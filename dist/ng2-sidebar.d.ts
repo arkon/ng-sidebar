@@ -2,6 +2,7 @@ import { ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChange } 
 export default class Sidebar implements OnInit, OnChanges, OnDestroy {
     private _el;
     open: boolean;
+    openChange: EventEmitter<boolean>;
     pullRight: boolean;
     closeOnClickOutside: boolean;
     sidebarClassName: string;

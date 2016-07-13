@@ -33,15 +33,15 @@
   padding: 2em;
 }
 
-  .demo-contents__control {
-    background-color: $light-grey;
-    border: 1px solid $dark-grey;
-    cursor: pointer;
-    padding: 0.5em 2em;
-    transition: background-color 0.15s;
+.demo-control {
+  background-color: $light-grey;
+  border: 1px solid $dark-grey;
+  cursor: pointer;
+  padding: 0.5em 2em;
+  transition: background-color 0.15s;
 
-    &:hover {
-      background-color: $dark-grey;
-      color: $white;
-    }
+  &:hover {
+    background-color: $dark-grey;
+    color: $white;
   }
+}

@@ -44,19 +44,21 @@ import {
       }
   `],
   template: `
-    <div class="ng2-sidebar"
+    <aside class="ng2-sidebar"
       [class.ng2-sidebar--open]="open"
       [class.ng2-sidebar--pull-right]="pullRight"
       [ngClass]="sidebarClassName">
       <ng-content></ng-content>
-    </div>
+    </aside>
   `
 })
 export default class Sidebar implements OnInit, OnChanges, OnDestroy {
+  // `openChange` allows for 2-way data binding
   @Input() open: boolean = false;
+  @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   @Input() pullRight: boolean = false;
   @Input() closeOnClickOutside: boolean = false;
-
   @Input() sidebarClassName: string;
 
   @Output() onOpen: EventEmitter<any> = new EventEmitter<any>();
@@ -79,23 +81,32 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: { [propName: string]: SimpleChange }) {
     if (changes['open']) {
       if (this.open) {
-        console.log('OPEN CHANGE')
         this.onOpen.emit(null);
+
         this._initCloseOnClickOutside();
       } else {
-        console.log('CLOSE CHANGE')
         this.onClose.emit(null);
+
+        this._destroyCloseOnClickOutside();
       }
+    }
+
+    if (changes['closeOnClickOutside']) {
+      this._initCloseOnClickOutside();
     }
   }
 
 
   // On click outside
+  // ==============================================================================================
 
   private _initCloseOnClickOutside() {
     if (this.open && this.closeOnClickOutside && !this._onClickOutsideAttached) {
-      document.body.addEventListener('click', this._onClickOutside);
-      this._onClickOutsideAttached = true;
+      // timeout so that things render first
+      setTimeout(() => {
+        document.body.addEventListener('click', this._onClickOutside);
+        this._onClickOutsideAttached = true;
+      }, 0);
     }
   }
 
@@ -107,9 +118,10 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   private _onClickOutside(e: Event) {
-    if (this.open && !this._el.nativeElement.contains(e.target)) {
-      console.log('CLICK OUTSIDE')
+    if (this._onClickOutsideAttached && !this._el.nativeElement.contains(e.target)) {
       this.open = false;
+      this.openChange.emit(false);
+
       this.onClose.emit(null);
 
       this._destroyCloseOnClickOutside();

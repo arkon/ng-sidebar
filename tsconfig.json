@@ -6,6 +6,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "declaration": true,
+    "removeComments": true,
     "outDir": "dist/"
   },
   "files": [
