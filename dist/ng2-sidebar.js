@@ -10,20 +10,49 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var Sidebar = (function () {
-    function Sidebar(_el, _renderer) {
-        this._el = _el;
-        this._renderer = _renderer;
+    function Sidebar() {
+        this.open = false;
+        this.pullRight = false;
+        this.onOpen = new core_1.EventEmitter();
+        this.onClose = new core_1.EventEmitter();
     }
     Sidebar.prototype.ngOnInit = function () {
     };
+    Sidebar.prototype.ngOnChanges = function (changes) {
+        if (changes['open'] !== undefined) {
+            if (changes['open']) {
+                this.onOpen.emit(null);
+            }
+            else {
+                this.onClose.emit(null);
+            }
+        }
+    };
     Sidebar.prototype.ngOnDestroy = function () {
     };
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Boolean)
+    ], Sidebar.prototype, "open", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Boolean)
+    ], Sidebar.prototype, "pullRight", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], Sidebar.prototype, "onOpen", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], Sidebar.prototype, "onClose", void 0);
     Sidebar = __decorate([
         core_1.Component({
             selector: 'ng2-sidebar',
-            template: "\n    <div>\n      Hello world\n    </div>\n  "
+            styles: ["\n    .ng2-sidebar {\n      background: #fff;\n      bottom: 0;\n      left: 0;\n      max-width: 250px;\n      overflow: auto;\n      padding: 2em 1em;\n      pointer-events: none;\n      position: fixed;\n      top: 0;\n      transform: translateX(-100%);\n      transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);\n      width: 100%;\n      will-change: transform;\n    }\n\n      .ng2-sidebar--pull-right {\n        left: auto;\n        right: 0;\n        transform: translateX(100%);\n      }\n\n      .ng2-sidebar.ng2-sidebar--open {\n        pointer-events: auto;\n        transform: none;\n        will-change: initial;\n      }\n  "],
+            template: "\n    <div [ngClass]=\"{ 'ng2-sidebar': true, 'ng2-sidebar--open': open, 'ng2-sidebar--pull-right': pullRight }\">\n      <ng-content></ng-content>\n    </div>\n  "
         }), 
-        __metadata('design:paramtypes', [core_1.ElementRef, core_1.Renderer])
+        __metadata('design:paramtypes', [])
     ], Sidebar);
     return Sidebar;
 }());

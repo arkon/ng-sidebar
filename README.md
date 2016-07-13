@@ -1,3 +1,5 @@
-# ng2-sticky-element
+# ng2-sidebar
 
-*More info coming soon*
+[Demo](http://echeung.me/ng2-sidebar)
+
+An Angular 2 sidebar component.
