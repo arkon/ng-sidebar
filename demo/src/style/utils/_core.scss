@@ -1,0 +1,31 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background: $light-grey;
+  color: $dark-grey;
+  font: 400 1em/1.25 $fonts;
+}
+
+::selection {
+  background-color: $green;
+  color: $white;
+}
+
+a {
+  color: $green;
+  text-decoration: none;
+
+  &:hover {
+    border-bottom: 1px dotted $green;
+  }
+}

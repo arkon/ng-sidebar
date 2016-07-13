@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": true,
+    "outDir": "dist/"
+  },
+  "files": [
+    "src/ng2-sidebar.ts",
+    "typings/index.d.ts"
+  ],
+  "compileOnSave": false,
+  "buildOnSave": false
+}

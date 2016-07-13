@@ -1,0 +1,37 @@
+@charset "utf-8";
+
+@import 'utils/variables';
+@import 'utils/core';
+
+body {
+  text-align: center;
+}
+
+header {
+  background: $white;
+  box-shadow: 0 0.15em 2.5em rgba($dark-grey, 0.5);
+  margin-bottom: 2em;
+  padding: 1em;
+}
+
+demo {
+  border: 3px solid $green;
+  display: block;
+  margin: 2em auto;
+  max-width: 800px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+
+  > div {
+    padding: 2em;
+  }
+}
+
+a {
+  padding: 0.5em 1em;
+
+  + a {
+    border-left: 1px solid $dark-grey;
+  }
+}

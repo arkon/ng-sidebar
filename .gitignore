@@ -1,0 +1,19 @@
+# OS generated files
+.DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Node files
+node_modules
+
+# Typing
+typings
+
+# Built demo files
+demo/public/style.css
+demo/public/bundle.js

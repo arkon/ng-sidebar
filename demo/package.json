@@ -1,0 +1,43 @@
+{
+  "name": "ng2-sidebar-demo",
+  "version": "0.0.1",
+  "description": "Demo of ng2-sidebar.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arkon/ng2-sidebar.git"
+  },
+  "author": "Eugene Cheung",
+  "license": "MIT",
+  "scripts": {
+    "install-lib": "npm uninstall ng2-sidebar && npm install",
+    "postinstall": "typings install",
+    "sass": "node-sass src/style/style.scss public/style.css --output-style compressed",
+    "start": "npm run sass && webpack-dev-server --progress --colors",
+    "build": "npm run sass && webpack",
+    "deploy": "npm run build && gh-pages -d public"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "dependencies": {
+    "@angular/common": "^2.0.0-rc.4",
+    "@angular/compiler": "^2.0.0-rc.4",
+    "@angular/core": "^2.0.0-rc.4",
+    "@angular/platform-browser": "^2.0.0-rc.4",
+    "@angular/platform-browser-dynamic": "^2.0.0-rc.4",
+    "es6-shim": "^0.35.1",
+    "ng2-sidebar": "file:../",
+    "reflect-metadata": "0.1.3",
+    "rxjs": "5.0.0-beta.6",
+    "zone.js": "^0.6.12"
+  },
+  "devDependencies": {
+    "gh-pages": "^0.11.0",
+    "node-sass": "^3.8.0",
+    "ts-loader": "^0.8.2",
+    "typescript": "^1.8.10",
+    "typings": "^1.3.1",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
