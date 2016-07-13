@@ -25,7 +25,7 @@
   "main": "./dist/ng2-sidebar.js",
   "typings": "./dist/ng2-sidebar.d.ts",
   "scripts": {
-    "start": "typings install && tsc --p ./tsconfig.json",
+    "start": "tsc --p ./tsconfig.json",
     "prepublish": "npm start"
   },
   "peerDependencies": {

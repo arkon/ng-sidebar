@@ -10,7 +10,6 @@
   "license": "MIT",
   "scripts": {
     "install-lib": "npm uninstall ng2-sidebar && npm install",
-    "postinstall": "typings install",
     "sass": "node-sass src/style/style.scss public/style.css --output-style compressed",
     "start": "npm run sass && webpack-dev-server --progress --colors",
     "build": "npm run sass && webpack",
