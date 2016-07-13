@@ -9,6 +9,7 @@ import Sidebar from 'ng2-sidebar';
       [(open)]="_open"
       [pullRight]="_pullRight"
       [closeOnClickOutside]="_closeOnClickOutside"
+      [showOverlay]="_showOverlay"
       (onOpen)="_onOpen()"
       (onClose)="_onClose()">
       <p>Sidebar contents</p>
@@ -26,6 +27,7 @@ import Sidebar from 'ng2-sidebar';
       <button class="demo-control" (click)="_toggleSidebar()">Toggle open ({{_open}})</button>
       <button class="demo-control" (click)="_togglePullRight()">Toggle pullRight ({{_pullRight}})</button>
       <button class="demo-control" (click)="_toggleCloseOnClickOutside()">Toggle closeOnClickOutside ({{_closeOnClickOutside}})</button>
+      <button class="demo-control" (click)="_toggleShowOverlay()">Toggle showOverlay ({{_showOverlay}})</button>
 
 
       <h1>Download</h1>
@@ -48,6 +50,7 @@ export class DemoComponent {
   private _open: boolean = false;
   private _pullRight: boolean = false;
   private _closeOnClickOutside: boolean = false;
+  private _showOverlay: boolean = false;
 
   private _toggleSidebar() {
     this._open = !this._open;
@@ -59,6 +62,10 @@ export class DemoComponent {
 
   private _toggleCloseOnClickOutside() {
     this._closeOnClickOutside = !this._closeOnClickOutside;
+  }
+
+  private _toggleShowOverlay() {
+    this._showOverlay = !this._showOverlay;
   }
 
   private _onOpen() {

@@ -48,14 +48,29 @@ Boolean input value that controls the visibility of the sidebar. This should be 
 the value changes when the sidebar is closed by clicking outside of it when `closeOnClickOutside` is
 enabled.
 
+Default: `false`.
+
 #### `[pullRight]="boolean_value"`
-Boolean input value
+Boolean input value that controls if the sidebar should appear on the right side of the viewport.
+
+Default: `false`.
 
 #### `[closeOnClickOutside]="boolean_value"`
 Boolean input value that controls whether clicking outside of the open sidebar will close it.
 
+Default: `false`.
+
+#### `[showOverlay]="boolean_value"`
+Boolean input value that controls if a translucent black overlay should appear over the page
+contents when the sidebar is open.
+
+Default: `false`.
+
 #### `[sidebarClassName]="'string_value'"`
 A string used as an additional class name on the sidebar element.
+
+#### `[overlayClassName]="'string_value'"`
+A string used as an additional class name on the overlay element.
 
 #### `(onOpen)="func_call()"`
 An output event, emitted when the sidebar is opened.

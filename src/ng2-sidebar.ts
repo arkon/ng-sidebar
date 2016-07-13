@@ -42,6 +42,17 @@ import {
         transform: none;
         will-change: initial;
       }
+
+    .ng2-sidebar__overlay {
+      background: #000;
+      height: 100%;
+      left: 0;
+      opacity: 0.75;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 99999998;
+    }
   `],
   template: `
     <aside class="ng2-sidebar"
@@ -50,6 +61,10 @@ import {
       [ngClass]="sidebarClassName">
       <ng-content></ng-content>
     </aside>
+
+    <div *ngIf="showOverlay && open"
+      class="ng2-sidebar__overlay"
+      [ngClass]="overlayClassName"></div>
   `
 })
 export default class Sidebar implements OnInit, OnChanges, OnDestroy {
@@ -59,7 +74,10 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
 
   @Input() pullRight: boolean = false;
   @Input() closeOnClickOutside: boolean = false;
+  @Input() showOverlay: boolean = false;
+
   @Input() sidebarClassName: string;
+  @Input() overlayClassName: string;
 
   @Output() onOpen: EventEmitter<any> = new EventEmitter<any>();
   @Output() onClose: EventEmitter<any> = new EventEmitter<any>();

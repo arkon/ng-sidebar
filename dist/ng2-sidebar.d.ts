@@ -5,7 +5,9 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
     openChange: EventEmitter<boolean>;
     pullRight: boolean;
     closeOnClickOutside: boolean;
+    showOverlay: boolean;
     sidebarClassName: string;
+    overlayClassName: string;
     onOpen: EventEmitter<any>;
     onClose: EventEmitter<any>;
     private _onClickOutsideAttached;
