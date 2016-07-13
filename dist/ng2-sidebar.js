@@ -10,8 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var Sidebar = (function () {
-    function Sidebar(_el) {
-        this._el = _el;
+    function Sidebar() {
         this.open = false;
         this.openChange = new core_1.EventEmitter();
         this.pullRight = false;
@@ -59,7 +58,7 @@ var Sidebar = (function () {
         }
     };
     Sidebar.prototype._onClickOutside = function (e) {
-        if (this._onClickOutsideAttached && !this._el.nativeElement.contains(e.target)) {
+        if (this._onClickOutsideAttached && this._elSidebar && !this._elSidebar.nativeElement.contains(e.target)) {
             this.open = false;
             this.openChange.emit(false);
             this.onClose.emit(null);
@@ -102,13 +101,17 @@ var Sidebar = (function () {
         core_1.Output(), 
         __metadata('design:type', core_1.EventEmitter)
     ], Sidebar.prototype, "onClose", void 0);
+    __decorate([
+        core_1.ViewChild('sidebar'), 
+        __metadata('design:type', core_1.ElementRef)
+    ], Sidebar.prototype, "_elSidebar", void 0);
     Sidebar = __decorate([
         core_1.Component({
             selector: 'ng2-sidebar',
             styles: ["\n    .ng2-sidebar {\n      background: #fff;\n      bottom: 0;\n      box-shadow: 0 0 2.5em rgba(84,85,85,0.5);\n      left: 0;\n      max-width: 250px;\n      overflow: auto;\n      padding: 2em 1em;\n      pointer-events: none;\n      position: fixed;\n      top: 0;\n      transform: translateX(-110%);\n      transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);\n      width: 100%;\n      will-change: transform;\n      z-index: 99999999;\n    }\n\n      .ng2-sidebar--pull-right {\n        left: auto;\n        right: 0;\n        transform: translateX(110%);\n      }\n\n      .ng2-sidebar.ng2-sidebar--open {\n        pointer-events: auto;\n        transform: none;\n        will-change: initial;\n      }\n\n    .ng2-sidebar__overlay {\n      background: #000;\n      height: 100%;\n      left: 0;\n      opacity: 0.75;\n      position: fixed;\n      top: 0;\n      width: 100%;\n      z-index: 99999998;\n    }\n  "],
-            template: "\n    <aside class=\"ng2-sidebar\"\n      [class.ng2-sidebar--open]=\"open\"\n      [class.ng2-sidebar--pull-right]=\"pullRight\"\n      [ngClass]=\"sidebarClassName\">\n      <ng-content></ng-content>\n    </aside>\n\n    <div *ngIf=\"showOverlay && open\"\n      class=\"ng2-sidebar__overlay\"\n      [ngClass]=\"overlayClassName\"></div>\n  "
+            template: "\n    <aside #sidebar\n      class=\"ng2-sidebar\"\n      [class.ng2-sidebar--open]=\"open\"\n      [class.ng2-sidebar--pull-right]=\"pullRight\"\n      [ngClass]=\"sidebarClassName\">\n      <ng-content></ng-content>\n    </aside>\n\n    <div *ngIf=\"showOverlay && open\"\n      class=\"ng2-sidebar__overlay\"\n      [ngClass]=\"overlayClassName\"></div>\n  "
         }), 
-        __metadata('design:paramtypes', [core_1.ElementRef])
+        __metadata('design:paramtypes', [])
     ], Sidebar);
     return Sidebar;
 }());

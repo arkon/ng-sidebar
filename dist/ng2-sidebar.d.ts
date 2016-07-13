@@ -1,6 +1,5 @@
-import { ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
+import { EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
 export default class Sidebar implements OnInit, OnChanges, OnDestroy {
-    private _el;
     open: boolean;
     openChange: EventEmitter<boolean>;
     pullRight: boolean;
@@ -10,8 +9,9 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
     overlayClassName: string;
     onOpen: EventEmitter<any>;
     onClose: EventEmitter<any>;
+    private _elSidebar;
     private _onClickOutsideAttached;
-    constructor(_el: ElementRef);
+    constructor();
     ngOnInit(): void;
     ngOnDestroy(): void;
     ngOnChanges(changes: {

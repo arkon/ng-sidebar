@@ -7,7 +7,8 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChange
+  SimpleChange,
+  ViewChild
 } from '@angular/core';
 
 @Component({
@@ -55,7 +56,8 @@ import {
     }
   `],
   template: `
-    <aside class="ng2-sidebar"
+    <aside #sidebar
+      class="ng2-sidebar"
       [class.ng2-sidebar--open]="open"
       [class.ng2-sidebar--pull-right]="pullRight"
       [ngClass]="sidebarClassName">
@@ -82,9 +84,12 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
   @Output() onOpen: EventEmitter<any> = new EventEmitter<any>();
   @Output() onClose: EventEmitter<any> = new EventEmitter<any>();
 
+  @ViewChild('sidebar')
+  private _elSidebar: ElementRef;
+
   private _onClickOutsideAttached: boolean = false;
 
-  constructor(private _el: ElementRef) {
+  constructor() {
     this._onClickOutside = this._onClickOutside.bind(this);
   }
 
@@ -136,7 +141,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   private _onClickOutside(e: Event) {
-    if (this._onClickOutsideAttached && !this._el.nativeElement.contains(e.target)) {
+    if (this._onClickOutsideAttached && this._elSidebar && !this._elSidebar.nativeElement.contains(e.target)) {
       this.open = false;
       this.openChange.emit(false);
 
