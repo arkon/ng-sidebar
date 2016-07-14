@@ -19,7 +19,6 @@ import {
       bottom: 0;
       box-shadow: 0 0 2.5em rgba(84,85,85,0.5);
       left: 0;
-      max-width: 250px;
       overflow: auto;
       padding: 2em 1em;
       pointer-events: none;
@@ -27,7 +26,6 @@ import {
       top: 0;
       transform: translateX(-110%);
       transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
-      width: 100%;
       will-change: transform;
       z-index: 99999999;
     }
