@@ -7,6 +7,7 @@ import { Sidebar } from 'ng2-sidebar';
   template: `
     <ng2-sidebar
       [(open)]="_open"
+      [defaultStyles]="true"
       [pullRight]="_pullRight"
       [closeOnClickOutside]="_closeOnClickOutside"
       [showOverlay]="_showOverlay"

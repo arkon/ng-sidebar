@@ -17,9 +17,7 @@ import {
   encapsulation: ViewEncapsulation.None,
   styles: [`
     .ng2-sidebar {
-      background: #fff;
       bottom: 0;
-      box-shadow: 0 0 2.5em rgba(84,85,85,0.5);
       left: 0;
       overflow: auto;
       pointer-events: none;
@@ -30,6 +28,11 @@ import {
       will-change: transform;
       z-index: 99999999;
     }
+
+      .ng2-sidebar--style {
+        background: #fff;
+        box-shadow: 0 0 2.5em rgba(84, 85, 85, 0.5);
+      }
 
       .ng2-sidebar--pull-right {
         left: auto;
@@ -57,6 +60,7 @@ import {
   template: `
     <aside #sidebar
       class="ng2-sidebar"
+      [class.ng2-sidebar--style]="defaultStyles"
       [class.ng2-sidebar--open]="open"
       [class.ng2-sidebar--pull-right]="pullRight"
       [ngClass]="sidebarClassName">
@@ -76,6 +80,8 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
   @Input() pullRight: boolean = false;
   @Input() closeOnClickOutside: boolean = false;
   @Input() showOverlay: boolean = false;
+
+  @Input() defaultStyles: boolean = false;
 
   @Input() sidebarClassName: string;
   @Input() overlayClassName: string;
