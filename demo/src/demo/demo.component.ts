@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import Sidebar from 'ng2-sidebar';
+import { Sidebar } from 'ng2-sidebar';
 
 @Component({
   selector: 'demo',
@@ -10,6 +10,7 @@ import Sidebar from 'ng2-sidebar';
       [pullRight]="_pullRight"
       [closeOnClickOutside]="_closeOnClickOutside"
       [showOverlay]="_showOverlay"
+      [sidebarClassName]="'demo-sidebar'"
       (onOpen)="_onOpen()"
       (onClose)="_onClose()">
       <p>Sidebar contents</p>

@@ -8,11 +8,13 @@ import {
   OnInit,
   Output,
   SimpleChange,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 
 @Component({
   selector: 'ng2-sidebar',
+  encapsulation: ViewEncapsulation.None,
   styles: [`
     .ng2-sidebar {
       background: #fff;
@@ -20,7 +22,6 @@ import {
       box-shadow: 0 0 2.5em rgba(84,85,85,0.5);
       left: 0;
       overflow: auto;
-      padding: 2em 1em;
       pointer-events: none;
       position: fixed;
       top: 0;

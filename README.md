@@ -19,7 +19,7 @@ npm install --save ng2-sidebar
 Import the component and add it to the list of directives on your component:
 
 ```typescript
-import Sidebar from 'ng2-sidebar';
+import { Sidebar } from 'ng2-sidebar';
 
 @Component({
   selector: 'example',

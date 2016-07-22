@@ -22,8 +22,8 @@
     "sidebar",
     "component"
   ],
-  "main": "./dist/ng2-sidebar.js",
-  "typings": "./dist/ng2-sidebar.d.ts",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "scripts": {
     "start": "tsc --p ./tsconfig.json",
     "prepublish": "npm start"
