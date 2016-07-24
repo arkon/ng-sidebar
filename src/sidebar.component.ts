@@ -115,6 +115,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
   private _focusedBeforeOpen: HTMLElement;
 
   constructor() {
+    this._trapFocus = this._trapFocus.bind(this);
     this._onClickOutside = this._onClickOutside.bind(this);
   }
 
@@ -144,7 +145,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
     this.onOpen.emit(null);
 
     this._focusedBeforeOpen = document.activeElement as HTMLElement;
-    this._getFocusableChildren();
+    this._getFocusableElements();
     document.body.addEventListener('focus', this._trapFocus, true);
 
     this._initCloseOnClickOutside();
@@ -163,12 +164,8 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
   // Focus on open/close
   // ==============================================================================================
 
-  private _getFocusableChildren() {
-    const allFocusableElements = Array.from(this._elSidebar.nativeElement.querySelectorAll(this._focusableElementsString)) as Array<HTMLElement>;
-
-    this._focusableElements = allFocusableElements.filter((child) => {
-      return !!(child.offsetWidth || child.offsetHeight || child.getClientRects().length);
-    });
+  private _getFocusableElements() {
+    this._focusableElements = Array.from(this._elSidebar.nativeElement.querySelectorAll(this._focusableElementsString)) as Array<HTMLElement>;
   }
 
   private _setFocusToFirstItem() {
@@ -178,7 +175,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   private _trapFocus(e: Event) {
-    if (this.open && !this._elSidebar.nativeElement.contains(event.target)) {
+    if (this.open && !this._elSidebar.nativeElement.contains(e.target)) {
       this._setFocusToFirstItem();
     }
   }

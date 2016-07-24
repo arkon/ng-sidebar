@@ -24,9 +24,9 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
     }): void;
     private _open();
     private _close();
-    private _getFocusableChildren();
+    private _getFocusableElements();
     private _setFocusToFirstItem();
-    private _trapFocus(event);
+    private _trapFocus(e);
     private _initCloseOnClickOutside();
     private _destroyCloseOnClickOutside();
     private _onClickOutside(e);
