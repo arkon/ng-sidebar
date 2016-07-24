@@ -18,14 +18,26 @@
 }
 
   .demo-header__toggle {
-    -webkit-appearance: none;
     background: transparent;
-    border: 0;
-    box-shadow: 0 0.15rem 0 $white, 0 -0.15rem 0 $white;
+    border: 0.15rem solid $white;
+    border-left: 0;
+    border-right: 0;
     font-size: 0;
-    height: 0.75rem;
+    height: 1.5rem;
     margin-right: 1rem;
+    position: relative;
     width: 2rem;
+
+    &::after {
+      background: $white;
+      content: '';
+      height: 0.15rem;
+      left: 0;
+      margin-top: -0.075rem;
+      position: absolute;
+      top: 50%;
+      width: 100%;
+    }
   }
 
 .demo-sidebar {
