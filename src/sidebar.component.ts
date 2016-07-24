@@ -146,6 +146,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
 
     this._focusedBeforeOpen = document.activeElement as HTMLElement;
     this._getFocusableElements();
+    this._setFocusToFirstItem();
     document.body.addEventListener('focus', this._trapFocus, true);
 
     this._initCloseOnClickOutside();

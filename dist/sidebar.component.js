@@ -47,6 +47,7 @@ var Sidebar = (function () {
         this.onOpen.emit(null);
         this._focusedBeforeOpen = document.activeElement;
         this._getFocusableElements();
+        this._setFocusToFirstItem();
         document.body.addEventListener('focus', this._trapFocus, true);
         this._initCloseOnClickOutside();
     };
