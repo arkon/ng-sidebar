@@ -11,7 +11,8 @@ import { Sidebar } from 'ng2-sidebar';
       [pullRight]="_pullRight"
       [closeOnClickOutside]="_closeOnClickOutside"
       [showOverlay]="_showOverlay"
-      [sidebarClassName]="'demo-sidebar'"
+      [sidebarClass]="'demo-sidebar'"
+      [ariaLabel]="'My sidebar'"
       (onOpen)="_onOpen()"
       (onClose)="_onClose()">
       <p>Sidebar contents</p>

@@ -59,17 +59,21 @@ import {
   `],
   template: `
     <aside #sidebar
+      role="complementary"
+      [attr.aria-hidden]="!open"
+      [attr.aria-label]="ariaLabel"
       class="ng2-sidebar"
       [class.ng2-sidebar--style]="defaultStyles"
       [class.ng2-sidebar--open]="open"
       [class.ng2-sidebar--pull-right]="pullRight"
-      [ngClass]="sidebarClassName">
+      [ngClass]="sidebarClass">
       <ng-content></ng-content>
     </aside>
 
     <div *ngIf="showOverlay && open"
+      aria-hidden="true"
       class="ng2-sidebar__overlay"
-      [ngClass]="overlayClassName"></div>
+      [ngClass]="overlayClass"></div>
   `
 })
 export default class Sidebar implements OnInit, OnChanges, OnDestroy {
@@ -83,8 +87,10 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
 
   @Input() defaultStyles: boolean = false;
 
-  @Input() sidebarClassName: string;
-  @Input() overlayClassName: string;
+  @Input() sidebarClass: string;
+  @Input() overlayClass: string;
+
+  @Input() ariaLabel: string;
 
   @Output() onOpen: EventEmitter<any> = new EventEmitter<any>();
   @Output() onClose: EventEmitter<any> = new EventEmitter<any>();
@@ -93,6 +99,10 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
   private _elSidebar: ElementRef;
 
   private _onClickOutsideAttached: boolean = false;
+
+  private _focusableElementsString: string = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]';
+  private _focusableElements: Array<HTMLElement>;
+  private _focusedBeforeOpen: HTMLElement;
 
   constructor() {
     this._onClickOutside = this._onClickOutside.bind(this);
@@ -109,13 +119,9 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: { [propName: string]: SimpleChange }) {
     if (changes['open']) {
       if (this.open) {
-        this.onOpen.emit(null);
-
-        this._initCloseOnClickOutside();
+        this._open();
       } else {
-        this.onClose.emit(null);
-
-        this._destroyCloseOnClickOutside();
+        this._close();
       }
     }
 
@@ -124,6 +130,48 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  private _open() {
+    this.onOpen.emit(null);
+
+    this._focusedBeforeOpen = document.activeElement as HTMLElement;
+    this._getFocusableChildren();
+    document.body.addEventListener('focus', this._trapFocus, true);
+
+    this._initCloseOnClickOutside();
+  }
+
+  private _close() {
+    this.onClose.emit(null);
+
+    this._focusedBeforeOpen && this._focusedBeforeOpen.focus();
+    document.body.removeEventListener('focus', this._trapFocus, true);
+
+    this._destroyCloseOnClickOutside();
+  }
+
+
+  // Focus on open/close
+  // ==============================================================================================
+
+  private _getFocusableChildren() {
+    const allFocusableElements = Array.from(this._elSidebar.nativeElement.querySelectorAll(this._focusableElementsString)) as Array<HTMLElement>;
+
+    this._focusableElements = allFocusableElements.filter((child) => {
+      return !!(child.offsetWidth || child.offsetHeight || child.getClientRects().length);
+    });
+  }
+
+  private _setFocusToFirstItem() {
+    if (this._focusableElements.length) {
+      this._focusableElements[0].focus();
+    }
+  }
+
+  private _trapFocus(e: Event) {
+    if (this.open && !this._elSidebar.nativeElement.contains(event.target)) {
+      this._setFocusToFirstItem();
+    }
+  }
 
   // On click outside
   // ==============================================================================================
@@ -150,9 +198,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
       this.open = false;
       this.openChange.emit(false);
 
-      this.onClose.emit(null);
-
-      this._destroyCloseOnClickOutside();
+      this._close();
     }
   }
 }

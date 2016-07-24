@@ -12,7 +12,6 @@
   "files": [
     "src/index.ts",
     "src/sidebar.component.ts",
-    "src/close.directive.ts",
     "typings/index.d.ts"
   ],
   "compileOnSave": false,

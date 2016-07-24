@@ -66,11 +66,14 @@ contents when the sidebar is open.
 
 Default: `false`.
 
-#### `[sidebarClassName]="'string_value'"`
+#### `[sidebarClass]="'string_value'"`
 A string used as an additional class name on the sidebar element.
 
-#### `[overlayClassName]="'string_value'"`
+#### `[overlayClass]="'string_value'"`
 A string used as an additional class name on the overlay element.
+
+#### `[ariaLabel]="'string_value'"`
+A string used as the `aria-label` attribute on the sidebar.
 
 #### `(onOpen)="func_call()"`
 An output event, emitted when the sidebar is opened.
