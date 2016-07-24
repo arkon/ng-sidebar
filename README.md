@@ -66,6 +66,11 @@ contents when the sidebar is open.
 
 Default: `false`.
 
+#### `[defaultStyles]="boolean_value"`
+Applies some default styles to the sidebar.
+
+Default: `false`.
+
 #### `[sidebarClass]="'string_value'"`
 A string used as an additional class name on the sidebar element.
 
