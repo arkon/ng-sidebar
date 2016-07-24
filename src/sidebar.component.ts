@@ -73,7 +73,7 @@ import {
       class="ng2-sidebar"
       [class.ng2-sidebar--open]="open"
       [class.ng2-sidebar--pull-right]="pullRight"
-      [class.ng2-sidebar--style]="oepn && defaultStyles"
+      [class.ng2-sidebar--style]="open && defaultStyles"
       [ngClass]="sidebarClass">
       <ng-content></ng-content>
     </aside>
