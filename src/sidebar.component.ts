@@ -56,7 +56,7 @@ import {
       z-index: 99999998;
     }
 
-      .ng2-sidebar__overlay--open {
+      .ng2-sidebar__overlay.ng2-sidebar__overlay--open {
         pointer-events: auto;
       }
 
@@ -73,7 +73,7 @@ import {
       class="ng2-sidebar"
       [class.ng2-sidebar--open]="open"
       [class.ng2-sidebar--pull-right]="pullRight"
-      [class.ng2-sidebar--style]="defaultStyles"
+      [class.ng2-sidebar--style]="oepn && defaultStyles"
       [ngClass]="sidebarClass">
       <ng-content></ng-content>
     </aside>
@@ -82,7 +82,7 @@ import {
       aria-hidden="true"
       class="ng2-sidebar__overlay"
       [class.ng2-sidebar__overlay--open]="open"
-      [class.ng2-sidebar__overlay--style]="defaultStyles"
+      [class.ng2-sidebar__overlay--style]="open && defaultStyles"
       [ngClass]="overlayClass"></div>
   `
 })
