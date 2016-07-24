@@ -29,11 +29,6 @@ import {
       z-index: 99999999;
     }
 
-      .ng2-sidebar--style {
-        background: #fff;
-        box-shadow: 0 0 2.5em rgba(84, 85, 85, 0.5);
-      }
-
       .ng2-sidebar--pull-right {
         left: auto;
         right: 0;
@@ -46,16 +41,29 @@ import {
         will-change: initial;
       }
 
+      .ng2-sidebar--style {
+        background: #fff;
+        box-shadow: 0 0 2.5em rgba(84, 85, 85, 0.5);
+      }
+
     .ng2-sidebar__overlay {
-      background: #000;
       height: 100%;
       left: 0;
-      opacity: 0.75;
+      pointer-events: none;
       position: fixed;
       top: 0;
       width: 100%;
       z-index: 99999998;
     }
+
+      .ng2-sidebar__overlay--open {
+        pointer-events: auto;
+      }
+
+      .ng2-sidebar__overlay--style {
+        background: #000;
+        opacity: 0.75;
+      }
   `],
   template: `
     <aside #sidebar
@@ -63,16 +71,18 @@ import {
       [attr.aria-hidden]="!open"
       [attr.aria-label]="ariaLabel"
       class="ng2-sidebar"
-      [class.ng2-sidebar--style]="defaultStyles"
       [class.ng2-sidebar--open]="open"
       [class.ng2-sidebar--pull-right]="pullRight"
+      [class.ng2-sidebar--style]="defaultStyles"
       [ngClass]="sidebarClass">
       <ng-content></ng-content>
     </aside>
 
-    <div *ngIf="showOverlay && open"
+    <div *ngIf="showOverlay"
       aria-hidden="true"
       class="ng2-sidebar__overlay"
+      [class.ng2-sidebar__overlay--open]="open"
+      [class.ng2-sidebar__overlay--style]="defaultStyles"
       [ngClass]="overlayClass"></div>
   `
 })
@@ -172,6 +182,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
       this._setFocusToFirstItem();
     }
   }
+
 
   // On click outside
   // ==============================================================================================
