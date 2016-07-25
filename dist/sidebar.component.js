@@ -44,24 +44,24 @@ var Sidebar = (function () {
         }
     };
     Sidebar.prototype._open = function () {
-        this.onOpen.emit(null);
         this._focusedBeforeOpen = document.activeElement;
         this._getFocusableElements();
         this._setFocusToFirstItem();
         document.body.addEventListener('focus', this._trapFocus, true);
         this._initCloseOnClickOutside();
+        this.onOpen.emit(null);
     };
     Sidebar.prototype._close = function () {
-        this.onClose.emit(null);
         this._focusedBeforeOpen && this._focusedBeforeOpen.focus();
         document.body.removeEventListener('focus', this._trapFocus, true);
         this._destroyCloseOnClickOutside();
+        this.onClose.emit(null);
     };
     Sidebar.prototype._getFocusableElements = function () {
         this._focusableElements = Array.from(this._elSidebar.nativeElement.querySelectorAll(this._focusableElementsString));
     };
     Sidebar.prototype._setFocusToFirstItem = function () {
-        if (this._focusableElements.length) {
+        if (this._focusableElements && this._focusableElements.length) {
             this._focusableElements[0].focus();
         }
     };
@@ -144,8 +144,11 @@ var Sidebar = (function () {
         core_1.Component({
             selector: 'ng2-sidebar',
             encapsulation: core_1.ViewEncapsulation.None,
-            styles: ["\n    .ng2-sidebar {\n      bottom: 0;\n      left: 0;\n      overflow: auto;\n      pointer-events: none;\n      position: fixed;\n      top: 0;\n      transform: translateX(-110%);\n      transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);\n      will-change: transform;\n      z-index: 99999999;\n    }\n\n      .ng2-sidebar--pull-right {\n        left: auto;\n        right: 0;\n        transform: translateX(110%);\n      }\n\n      .ng2-sidebar.ng2-sidebar--open {\n        pointer-events: auto;\n        transform: none;\n        will-change: initial;\n      }\n\n      .ng2-sidebar--style {\n        background: #fff;\n        box-shadow: 0 0 2.5em rgba(84, 85, 85, 0.5);\n      }\n\n    .ng2-sidebar__overlay {\n      height: 100%;\n      left: 0;\n      pointer-events: none;\n      position: fixed;\n      top: 0;\n      width: 100%;\n      z-index: 99999998;\n    }\n\n      .ng2-sidebar__overlay.ng2-sidebar__overlay--open {\n        pointer-events: auto;\n      }\n\n      .ng2-sidebar__overlay--style {\n        background: #000;\n        opacity: 0.75;\n      }\n  "],
-            template: "\n    <aside #sidebar\n      role=\"complementary\"\n      [attr.aria-hidden]=\"!open\"\n      [attr.aria-label]=\"ariaLabel\"\n      class=\"ng2-sidebar\"\n      [class.ng2-sidebar--open]=\"open\"\n      [class.ng2-sidebar--pull-right]=\"pullRight\"\n      [class.ng2-sidebar--style]=\"open && defaultStyles\"\n      [ngClass]=\"sidebarClass\">\n      <ng-content></ng-content>\n    </aside>\n\n    <div *ngIf=\"showOverlay\"\n      aria-hidden=\"true\"\n      class=\"ng2-sidebar__overlay\"\n      [class.ng2-sidebar__overlay--open]=\"open\"\n      [class.ng2-sidebar__overlay--style]=\"open && defaultStyles\"\n      [ngClass]=\"overlayClass\"></div>\n  "
+            styles: ["\n    .ng2-sidebar {\n      bottom: 0;\n      left: 0;\n      overflow: auto;\n      pointer-events: none;\n      position: fixed;\n      top: 0;\n      transform: translateX(-110%);\n      transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);\n      will-change: transform;\n      z-index: 99999999;\n    }\n\n      .ng2-sidebar--pull-right {\n        left: auto;\n        right: 0;\n        transform: translateX(110%);\n      }\n\n      .ng2-sidebar--style {\n        background: #fff;\n        box-shadow: 0 0 2.5em rgba(84, 85, 85, 0.5);\n      }\n\n      .ng2-sidebar--open .ng2-sidebar {\n        pointer-events: auto;\n        transform: none;\n        will-change: initial;\n      }\n\n    .ng2-sidebar__overlay {\n      height: 100%;\n      left: 0;\n      pointer-events: none;\n      position: fixed;\n      top: 0;\n      width: 100%;\n      z-index: 99999998;\n    }\n\n      .ng2-sidebar--open .ng2-sidebar__overlay {\n        pointer-events: auto;\n      }\n\n      .ng2-sidebar--open .ng2-sidebar__overlay--style {\n        background: #000;\n        opacity: 0.75;\n      }\n  "],
+            template: "\n    <aside #sidebar\n      role=\"complementary\"\n      [attr.aria-hidden]=\"!open\"\n      [attr.aria-label]=\"ariaLabel\"\n      class=\"ng2-sidebar\"\n      [class.ng2-sidebar--pull-right]=\"pullRight\"\n      [class.ng2-sidebar--style]=\"defaultStyles\"\n      [ngClass]=\"sidebarClass\">\n      <ng-content></ng-content>\n    </aside>\n\n    <div *ngIf=\"showOverlay\"\n      aria-hidden=\"true\"\n      class=\"ng2-sidebar__overlay\"\n      [class.ng2-sidebar__overlay--style]=\"defaultStyles\"\n      [ngClass]=\"overlayClass\"></div>\n  ",
+            host: {
+                '[class.ng2-sidebar--open]': 'open'
+            }
         }), 
         __metadata('design:paramtypes', [])
     ], Sidebar);

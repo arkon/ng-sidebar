@@ -9,8 +9,8 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
     sidebarClass: string;
     overlayClass: string;
     ariaLabel: string;
-    onOpen: EventEmitter<any>;
-    onClose: EventEmitter<any>;
+    onOpen: EventEmitter<void>;
+    onClose: EventEmitter<void>;
     private _elSidebar;
     private _onClickOutsideAttached;
     private _focusableElementsString;

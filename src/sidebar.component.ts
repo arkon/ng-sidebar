@@ -35,15 +35,15 @@ import {
         transform: translateX(110%);
       }
 
-      .ng2-sidebar.ng2-sidebar--open {
-        pointer-events: auto;
-        transform: none;
-        will-change: initial;
-      }
-
       .ng2-sidebar--style {
         background: #fff;
         box-shadow: 0 0 2.5em rgba(84, 85, 85, 0.5);
+      }
+
+      .ng2-sidebar--open .ng2-sidebar {
+        pointer-events: auto;
+        transform: none;
+        will-change: initial;
       }
 
     .ng2-sidebar__overlay {
@@ -56,11 +56,11 @@ import {
       z-index: 99999998;
     }
 
-      .ng2-sidebar__overlay.ng2-sidebar__overlay--open {
+      .ng2-sidebar--open .ng2-sidebar__overlay {
         pointer-events: auto;
       }
 
-      .ng2-sidebar__overlay--style {
+      .ng2-sidebar--open .ng2-sidebar__overlay--style {
         background: #000;
         opacity: 0.75;
       }
@@ -71,9 +71,8 @@ import {
       [attr.aria-hidden]="!open"
       [attr.aria-label]="ariaLabel"
       class="ng2-sidebar"
-      [class.ng2-sidebar--open]="open"
       [class.ng2-sidebar--pull-right]="pullRight"
-      [class.ng2-sidebar--style]="open && defaultStyles"
+      [class.ng2-sidebar--style]="defaultStyles"
       [ngClass]="sidebarClass">
       <ng-content></ng-content>
     </aside>
@@ -81,10 +80,12 @@ import {
     <div *ngIf="showOverlay"
       aria-hidden="true"
       class="ng2-sidebar__overlay"
-      [class.ng2-sidebar__overlay--open]="open"
-      [class.ng2-sidebar__overlay--style]="open && defaultStyles"
+      [class.ng2-sidebar__overlay--style]="defaultStyles"
       [ngClass]="overlayClass"></div>
-  `
+  `,
+  host: {
+    '[class.ng2-sidebar--open]': 'open'
+  }
 })
 export default class Sidebar implements OnInit, OnChanges, OnDestroy {
   // `openChange` allows for 2-way data binding
@@ -102,8 +103,8 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
 
   @Input() ariaLabel: string;
 
-  @Output() onOpen: EventEmitter<any> = new EventEmitter<any>();
-  @Output() onClose: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onOpen: EventEmitter<void> = new EventEmitter<void>();
+  @Output() onClose: EventEmitter<void> = new EventEmitter<void>();
 
   @ViewChild('sidebar')
   private _elSidebar: ElementRef;
@@ -142,23 +143,23 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   private _open() {
-    this.onOpen.emit(null);
-
     this._focusedBeforeOpen = document.activeElement as HTMLElement;
     this._getFocusableElements();
     this._setFocusToFirstItem();
     document.body.addEventListener('focus', this._trapFocus, true);
 
     this._initCloseOnClickOutside();
+
+    this.onOpen.emit(null);
   }
 
   private _close() {
-    this.onClose.emit(null);
-
     this._focusedBeforeOpen && this._focusedBeforeOpen.focus();
     document.body.removeEventListener('focus', this._trapFocus, true);
 
     this._destroyCloseOnClickOutside();
+
+    this.onClose.emit(null);
   }
 
 
@@ -170,7 +171,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   private _setFocusToFirstItem() {
-    if (this._focusableElements.length) {
+    if (this._focusableElements && this._focusableElements.length) {
       this._focusableElements[0].focus();
     }
   }
@@ -187,7 +188,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
 
   private _initCloseOnClickOutside() {
     if (this.open && this.closeOnClickOutside && !this._onClickOutsideAttached) {
-      // timeout so that things render first
+      // In a timeout so that things render first
       setTimeout(() => {
         document.body.addEventListener('click', this._onClickOutside);
         this._onClickOutsideAttached = true;
