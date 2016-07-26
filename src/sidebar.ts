@@ -1,5 +1,7 @@
 import {
+  AfterContentInit,
   Component,
+  ContentChildren,
   ElementRef,
   EventEmitter,
   Input,
@@ -9,8 +11,11 @@ import {
   Output,
   SimpleChange,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  QueryList
 } from '@angular/core';
+
+import CloseSidebar from './close';
 
 @Component({
   selector: 'ng2-sidebar',
@@ -87,7 +92,7 @@ import {
     '[class.ng2-sidebar--open]': 'open'
   }
 })
-export default class Sidebar implements OnInit, OnChanges, OnDestroy {
+export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterContentInit {
   // `openChange` allows for 2-way data binding
   @Input() open: boolean = false;
   @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -109,6 +114,9 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
   @ViewChild('sidebar')
   private _elSidebar: ElementRef;
 
+  @ContentChildren(CloseSidebar, { descendants: true })
+  private _closeDirectives: QueryList<CloseSidebar>;
+
   private _onClickOutsideAttached: boolean = false;
 
   private _focusableElementsString: string = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]';
@@ -126,6 +134,12 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this._destroyCloseOnClickOutside();
+  }
+
+  ngAfterContentInit() {
+    this._closeDirectives.forEach((dir: CloseSidebar) => {
+      dir.clicked.subscribe((next) => this._manualClose());
+    });
   }
 
   ngOnChanges(changes: { [propName: string]: SimpleChange }) {
@@ -160,6 +174,13 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
     this._destroyCloseOnClickOutside();
 
     this.onClose.emit(null);
+  }
+
+  private _manualClose() {
+    this.open = false;
+    this.openChange.emit(false);
+
+    this._close();
   }
 
 
@@ -205,10 +226,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy {
 
   private _onClickOutside(e: Event) {
     if (this._onClickOutsideAttached && this._elSidebar && !this._elSidebar.nativeElement.contains(e.target)) {
-      this.open = false;
-      this.openChange.emit(false);
-
-      this._close();
+      this._manualClose();
     }
   }
 }

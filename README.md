@@ -41,6 +41,26 @@ export class MyComponent {
 }
 ```
 
+A directive is also provided to easily close the sidebar by clicking something inside it:
+
+```typescript
+import { Sidebar, CloseSidebar } from 'ng2-sidebar';
+// or:
+// import { SIDEBAR_DIRECTIVES } from 'ng2-sidebar';
+
+@Component({
+  selector: 'example',
+  directives: [Sidebar, CloseSidebar],
+  template: `
+    <ng2-sidebar [(open)]="_open">
+      <a closeSidebar>Closes the sidebar</a>
+    </ng2-sidebar>
+  `
+})
+// ...
+```
+
+
 ### Options
 
 #### `[(open)]="boolean_value"`

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { Sidebar } from 'ng2-sidebar';
+import { SIDEBAR_DIRECTIVES } from 'ng2-sidebar';
 
 @Component({
   selector: 'demo',
-  directives: [Sidebar],
+  directives: [SIDEBAR_DIRECTIVES],
   template: `
     <ng2-sidebar
       [(open)]="_open"
@@ -16,7 +16,9 @@ import { Sidebar } from 'ng2-sidebar';
       (onOpen)="_onOpen()"
       (onClose)="_onClose()">
       <p>Sidebar contents</p>
+
       <button class="demo-control" (click)="_toggleSidebar()">Close sidebar</button>
+      <p><a closeSidebar>This will close the sidebar too</a></p>
     </ng2-sidebar>
 
     <header class="demo-header">
