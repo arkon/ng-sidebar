@@ -134,11 +134,15 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
 
   ngOnDestroy() {
     this._destroyCloseOnClickOutside();
+
+    this._closeDirectives.forEach((dir: CloseSidebar) => {
+      dir.clicked.unsubscribe();
+    });
   }
 
   ngAfterContentInit() {
     this._closeDirectives.forEach((dir: CloseSidebar) => {
-      dir.clicked.subscribe((next) => this._manualClose());
+      dir.clicked.subscribe(() => this._manualClose());
     });
   }
 
