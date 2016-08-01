@@ -12,7 +12,7 @@
   },
   "files": [
     "src/*",
-    "dist/*"
+    "lib/*"
   ],
   "author": "Eugene Cheung",
   "license": "MIT",
@@ -22,8 +22,8 @@
     "sidebar",
     "component"
   ],
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
   "scripts": {
     "start": "tsc --p ./tsconfig.json",
     "prepublish": "npm start"
