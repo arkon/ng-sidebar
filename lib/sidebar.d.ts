@@ -1,8 +1,14 @@
 import { AfterContentInit, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
+export declare const SIDEBAR_POSITION: {
+    Left: string;
+    Right: string;
+    Top: string;
+    Bottom: string;
+};
 export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterContentInit {
     open: boolean;
     openChange: EventEmitter<boolean>;
-    pullRight: boolean;
+    position: string;
     closeOnClickOutside: boolean;
     showOverlay: boolean;
     defaultStyles: boolean;

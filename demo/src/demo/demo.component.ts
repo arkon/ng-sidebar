@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SIDEBAR_DIRECTIVES } from 'ng2-sidebar';
+import { SIDEBAR_DIRECTIVES, SIDEBAR_POSITION } from 'ng2-sidebar';
 
 @Component({
   selector: 'demo',
@@ -8,7 +8,7 @@ import { SIDEBAR_DIRECTIVES } from 'ng2-sidebar';
     <ng2-sidebar
       [(open)]="_open"
       [defaultStyles]="true"
-      [pullRight]="_pullRight"
+      [position]="_POSITIONS[_positionNum]"
       [closeOnClickOutside]="_closeOnClickOutside"
       [showOverlay]="_showOverlay"
       [sidebarClass]="'demo-sidebar'"
@@ -30,7 +30,7 @@ import { SIDEBAR_DIRECTIVES } from 'ng2-sidebar';
       <h1>Controls</h1>
 
       <button class="demo-control" (click)="_toggleSidebar()">Toggle open ({{_open}})</button>
-      <button class="demo-control" (click)="_togglePullRight()">Toggle pullRight ({{_pullRight}})</button>
+      <button class="demo-control" (click)="_togglePosition()">Toggle position ({{_POSITIONS[_positionNum]}})</button>
       <button class="demo-control" (click)="_toggleCloseOnClickOutside()">Toggle closeOnClickOutside ({{_closeOnClickOutside}})</button>
       <button class="demo-control" (click)="_toggleShowOverlay()">Toggle showOverlay ({{_showOverlay}})</button>
 
@@ -55,16 +55,22 @@ import { SIDEBAR_DIRECTIVES } from 'ng2-sidebar';
 })
 export class DemoComponent {
   private _open: boolean = false;
-  private _pullRight: boolean = false;
+  private _positionNum: number = 0;
   private _closeOnClickOutside: boolean = false;
   private _showOverlay: boolean = false;
+
+  private _POSITIONS = [SIDEBAR_POSITION.Left, SIDEBAR_POSITION.Right, SIDEBAR_POSITION.Top, SIDEBAR_POSITION.Bottom];
 
   private _toggleSidebar() {
     this._open = !this._open;
   }
 
-  private _togglePullRight() {
-    this._pullRight = !this._pullRight;
+  private _togglePosition() {
+    this._positionNum++;
+
+    if (this._positionNum === this._POSITIONS.length) {
+      this._positionNum = 0;
+    }
   }
 
   private _toggleCloseOnClickOutside() {

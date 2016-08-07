@@ -72,10 +72,11 @@ enabled.
 
 Default: `false`.
 
-#### `[pullRight]="boolean_value"`
-Boolean input value that controls if the sidebar should appear on the right side of the viewport.
+#### `[position]="'left' | 'right' | 'top' | 'bottom'"`
+String indicating what side of the viewport the sidebar should be docked to. You can also import the
+`SIDEBAR_POSITION` instead of hardcoding the strings yourself.
 
-Default: `false`.
+Default: `'left'`.
 
 #### `[closeOnClickOutside]="boolean_value"`
 Boolean input value that controls whether clicking outside of the open sidebar will close it.

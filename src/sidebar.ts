@@ -17,27 +17,52 @@ import {
 
 import CloseSidebar from './close';
 
+export const SIDEBAR_POSITION = {
+  Left: 'left',
+  Right: 'right',
+  Top: 'top',
+  Bottom: 'bottom'
+};
+
 @Component({
   selector: 'ng2-sidebar',
   encapsulation: ViewEncapsulation.None,
   styles: [`
     .ng2-sidebar {
-      bottom: 0;
-      left: 0;
       overflow: auto;
       pointer-events: none;
       position: fixed;
-      top: 0;
-      transform: translateX(-110%);
       transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
       will-change: transform;
       z-index: 99999999;
     }
 
-      .ng2-sidebar--pull-right {
-        left: auto;
+      .ng2-sidebar--left {
+        bottom: 0;
+        left: 0;
+        top: 0;
+        transform: translateX(-110%);
+      }
+
+      .ng2-sidebar--right {
+        bottom: 0;
         right: 0;
+        top: 0;
         transform: translateX(110%);
+      }
+
+      .ng2-sidebar--top {
+        left: 0;
+        right: 0;
+        top: 0;
+        transform: translateY(-110%);
+      }
+
+      .ng2-sidebar--bottom {
+        bottom: 0;
+        left: 0;
+        right: 0;
+        transform: translateY(110%);
       }
 
       .ng2-sidebar--style {
@@ -75,8 +100,7 @@ import CloseSidebar from './close';
       role="complementary"
       [attr.aria-hidden]="!open"
       [attr.aria-label]="ariaLabel"
-      class="ng2-sidebar"
-      [class.ng2-sidebar--pull-right]="pullRight"
+      class="ng2-sidebar ng2-sidebar--{{position}}"
       [class.ng2-sidebar--style]="defaultStyles"
       [ngClass]="sidebarClass">
       <ng-content></ng-content>
@@ -97,7 +121,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
   @Input() open: boolean = false;
   @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  @Input() pullRight: boolean = false;
+  @Input() position: string = SIDEBAR_POSITION.Left;
   @Input() closeOnClickOutside: boolean = false;
   @Input() showOverlay: boolean = false;
 
