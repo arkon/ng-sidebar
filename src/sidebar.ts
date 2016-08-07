@@ -4,6 +4,7 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -14,6 +15,7 @@ import {
   ViewEncapsulation,
   QueryList
 } from '@angular/core';
+import { DOCUMENT } from '@angular/platform-browser';
 
 import CloseSidebar from './close';
 
@@ -147,7 +149,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
   private _focusableElements: Array<HTMLElement>;
   private _focusedBeforeOpen: HTMLElement;
 
-  constructor() {
+  constructor(@Inject(DOCUMENT) private _document) {
     this._trapFocus = this._trapFocus.bind(this);
     this._onClickOutside = this._onClickOutside.bind(this);
   }
@@ -185,10 +187,10 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
   }
 
   private _open() {
-    this._focusedBeforeOpen = document.activeElement as HTMLElement;
+    this._focusedBeforeOpen = this._document.activeElement as HTMLElement;
     this._getFocusableElements();
     this._setFocusToFirstItem();
-    document.body.addEventListener('focus', this._trapFocus, true);
+    this._document.body.addEventListener('focus', this._trapFocus, true);
 
     this._initCloseOnClickOutside();
 
@@ -197,7 +199,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
 
   private _close() {
     this._focusedBeforeOpen && this._focusedBeforeOpen.focus();
-    document.body.removeEventListener('focus', this._trapFocus, true);
+    this._document.body.removeEventListener('focus', this._trapFocus, true);
 
     this._destroyCloseOnClickOutside();
 
@@ -239,7 +241,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
     if (this.open && this.closeOnClickOutside && !this._onClickOutsideAttached) {
       // In a timeout so that things render first
       setTimeout(() => {
-        document.body.addEventListener('click', this._onClickOutside);
+        this._document.body.addEventListener('click', this._onClickOutside);
         this._onClickOutsideAttached = true;
       }, 0);
     }
@@ -247,7 +249,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
 
   private _destroyCloseOnClickOutside() {
     if (this._onClickOutsideAttached) {
-      document.body.removeEventListener('click', this._onClickOutside);
+      this._document.body.removeEventListener('click', this._onClickOutside);
       this._onClickOutsideAttached = false;
     }
   }
