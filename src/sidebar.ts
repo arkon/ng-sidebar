@@ -10,7 +10,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChange,
+  SimpleChanges,
   ViewChild,
   ViewEncapsulation,
   QueryList
@@ -155,6 +155,8 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
   }
 
   ngOnInit() {
+    this._setFocused(this.open);
+
     this._initCloseOnClickOutside();
   }
 
@@ -172,7 +174,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
     });
   }
 
-  ngOnChanges(changes: { [propName: string]: SimpleChange }) {
+  ngOnChanges(changes: SimpleChanges) {
     if (changes['open']) {
       if (this.open) {
         this._open();
@@ -187,10 +189,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
   }
 
   private _open() {
-    this._focusedBeforeOpen = this._document.activeElement as HTMLElement;
-    this._getFocusableElements();
-    this._setFocusToFirstItem();
-    this._document.body.addEventListener('focus', this._trapFocus, true);
+    this._setFocused(true);
 
     this._initCloseOnClickOutside();
 
@@ -198,8 +197,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
   }
 
   private _close() {
-    this._focusedBeforeOpen && this._focusedBeforeOpen.focus();
-    this._document.body.removeEventListener('focus', this._trapFocus, true);
+    this._setFocused(false);
 
     this._destroyCloseOnClickOutside();
 
@@ -230,6 +228,45 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
   private _trapFocus(e: Event) {
     if (this.open && !this._elSidebar.nativeElement.contains(e.target)) {
       this._setFocusToFirstItem();
+    }
+  }
+
+  // Handles the ability to focus sidebar elements when it's open/closed'
+  private _setFocused(open: boolean) {
+    this._getFocusableElements();
+
+    if (open) {
+      this._focusedBeforeOpen = this._document.activeElement as HTMLElement;
+      this._setFocusToFirstItem();
+
+      this._document.body.addEventListener('focus', this._trapFocus, true);
+
+      // Restore focusability, with previous tabIndex attributes
+      for (let el of this._focusableElements) {
+        const prevTabIndex = el.getAttribute('__tabindex__');
+        if (prevTabIndex !== null) {
+          el.setAttribute('tabindex', prevTabIndex);
+          el.removeAttribute('__tabindex__');
+        } else {
+          el.removeAttribute('tabindex');
+        }
+      }
+    } else {
+      if (this._focusedBeforeOpen) {
+        this._focusedBeforeOpen.focus();
+      }
+
+      this._document.body.removeEventListener('focus', this._trapFocus, true);
+
+      // Manually make all focusable elements unfocusable, saving existing tabIndex attributes
+      for (let el of this._focusableElements) {
+        const existingTabIndex = el.getAttribute('tabindex');
+        if (existingTabIndex !== null) {
+          el.setAttribute('__tabindex__', existingTabIndex);
+        }
+
+        el.setAttribute('tabindex', '-1');
+      }
     }
   }
 
