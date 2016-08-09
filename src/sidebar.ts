@@ -149,7 +149,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
   private _focusableElements: Array<HTMLElement>;
   private _focusedBeforeOpen: HTMLElement;
 
-  constructor(@Inject(DOCUMENT) private _document) {
+  constructor(@Inject(DOCUMENT) private _document: HTMLDocument) {
     this._trapFocus = this._trapFocus.bind(this);
     this._onClickOutside = this._onClickOutside.bind(this);
   }

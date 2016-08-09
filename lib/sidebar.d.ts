@@ -24,7 +24,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
     private _focusableElementsString;
     private _focusableElements;
     private _focusedBeforeOpen;
-    constructor(_document: any);
+    constructor(_document: HTMLDocument);
     ngOnInit(): void;
     ngOnDestroy(): void;
     ngAfterContentInit(): void;
