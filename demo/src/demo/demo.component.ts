@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { SIDEBAR_DIRECTIVES, SIDEBAR_POSITION } from 'ng2-sidebar';
+import { SIDEBAR_POSITION } from 'ng2-sidebar';
 
 @Component({
   selector: 'demo',
-  directives: [SIDEBAR_DIRECTIVES],
   template: `
     <ng2-sidebar
       [(open)]="_open"

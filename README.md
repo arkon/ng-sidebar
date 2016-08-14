@@ -16,16 +16,24 @@ npm install --save ng2-sidebar
 
 ## Usage
 
-Import the component and add it to the list of directives on your component:
+Add `SidebarModule` to your app module:
 
 ```typescript
-import { Sidebar } from 'ng2-sidebar';
-// or:
-// import Sidebar from 'ng2-sidebar/lib/sidebar';
+import { SidebarModule } from 'ng2-sidebar';
 
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule, SidebarModule],
+  bootstrap: [AppComponent],
+})
+class AppModule {}
+```
+
+In your component, simply use the directive in your template:
+
+```typescript
 @Component({
-  selector: 'example',
-  directives: [Sidebar],
+  selector: 'app',
   template: `
     <ng2-sidebar [(open)]="_open">
       <p>Sidebar contents</p>
@@ -34,7 +42,7 @@ import { Sidebar } from 'ng2-sidebar';
     <button (click)="_toggleSidebar()">Toggle sidebar</button>
   `
 })
-export class MyComponent {
+export class AppComponent {
   private _open: boolean = false;
 
   private _toggleSidebar() {
@@ -46,7 +54,8 @@ export class MyComponent {
 A directive is also provided to easily close the sidebar by clicking something inside it:
 
 ```typescript
-import { Sidebar, CloseSidebar } from 'ng2-sidebar';
+// If you didn't use the module, explicitely include the directives:
+// import { Sidebar, CloseSidebar } from 'ng2-sidebar';
 // or:
 // import { SIDEBAR_DIRECTIVES } from 'ng2-sidebar';
 
