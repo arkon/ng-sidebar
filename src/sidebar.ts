@@ -237,9 +237,6 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
 
     if (open) {
       this._focusedBeforeOpen = this._document.activeElement as HTMLElement;
-      this._setFocusToFirstItem();
-
-      this._document.body.addEventListener('focus', this._trapFocus, true);
 
       // Restore focusability, with previous tabIndex attributes
       for (let el of this._focusableElements) {
@@ -251,13 +248,11 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
           el.removeAttribute('tabindex');
         }
       }
+
+      this._setFocusToFirstItem();
+
+      this._document.body.addEventListener('focus', this._trapFocus, true);
     } else {
-      if (this._focusedBeforeOpen) {
-        this._focusedBeforeOpen.focus();
-      }
-
-      this._document.body.removeEventListener('focus', this._trapFocus, true);
-
       // Manually make all focusable elements unfocusable, saving existing tabIndex attributes
       for (let el of this._focusableElements) {
         const existingTabIndex = el.getAttribute('tabindex');
@@ -267,6 +262,12 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
 
         el.setAttribute('tabindex', '-1');
       }
+
+      if (this._focusedBeforeOpen) {
+        this._focusedBeforeOpen.focus();
+      }
+
+      this._document.body.removeEventListener('focus', this._trapFocus, true);
     }
   }
 
