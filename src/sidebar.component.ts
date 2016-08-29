@@ -13,11 +13,16 @@ import {
   SimpleChanges,
   ViewChild,
   ViewEncapsulation,
-  QueryList
+  QueryList,
+  trigger,
+  state,
+  style,
+  transition,
+  animate
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 
-import CloseSidebar from './close';
+import CloseSidebar from './close.directive';
 
 export const SIDEBAR_POSITION = {
   Left: 'left',
@@ -29,76 +34,9 @@ export const SIDEBAR_POSITION = {
 @Component({
   selector: 'ng2-sidebar',
   encapsulation: ViewEncapsulation.None,
-  styles: [`
-    .ng2-sidebar {
-      overflow: auto;
-      pointer-events: none;
-      position: fixed;
-      transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
-      will-change: transform;
-      z-index: 99999999;
-    }
-
-      .ng2-sidebar--left {
-        bottom: 0;
-        left: 0;
-        top: 0;
-        transform: translateX(-110%);
-      }
-
-      .ng2-sidebar--right {
-        bottom: 0;
-        right: 0;
-        top: 0;
-        transform: translateX(110%);
-      }
-
-      .ng2-sidebar--top {
-        left: 0;
-        right: 0;
-        top: 0;
-        transform: translateY(-110%);
-      }
-
-      .ng2-sidebar--bottom {
-        bottom: 0;
-        left: 0;
-        right: 0;
-        transform: translateY(110%);
-      }
-
-      .ng2-sidebar--style {
-        background: #fff;
-        box-shadow: 0 0 2.5em rgba(84, 85, 85, 0.5);
-      }
-
-      .ng2-sidebar--open .ng2-sidebar {
-        pointer-events: auto;
-        transform: none;
-        will-change: initial;
-      }
-
-    .ng2-sidebar__overlay {
-      height: 100%;
-      left: 0;
-      pointer-events: none;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 99999998;
-    }
-
-      .ng2-sidebar--open .ng2-sidebar__overlay {
-        pointer-events: auto;
-      }
-
-      .ng2-sidebar--open .ng2-sidebar__overlay--style {
-        background: #000;
-        opacity: 0.75;
-      }
-  `],
   template: `
     <aside #sidebar
+      [@visibleSidebarState]="_visibleSidebarState"
       role="complementary"
       [attr.aria-hidden]="!open"
       [attr.aria-label]="ariaLabel"
@@ -111,12 +49,71 @@ export const SIDEBAR_POSITION = {
     <div *ngIf="showOverlay"
       aria-hidden="true"
       class="ng2-sidebar__overlay"
-      [class.ng2-sidebar__overlay--style]="defaultStyles"
+      [class.ng2-sidebar__overlay--style]="open && defaultStyles"
       [ngClass]="overlayClass"></div>
   `,
-  host: {
-    '[class.ng2-sidebar--open]': 'open'
-  }
+  styles: [`
+    .ng2-sidebar {
+      overflow: auto;
+      pointer-events: none;
+      position: fixed;
+      z-index: 99999999;
+    }
+
+      .ng2-sidebar--left {
+        bottom: 0;
+        left: 0;
+        top: 0;
+      }
+
+      .ng2-sidebar--right {
+        bottom: 0;
+        right: 0;
+        top: 0;
+      }
+
+      .ng2-sidebar--top {
+        left: 0;
+        right: 0;
+        top: 0;
+      }
+
+      .ng2-sidebar--bottom {
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+
+      .ng2-sidebar--style {
+        background: #fff;
+        box-shadow: 0 0 2.5em rgba(85, 85, 85, 0.5);
+      }
+
+    .ng2-sidebar__overlay {
+      height: 100%;
+      left: 0;
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 99999998;
+    }
+
+      .ng2-sidebar__overlay--style {
+        background: #000;
+        opacity: 0.75;
+      }
+  `],
+  animations: [
+    trigger('visibleSidebarState', [
+      state('expanded', style({ transform: 'none', pointerEvents: 'auto', willChange: 'initial' })),
+      state('collapsed--left', style({ transform: 'translateX(-110%)' })),
+      state('collapsed--right', style({ transform: 'translateX(110%)' })),
+      state('collapsed--top', style({ transform: 'translateY(-110%)' })),
+      state('collapsed--bottom', style({ transform: 'translateY(110%)' })),
+      transition('* => *', animate('0.3s cubic-bezier(0, 0, 0.3, 1)'))
+    ])
+  ]
 })
 export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterContentInit {
   // `openChange` allows for 2-way data binding
@@ -143,6 +140,8 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
   @ContentChildren(CloseSidebar, { descendants: true })
   private _closeDirectives: QueryList<CloseSidebar>;
 
+  private _visibleSidebarState: string;
+
   private _onClickOutsideAttached: boolean = false;
 
   private _focusableElementsString: string = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]';
@@ -155,6 +154,8 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
   }
 
   ngOnInit() {
+    this._setvisibleSidebarState();
+
     this._setFocused(this.open);
 
     this._initCloseOnClickOutside();
@@ -181,11 +182,21 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
       } else {
         this._close();
       }
+
+      this._setvisibleSidebarState();
     }
 
     if (changes['closeOnClickOutside']) {
       this._initCloseOnClickOutside();
     }
+
+    if (changes['position']) {
+      this._setvisibleSidebarState();
+    }
+  }
+
+  private _setvisibleSidebarState() {
+    this._visibleSidebarState = this.open ? 'expanded' : `collapsed--${this.position}`;
   }
 
   private _open() {

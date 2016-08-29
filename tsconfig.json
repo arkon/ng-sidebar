@@ -10,10 +10,10 @@
     "outDir": "lib/"
   },
   "files": [
+    "typings/index.d.ts",
     "src/index.ts",
-    "src/sidebar.ts",
-    "src/close.ts",
-    "typings/index.d.ts"
+    "src/sidebar.component.ts",
+    "src/close.directive.ts"
   ],
   "compileOnSave": false,
   "buildOnSave": false

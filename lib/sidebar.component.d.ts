@@ -20,6 +20,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
     onClose: EventEmitter<void>;
     private _elSidebar;
     private _closeDirectives;
+    private _visibleSidebarState;
     private _onClickOutsideAttached;
     private _focusableElementsString;
     private _focusableElements;
@@ -29,6 +30,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
     ngOnDestroy(): void;
     ngAfterContentInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
+    private _setvisibleSidebarState();
     private _open();
     private _close();
     private _manualClose();
