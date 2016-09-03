@@ -144,7 +144,8 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
 
   private _onClickOutsideAttached: boolean = false;
 
-  private _focusableElementsString: string = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]';
+  private _focusableElementsString: string = 'a[href], area[href], input:not([disabled]), select:not([disabled]), ' +
+    'textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]';
   private _focusableElements: Array<HTMLElement>;
   private _focusedBeforeOpen: HTMLElement;
 
@@ -227,7 +228,8 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
   // ==============================================================================================
 
   private _getFocusableElements() {
-    this._focusableElements = Array.from(this._elSidebar.nativeElement.querySelectorAll(this._focusableElementsString)) as Array<HTMLElement>;
+    this._focusableElements = Array.from(
+      this._elSidebar.nativeElement.querySelectorAll(this._focusableElementsString)) as Array<HTMLElement>;
   }
 
   private _setFocusToFirstItem() {

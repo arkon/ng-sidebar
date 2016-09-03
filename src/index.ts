@@ -6,7 +6,7 @@ import CloseSidebar from './close.directive';
 
 export { Sidebar, SIDEBAR_POSITION, CloseSidebar };
 
-export const SIDEBAR_DIRECTIVES = [Sidebar, CloseSidebar];
+const SIDEBAR_DIRECTIVES = [Sidebar, CloseSidebar];
 
 @NgModule({
   declarations: [SIDEBAR_DIRECTIVES],

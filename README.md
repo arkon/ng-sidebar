@@ -2,7 +2,7 @@
 
 [![NPM](https://nodei.co/npm/ng2-sidebar.png?compact=true)](https://nodei.co/npm/ng2-sidebar)
 
-**[Demo](http://echeung.me/ng2-sidebar)**
+**[Demo](https://echeung.me/ng2-sidebar)**
 
 An Angular 2 sidebar component.
 
@@ -54,14 +54,9 @@ export class AppComponent {
 A directive is also provided to easily close the sidebar by clicking something inside it:
 
 ```typescript
-// If you didn't use the module, explicitely include the directives:
-// import { Sidebar, CloseSidebar } from 'ng2-sidebar';
-// or:
-// import { SIDEBAR_DIRECTIVES } from 'ng2-sidebar';
 
 @Component({
   selector: 'example',
-  directives: [Sidebar, CloseSidebar],
   template: `
     <ng2-sidebar [(open)]="_open">
       <a closeSidebar>Closes the sidebar</a>
