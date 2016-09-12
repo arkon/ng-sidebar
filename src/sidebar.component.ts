@@ -294,7 +294,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
       setTimeout(() => {
         this._document.body.addEventListener('click', this._onClickOutside);
         this._onClickOutsideAttached = true;
-      }, 0);
+      });
     }
   }
 
