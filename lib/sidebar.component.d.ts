@@ -5,13 +5,14 @@ export declare const SIDEBAR_POSITION: {
     Top: string;
     Bottom: string;
 };
-export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterContentInit {
+export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnDestroy {
     private _document;
     open: boolean;
     openChange: EventEmitter<boolean>;
     position: string;
     closeOnClickOutside: boolean;
     showOverlay: boolean;
+    animate: boolean;
     defaultStyles: boolean;
     sidebarClass: string;
     overlayClass: string;
@@ -27,9 +28,9 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
     private _focusedBeforeOpen;
     constructor(_document: HTMLDocument);
     ngOnInit(): void;
-    ngOnDestroy(): void;
     ngAfterContentInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
+    ngOnDestroy(): void;
     private _setvisibleSidebarState();
     private _open();
     private _close();

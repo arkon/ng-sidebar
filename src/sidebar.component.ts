@@ -107,15 +107,16 @@ export const SIDEBAR_POSITION = {
   animations: [
     trigger('visibleSidebarState', [
       state('expanded', style({ transform: 'none', pointerEvents: 'auto', willChange: 'initial' })),
+      state('expanded--animate', style({ transform: 'none', pointerEvents: 'auto', willChange: 'initial' })),
       state('collapsed--left', style({ transform: 'translateX(-110%)' })),
       state('collapsed--right', style({ transform: 'translateX(110%)' })),
       state('collapsed--top', style({ transform: 'translateY(-110%)' })),
       state('collapsed--bottom', style({ transform: 'translateY(110%)' })),
-      transition('* => *', animate('0.3s cubic-bezier(0, 0, 0.3, 1)'))
+      transition('expanded--animate <=> *', animate('0.3s cubic-bezier(0, 0, 0.3, 1)'))
     ])
   ]
 })
-export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterContentInit {
+export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnDestroy {
   // `openChange` allows for 2-way data binding
   @Input() open: boolean = false;
   @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -123,6 +124,7 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
   @Input() position: string = SIDEBAR_POSITION.Left;
   @Input() closeOnClickOutside: boolean = false;
   @Input() showOverlay: boolean = false;
+  @Input() animate: boolean = true;
 
   @Input() defaultStyles: boolean = false;
 
@@ -162,14 +164,6 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
     this._initCloseOnClickOutside();
   }
 
-  ngOnDestroy() {
-    this._destroyCloseOnClickOutside();
-
-    this._closeDirectives.forEach((dir: CloseSidebar) => {
-      dir.clicked.unsubscribe();
-    });
-  }
-
   ngAfterContentInit() {
     this._closeDirectives.forEach((dir: CloseSidebar) => {
       dir.clicked.subscribe(() => this._manualClose());
@@ -196,8 +190,18 @@ export default class Sidebar implements OnInit, OnChanges, OnDestroy, AfterConte
     }
   }
 
+  ngOnDestroy() {
+    this._destroyCloseOnClickOutside();
+
+    this._closeDirectives.forEach((dir: CloseSidebar) => {
+      dir.clicked.unsubscribe();
+    });
+  }
+
   private _setvisibleSidebarState() {
-    this._visibleSidebarState = this.open ? 'expanded' : `collapsed--${this.position}`;
+    this._visibleSidebarState = this.open ?
+      this.animate ? 'expanded--animate' : 'expanded' :
+      `collapsed--${this.position}`;
   }
 
   private _open() {
