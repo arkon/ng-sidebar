@@ -93,6 +93,11 @@ contents when the sidebar is open.
 
 Default: `false`.
 
+#### `[animate]="boolean_value"`
+Boolean input value that controls whether the sidebar is animated when opening/closing.
+
+Default: `true`.
+
 #### `[defaultStyles]="boolean_value"`
 Applies some default styles to the sidebar.
 
