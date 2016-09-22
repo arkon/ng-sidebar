@@ -133,8 +133,8 @@ export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnD
 
   @Input() ariaLabel: string;
 
-  @Output() onOpen: EventEmitter<void> = new EventEmitter<void>();
-  @Output() onClose: EventEmitter<void> = new EventEmitter<void>();
+  @Output() onOpen: EventEmitter<null> = new EventEmitter<null>();
+  @Output() onClose: EventEmitter<null> = new EventEmitter<null>();
 
   @ViewChild('sidebar')
   private _elSidebar: ElementRef;

@@ -17,8 +17,8 @@ export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnD
     sidebarClass: string;
     overlayClass: string;
     ariaLabel: string;
-    onOpen: EventEmitter<void>;
-    onClose: EventEmitter<void>;
+    onOpen: EventEmitter<null>;
+    onClose: EventEmitter<null>;
     private _elSidebar;
     private _closeDirectives;
     private _visibleSidebarState;
