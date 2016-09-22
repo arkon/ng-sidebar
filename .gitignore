@@ -11,9 +11,6 @@ logs
 # Node files
 node_modules
 
-# Typing
-typings
-
 # Built demo files
 demo/public/style.css
 demo/public/bundle.js
