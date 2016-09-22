@@ -7,7 +7,8 @@
     "experimentalDecorators": true,
     "declaration": true,
     "removeComments": true,
-    "outDir": "lib/"
+    "outDir": "lib/",
+    "lib": ["dom", "es5", "es2015.core", "es2015.collection", "es2015.promise"]
   },
   "files": [
     "src/index.ts",

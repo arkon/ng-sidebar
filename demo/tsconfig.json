@@ -6,7 +6,8 @@
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "removeComments": true
+    "removeComments": true,
+    "lib": ["dom", "es5", "es2015.core", "es2015.collection", "es2015.promise"]
   },
   "exclude": [
     "node_modules"
