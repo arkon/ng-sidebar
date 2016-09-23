@@ -1,5 +1,4 @@
-import Sidebar, { SIDEBAR_POSITION } from './sidebar.component';
-import CloseSidebar from './close.directive';
-export { Sidebar, SIDEBAR_POSITION, CloseSidebar };
+import { SIDEBAR_POSITION } from './sidebar.component';
+export { SIDEBAR_POSITION };
 export declare class SidebarModule {
 }

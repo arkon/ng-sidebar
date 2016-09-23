@@ -152,12 +152,13 @@ export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnD
   private _focusedBeforeOpen: HTMLElement;
 
   constructor(@Inject(DOCUMENT) private _document: HTMLDocument) {
+    this._manualClose = this._manualClose.bind(this);
     this._trapFocus = this._trapFocus.bind(this);
     this._onClickOutside = this._onClickOutside.bind(this);
   }
 
   ngOnInit() {
-    this._setvisibleSidebarState();
+    this._setVisibleSidebarState();
 
     this._setFocused(this.open);
 
@@ -166,27 +167,27 @@ export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnD
 
   ngAfterContentInit() {
     this._closeDirectives.forEach((dir: CloseSidebar) => {
-      dir.clicked.subscribe(() => this._manualClose());
+      dir.clicked.subscribe(this._manualClose);
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['open']) {
+    if (changes['open'] && !changes['open'].isFirstChange()) {
       if (this.open) {
         this._open();
       } else {
         this._close();
       }
 
-      this._setvisibleSidebarState();
+      this._setVisibleSidebarState();
     }
 
-    if (changes['closeOnClickOutside']) {
+    if (changes['closeOnClickOutside'] && !changes['closeOnClickOutside'].isFirstChange()) {
       this._initCloseOnClickOutside();
     }
 
-    if (changes['position']) {
-      this._setvisibleSidebarState();
+    if (changes['position'] && !changes['position'].isFirstChange()) {
+      this._setVisibleSidebarState();
     }
   }
 
@@ -198,7 +199,7 @@ export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnD
     });
   }
 
-  private _setvisibleSidebarState() {
+  private _setVisibleSidebarState() {
     this._visibleSidebarState = this.open ?
       this.animate ? 'expanded--animate' : 'expanded' :
       `collapsed--${this.position}`;
@@ -231,34 +232,30 @@ export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnD
   // Focus on open/close
   // ==============================================================================================
 
-  private _getFocusableElements() {
-    this._focusableElements = Array.from(
-      this._elSidebar.nativeElement.querySelectorAll(this._focusableElementsString)) as Array<HTMLElement>;
-  }
-
   private _setFocusToFirstItem() {
     if (this._focusableElements && this._focusableElements.length) {
       this._focusableElements[0].focus();
     }
   }
 
-  private _trapFocus(e: Event) {
+  private _trapFocus(e: FocusEvent) {
     if (this.open && !this._elSidebar.nativeElement.contains(e.target)) {
       this._setFocusToFirstItem();
     }
   }
 
-  // Handles the ability to focus sidebar elements when it's open/closed'
+  // Handles the ability to focus sidebar elements when it's open/closed
   private _setFocused(open: boolean) {
-    this._getFocusableElements();
+    this._focusableElements = Array.from(
+      this._elSidebar.nativeElement.querySelectorAll(this._focusableElementsString)) as Array<HTMLElement>;
 
     if (open) {
       this._focusedBeforeOpen = this._document.activeElement as HTMLElement;
 
-      // Restore focusability, with previous tabIndex attributes
+      // Restore focusability, with previous tabindex attributes
       for (let el of this._focusableElements) {
         const prevTabIndex = el.getAttribute('__tabindex__');
-        if (prevTabIndex !== null) {
+        if (prevTabIndex) {
           el.setAttribute('tabindex', prevTabIndex);
           el.removeAttribute('__tabindex__');
         } else {
@@ -270,10 +267,10 @@ export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnD
 
       this._document.body.addEventListener('focus', this._trapFocus, true);
     } else {
-      // Manually make all focusable elements unfocusable, saving existing tabIndex attributes
+      // Manually make all focusable elements unfocusable, saving existing tabindex attributes
       for (let el of this._focusableElements) {
         const existingTabIndex = el.getAttribute('tabindex');
-        if (existingTabIndex !== null) {
+        if (existingTabIndex) {
           el.setAttribute('__tabindex__', existingTabIndex);
         }
 
@@ -309,7 +306,7 @@ export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnD
     }
   }
 
-  private _onClickOutside(e: Event) {
+  private _onClickOutside(e: MouseEvent) {
     if (this._onClickOutsideAttached && this._elSidebar && !this._elSidebar.nativeElement.contains(e.target)) {
       this._manualClose();
     }

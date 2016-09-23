@@ -54,7 +54,6 @@ export class AppComponent {
 A directive is also provided to easily close the sidebar by clicking something inside it:
 
 ```typescript
-
 @Component({
   selector: 'example',
   template: `

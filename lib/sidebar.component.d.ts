@@ -31,11 +31,10 @@ export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnD
     ngAfterContentInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
-    private _setvisibleSidebarState();
+    private _setVisibleSidebarState();
     private _open();
     private _close();
     private _manualClose();
-    private _getFocusableElements();
     private _setFocusToFirstItem();
     private _trapFocus(e);
     private _setFocused(open);
