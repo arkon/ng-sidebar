@@ -8,7 +8,6 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   Output,
   SimpleChanges,
   ViewChild,
@@ -116,7 +115,7 @@ export const SIDEBAR_POSITION = {
     ])
   ]
 })
-export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnDestroy {
+export default class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // `openChange` allows for 2-way data binding
   @Input() open: boolean = false;
   @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -157,14 +156,6 @@ export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnD
     this._onClickOutside = this._onClickOutside.bind(this);
   }
 
-  ngOnInit() {
-    this._setVisibleSidebarState();
-
-    this._setFocused(this.open);
-
-    this._initCloseOnClickOutside();
-  }
-
   ngAfterContentInit() {
     this._closeDirectives.forEach((dir: CloseSidebar) => {
       dir.clicked.subscribe(this._manualClose);
@@ -172,7 +163,7 @@ export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnD
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['open'] && !changes['open'].isFirstChange()) {
+    if (changes['open']) {
       if (this.open) {
         this._open();
       } else {
@@ -182,11 +173,11 @@ export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnD
       this._setVisibleSidebarState();
     }
 
-    if (changes['closeOnClickOutside'] && !changes['closeOnClickOutside'].isFirstChange()) {
+    if (changes['closeOnClickOutside']) {
       this._initCloseOnClickOutside();
     }
 
-    if (changes['position'] && !changes['position'].isFirstChange()) {
+    if (changes['position']) {
       this._setVisibleSidebarState();
     }
   }
