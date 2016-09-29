@@ -1,11 +1,11 @@
-import { AfterContentInit, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { AfterContentInit, EventEmitter, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 export declare const SIDEBAR_POSITION: {
     Left: string;
     Right: string;
     Top: string;
     Bottom: string;
 };
-export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnDestroy {
+export default class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     private _document;
     open: boolean;
     openChange: EventEmitter<boolean>;
@@ -27,7 +27,6 @@ export default class Sidebar implements OnInit, AfterContentInit, OnChanges, OnD
     private _focusableElements;
     private _focusedBeforeOpen;
     constructor(_document: HTMLDocument);
-    ngOnInit(): void;
     ngAfterContentInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
