@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AnimationTransitionEvent } from '@angular/core';
 import { SIDEBAR_POSITION } from 'ng2-sidebar';
 
 @Component({
@@ -14,7 +14,9 @@ import { SIDEBAR_POSITION } from 'ng2-sidebar';
       [sidebarClass]="'demo-sidebar'"
       [ariaLabel]="'My sidebar'"
       (onOpen)="_onOpen()"
-      (onClose)="_onClose()">
+      (onClose)="_onClose()"
+      (onAnimationStarted)="_onAnimationStarted($event)"
+      (onAnimationDone)="_onAnimationDone($event)">
       <p>Sidebar contents</p>
 
       <button class="demo-control" (click)="_toggleSidebar()">Close sidebar</button>
@@ -93,5 +95,13 @@ export class DemoComponent {
 
   private _onClose() {
     console.info('Sidebar closed');
+  }
+
+  private _onAnimationStarted(e: AnimationTransitionEvent) {
+    console.info('Animation started', e);
+  }
+
+  private _onAnimationDone(e: AnimationTransitionEvent) {
+    console.info('Animation done', e);
   }
 }

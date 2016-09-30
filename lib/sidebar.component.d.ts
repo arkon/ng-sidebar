@@ -1,4 +1,4 @@
-import { AfterContentInit, EventEmitter, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { AfterContentInit, AnimationTransitionEvent, EventEmitter, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 export declare const SIDEBAR_POSITION: {
     Left: string;
     Right: string;
@@ -19,6 +19,8 @@ export default class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     ariaLabel: string;
     onOpen: EventEmitter<null>;
     onClose: EventEmitter<null>;
+    onAnimationStarted: EventEmitter<AnimationTransitionEvent>;
+    onAnimationDone: EventEmitter<AnimationTransitionEvent>;
     private _elSidebar;
     private _closeDirectives;
     private _visibleSidebarState;
@@ -40,4 +42,6 @@ export default class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     private _initCloseOnClickOutside();
     private _destroyCloseOnClickOutside();
     private _onClickOutside(e);
+    private _animationStarted(e);
+    private _animationDone(e);
 }

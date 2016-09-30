@@ -1,5 +1,6 @@
 import {
   AfterContentInit,
+  AnimationTransitionEvent,
   Component,
   ContentChildren,
   ElementRef,
@@ -36,6 +37,8 @@ export const SIDEBAR_POSITION = {
   template: `
     <aside #sidebar
       [@visibleSidebarState]="_visibleSidebarState"
+      (@visibleSidebarState.start)="_animationStarted($event)"
+      (@visibleSidebarState.done)="_animationDone($event)"
       role="complementary"
       [attr.aria-hidden]="!open"
       [attr.aria-label]="ariaLabel"
@@ -135,6 +138,11 @@ export default class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Output() onOpen: EventEmitter<null> = new EventEmitter<null>();
   @Output() onClose: EventEmitter<null> = new EventEmitter<null>();
 
+  @Output() onAnimationStarted: EventEmitter<AnimationTransitionEvent> =
+    new EventEmitter<AnimationTransitionEvent>();
+  @Output() onAnimationDone: EventEmitter<AnimationTransitionEvent> =
+    new EventEmitter<AnimationTransitionEvent>();
+
   @ViewChild('sidebar')
   private _elSidebar: ElementRef;
 
@@ -145,7 +153,7 @@ export default class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
 
   private _onClickOutsideAttached: boolean = false;
 
-  private _focusableElementsString: string = 'a[href], area[href], input:not([disabled]), select:not([disabled]), ' +
+  private _focusableElementsString: string = 'a[href], area[href], input:not([disabled]), select:not([disabled]),' +
     'textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]';
   private _focusableElements: Array<HTMLElement>;
   private _focusedBeforeOpen: HTMLElement;
@@ -301,5 +309,19 @@ export default class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     if (this._onClickOutsideAttached && this._elSidebar && !this._elSidebar.nativeElement.contains(e.target)) {
       this._manualClose();
     }
+  }
+
+
+  // Animation callbacks
+  // ==============================================================================================
+
+  // tslint:disable-next-line:no-unused-variable
+  private _animationStarted(e: AnimationTransitionEvent) {
+    this.onAnimationStarted.emit(e);
+  }
+
+  // tslint:disable-next-line:no-unused-variable
+  private _animationDone(e: AnimationTransitionEvent) {
+    this.onAnimationDone.emit(e);
   }
 }
