@@ -68,51 +68,25 @@ A directive is also provided to easily close the sidebar by clicking something i
 
 ### Options
 
-#### `[(open)]="boolean_value"`
-Boolean input value that controls the visibility of the sidebar. This should be two-way bound in case
-the value changes when the sidebar is closed by clicking outside of it when `closeOnClickOutside` is
-enabled.
+#### Inputs
 
-Default: `false`.
+| Property name | Type | Default | Description |
+| ------------- | ---- | ------- | ----------- |
+| open | boolean | `false` | If the sidebar should be open. This should be two-way bound. |
+| position | `'left' | 'right' | 'top' | 'bottom'` | `'left'` | What side the sidebar should be docked to. `SIDEBAR_POSITION` can also be used instead of the strings. |
+| closeOnClickOutside | boolean | `false` | Whether clicking outside of the open sidebar will close it. |
+| showOverlay | boolean | `false` | If a translucent black overlay should appear over the page contents when the sidebar is open. |
+| animate | boolean | `true` | Whether the sidebar should animate when opening/closing. |
+| defaultStyles | boolean | `false` | Applies some basic default styles to the sidebar. |
+| sidebarClass | string | | Additional class name on the sidebar element. |
+| overlayClass | string | | Additional class name on the overlay element. |
+| ariaLabel | string | | String used for the sidebar's `aria-label` attribute. |
 
-#### `[position]="'left' | 'right' | 'top' | 'bottom'"`
-String indicating what side of the viewport the sidebar should be docked to. You can also import the
-`SIDEBAR_POSITION` instead of hardcoding the strings yourself.
+#### Outputs
 
-Default: `'left'`.
-
-#### `[closeOnClickOutside]="boolean_value"`
-Boolean input value that controls whether clicking outside of the open sidebar will close it.
-
-Default: `false`.
-
-#### `[showOverlay]="boolean_value"`
-Boolean input value that controls if a translucent black overlay should appear over the page
-contents when the sidebar is open.
-
-Default: `false`.
-
-#### `[animate]="boolean_value"`
-Boolean input value that controls whether the sidebar is animated when opening/closing.
-
-Default: `true`.
-
-#### `[defaultStyles]="boolean_value"`
-Applies some default styles to the sidebar.
-
-Default: `false`.
-
-#### `[sidebarClass]="'string_value'"`
-A string used as an additional class name on the sidebar element.
-
-#### `[overlayClass]="'string_value'"`
-A string used as an additional class name on the overlay element.
-
-#### `[ariaLabel]="'string_value'"`
-A string used as the `aria-label` attribute on the sidebar.
-
-#### `(onOpen)="func_call()"`
-An output event, emitted when the sidebar is opened.
-
-#### `(onClose)="func_call()"`
-An output event, emitted when the sidebar is closed.
+| Property name | Callback arguments | Description |
+| ------------- | ------------------ | ----------- |
+| onOpen | | Emitted when the sidebar is opened. |
+| onClose | | Emitted when the sidebar is closed. |
+| onAnimationStarted | `e: AnimationTransitionEvent` | Emitted when the animation is started. |
+| onAnimationDone | `e: AnimationTransitionEvent` | Emitted when the animation is done. |
