@@ -17,6 +17,7 @@ export declare class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     sidebarClass: string;
     overlayClass: string;
     ariaLabel: string;
+    trapFocus: boolean;
     onOpen: EventEmitter<null>;
     onClose: EventEmitter<null>;
     onAnimationStarted: EventEmitter<AnimationTransitionEvent>;

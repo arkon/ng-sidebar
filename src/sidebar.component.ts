@@ -134,6 +134,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Input() overlayClass: string;
 
   @Input() ariaLabel: string;
+  @Input() trapFocus: boolean = true;
 
   @Output() onOpen: EventEmitter<null> = new EventEmitter<null>();
   @Output() onClose: EventEmitter<null> = new EventEmitter<null>();
@@ -238,7 +239,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   private _trapFocus(e: FocusEvent) {
-    if (this.open && !this._elSidebar.nativeElement.contains(e.target)) {
+    if (this.open && this.trapFocus && !this._elSidebar.nativeElement.contains(e.target)) {
       this._setFocusToFirstItem();
     }
   }

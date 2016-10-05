@@ -78,6 +78,7 @@ A directive is also provided to easily close the sidebar by clicking something i
 | showOverlay | boolean | `false` | If a translucent black overlay should appear over the page contents when the sidebar is open. |
 | animate | boolean | `true` | Whether the sidebar should animate when opening/closing. |
 | defaultStyles | boolean | `false` | Applies some basic default styles to the sidebar. |
+| trapFocus | boolean | `true` | Keeps focus within the sidebar if it's open. |
 | sidebarClass | string | | Additional class name on the sidebar element. |
 | overlayClass | string | | Additional class name on the overlay element. |
 | ariaLabel | string | | String used for the sidebar's `aria-label` attribute. |
