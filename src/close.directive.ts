@@ -1,7 +1,7 @@
 import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
 
 @Directive({ selector: '[closeSidebar]' })
-export default class CloseSidebar {
+export class CloseSidebar {
   @Output() clicked: EventEmitter<null> = new EventEmitter<null>();
 
   @HostListener('click')

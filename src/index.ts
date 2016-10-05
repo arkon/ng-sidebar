@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import Sidebar, { SIDEBAR_POSITION } from './sidebar.component';
-import CloseSidebar from './close.directive';
+import { Sidebar, SIDEBAR_POSITION } from './sidebar.component';
+import { CloseSidebar } from './close.directive';
 
 export { SIDEBAR_POSITION };
 

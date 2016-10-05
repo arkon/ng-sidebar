@@ -11,6 +11,9 @@ logs
 # Node files
 node_modules
 
+# Built ngc AOT stuff
+factories
+
 # Built demo files
 demo/public/style.css
 demo/public/bundle.js

@@ -14,5 +14,8 @@
     "src/**/*"
   ],
   "compileOnSave": false,
-  "buildOnSave": false
+  "buildOnSave": false,
+  "angularCompilerOptions": {
+    "genDir": "factories"
+  }
 }

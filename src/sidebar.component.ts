@@ -22,7 +22,7 @@ import {
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 
-import CloseSidebar from './close.directive';
+import { CloseSidebar } from './close.directive';
 
 export const SIDEBAR_POSITION = {
   Left: 'left',
@@ -118,7 +118,7 @@ export const SIDEBAR_POSITION = {
     ])
   ]
 })
-export default class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
+export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // `openChange` allows for 2-way data binding
   @Input() open: boolean = false;
   @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -158,7 +158,7 @@ export default class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   private _focusableElements: Array<HTMLElement>;
   private _focusedBeforeOpen: HTMLElement;
 
-  constructor(@Inject(DOCUMENT) private _document: HTMLDocument) {
+  constructor(@Inject(DOCUMENT) private _document /*: HTMLDocument */) {
     this._manualClose = this._manualClose.bind(this);
     this._trapFocus = this._trapFocus.bind(this);
     this._onClickOutside = this._onClickOutside.bind(this);
