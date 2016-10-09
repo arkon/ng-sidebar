@@ -147,7 +147,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @ViewChild('sidebar')
   private _elSidebar: ElementRef;
 
-  @ContentChildren(CloseSidebar, { descendants: true })
+  @ContentChildren(CloseSidebar)
   private _closeDirectives: QueryList<CloseSidebar>;
 
   private _visibleSidebarState: string;
@@ -166,9 +166,11 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   ngAfterContentInit() {
-    this._closeDirectives.forEach((dir: CloseSidebar) => {
-      dir.clicked.subscribe(this._manualClose);
-    });
+    if (this._closeDirectives) {
+      this._closeDirectives.forEach((dir: CloseSidebar) => {
+        dir.clicked.subscribe(this._manualClose);
+      });
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -194,9 +196,11 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     this._destroyCloseOnClickOutside();
 
-    this._closeDirectives.forEach((dir: CloseSidebar) => {
-      dir.clicked.unsubscribe();
-    });
+    if (this._closeDirectives) {
+      this._closeDirectives.forEach((dir: CloseSidebar) => {
+        dir.clicked.unsubscribe();
+      });
+    }
   }
 
   private _setVisibleSidebarState() {
