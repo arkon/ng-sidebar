@@ -65,7 +65,9 @@ A directive is also provided to easily close the sidebar by clicking something i
 // ...
 ```
 
-Note that this component uses Angular 2's [animation system](https://angular.io/docs/ts/latest/guide/animations.html), which relies on the Web Animations API. Unforunately, there is only [partial support](http://caniuse.com/#search=web%20animations) for this API in Firefox, Chrome, and Opera, so it's recommended to use [the web-animations.js polyfill](https://github.com/web-animations/web-animations-js) for support in other browsers.
+### Browser support
+
+Note that this component uses Angular 2's [animation system](https://angular.io/docs/ts/latest/guide/animations.html), which relies on the Web Animations API. Unforunately, there is only [partial support](http://caniuse.com/#feat=web-animation) for this API in Firefox, Chrome, and Opera, so it's recommended to use [the web-animations.js polyfill](https://github.com/web-animations/web-animations-js) for support in other browsers.
 
 
 ### Options
