@@ -14,8 +14,9 @@ node_modules
 # Yarn
 yarn.lock
 
-# Built ngc AOT stuff
-factories
+# Built files
+lib/
+factories/
 
 # Built demo files
 demo/public/style.css
