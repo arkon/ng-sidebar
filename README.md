@@ -13,6 +13,26 @@ An Angular 2 sidebar component.
 npm install --save ng2-sidebar
 ```
 
+### SystemJS configuration
+
+If you're using SystemJS, be sure to add the appropriate settings to your SystemJS config:
+
+```js
+var map = {
+  // ...
+  'ng2-sidebar': 'node_modules/ng2-sidebar',
+  // ...
+};
+
+var packages = {
+  // ...
+  'ng2-sidebar': {
+    main: 'lib/index',
+    defaultExtension: 'js'
+  },
+  // ...
+};
+```
 
 ## Usage
 
@@ -28,6 +48,8 @@ import { SidebarModule } from 'ng2-sidebar';
 })
 class AppModule {}
 ```
+
+If you're using it in a feature module, you may need to add it as an import in that module as well.
 
 In your component, simply use the directive in your template:
 
