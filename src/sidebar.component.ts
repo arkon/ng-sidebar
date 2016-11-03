@@ -36,9 +36,9 @@ export const SIDEBAR_POSITION = {
   encapsulation: ViewEncapsulation.None,
   template: `
     <aside #sidebar
-      [@visibleSidebarState]="_visibleSidebarState"
-      (@visibleSidebarState.start)="_animationStarted($event)"
-      (@visibleSidebarState.done)="_animationDone($event)"
+      [@visibleSidebarState]="visibleSidebarState"
+      (@visibleSidebarState.start)="animationStarted($event)"
+      (@visibleSidebarState.done)="animationDone($event)"
       role="complementary"
       [attr.aria-hidden]="!open"
       [attr.aria-label]="ariaLabel"
@@ -145,12 +145,12 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     new EventEmitter<AnimationTransitionEvent>();
 
   @ViewChild('sidebar')
-  private _elSidebar: ElementRef;
+  elSidebar: ElementRef;
 
   @ContentChildren(CloseSidebar)
-  private _closeDirectives: QueryList<CloseSidebar>;
+  closeDirectives: QueryList<CloseSidebar>;
 
-  private _visibleSidebarState: string;
+  visibleSidebarState: string;
 
   private _onClickOutsideAttached: boolean = false;
 
@@ -166,8 +166,8 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   ngAfterContentInit() {
-    if (this._closeDirectives) {
-      this._closeDirectives.forEach((dir: CloseSidebar) => {
+    if (this.closeDirectives) {
+      this.closeDirectives.forEach((dir: CloseSidebar) => {
         dir.clicked.subscribe(this._manualClose);
       });
     }
@@ -196,15 +196,15 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     this._destroyCloseOnClickOutside();
 
-    if (this._closeDirectives) {
-      this._closeDirectives.forEach((dir: CloseSidebar) => {
+    if (this.closeDirectives) {
+      this.closeDirectives.forEach((dir: CloseSidebar) => {
         dir.clicked.unsubscribe();
       });
     }
   }
 
   private _setVisibleSidebarState() {
-    this._visibleSidebarState = this.open ?
+    this.visibleSidebarState = this.open ?
       this.animate ? 'expanded--animate' : 'expanded' :
       `collapsed--${this.position}`;
   }
@@ -243,7 +243,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   private _trapFocus(e: FocusEvent) {
-    if (this.open && this.trapFocus && !this._elSidebar.nativeElement.contains(e.target)) {
+    if (this.open && this.trapFocus && !this.elSidebar.nativeElement.contains(e.target)) {
       this._setFocusToFirstItem();
     }
   }
@@ -251,7 +251,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // Handles the ability to focus sidebar elements when it's open/closed
   private _setFocused(open: boolean) {
     this._focusableElements = Array.from(
-      this._elSidebar.nativeElement.querySelectorAll(this._focusableElementsString)) as Array<HTMLElement>;
+      this.elSidebar.nativeElement.querySelectorAll(this._focusableElementsString)) as Array<HTMLElement>;
 
     if (open) {
       this._focusedBeforeOpen = this._document.activeElement as HTMLElement;
@@ -311,7 +311,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   private _onClickOutside(e: MouseEvent) {
-    if (this._onClickOutsideAttached && this._elSidebar && !this._elSidebar.nativeElement.contains(e.target)) {
+    if (this._onClickOutsideAttached && this.elSidebar && !this.elSidebar.nativeElement.contains(e.target)) {
       this._manualClose();
     }
   }
@@ -321,12 +321,12 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // ==============================================================================================
 
   // tslint:disable-next-line:no-unused-variable
-  private _animationStarted(e: AnimationTransitionEvent) {
+  animationStarted(e: AnimationTransitionEvent) {
     this.onAnimationStarted.emit(e);
   }
 
   // tslint:disable-next-line:no-unused-variable
-  private _animationDone(e: AnimationTransitionEvent) {
+  animationDone(e: AnimationTransitionEvent) {
     this.onAnimationDone.emit(e);
   }
 }
