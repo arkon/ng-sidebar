@@ -144,13 +144,14 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Output() onAnimationDone: EventEmitter<AnimationTransitionEvent> =
     new EventEmitter<AnimationTransitionEvent>();
 
+  /** @internal */
+  _visibleSidebarState: string;
+
   @ViewChild('sidebar')
   private _elSidebar: ElementRef;
 
   @ContentChildren(CloseSidebar)
   private _closeDirectives: QueryList<CloseSidebar>;
-
-  private _visibleSidebarState: string;
 
   private _onClickOutsideAttached: boolean = false;
 
@@ -203,9 +204,26 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     }
   }
 
+  // Animation callbacks
+  // ==============================================================================================
+
+  /** @internal */
+  _animationStarted(e: AnimationTransitionEvent) {
+    this.onAnimationStarted.emit(e);
+  }
+
+  /** @internal */
+  _animationDone(e: AnimationTransitionEvent) {
+    this.onAnimationDone.emit(e);
+  }
+
+
+  // Sidebar toggling
+  // ==============================================================================================
+
   private _setVisibleSidebarState() {
     this._visibleSidebarState = this.open ?
-      this.animate ? 'expanded--animate' : 'expanded' :
+      (this.animate ? 'expanded--animate' : 'expanded') :
       `collapsed--${this.position}`;
   }
 
@@ -314,19 +332,5 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     if (this._onClickOutsideAttached && this._elSidebar && !this._elSidebar.nativeElement.contains(e.target)) {
       this._manualClose();
     }
-  }
-
-
-  // Animation callbacks
-  // ==============================================================================================
-
-  // tslint:disable-next-line:no-unused-variable
-  private _animationStarted(e: AnimationTransitionEvent) {
-    this.onAnimationStarted.emit(e);
-  }
-
-  // tslint:disable-next-line:no-unused-variable
-  private _animationDone(e: AnimationTransitionEvent) {
-    this.onAnimationDone.emit(e);
   }
 }
