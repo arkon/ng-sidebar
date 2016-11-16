@@ -19,11 +19,11 @@
     "node": ">=6"
   },
   "dependencies": {
-    "@angular/common": "^2.1.2",
-    "@angular/compiler": "^2.1.2",
-    "@angular/core": "^2.1.2",
-    "@angular/platform-browser": "^2.1.2",
-    "@angular/platform-browser-dynamic": "^2.1.2",
+    "@angular/common": "^2.2.0",
+    "@angular/compiler": "^2.2.0",
+    "@angular/core": "^2.2.0",
+    "@angular/platform-browser": "^2.2.0",
+    "@angular/platform-browser-dynamic": "^2.2.0",
     "es6-shim": "^0.35.1",
     "ng2-sidebar": "file:../",
     "reflect-metadata": "^0.1.8",
@@ -32,9 +32,9 @@
   },
   "devDependencies": {
     "gh-pages": "^0.11.0",
-    "node-sass": "^3.10.1",
-    "ts-loader": "^0.9.5",
-    "typescript": "^2.0.6",
+    "node-sass": "^3.13.0",
+    "ts-loader": "^1.2.1",
+    "typescript": "^2.0.10",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2"
   }
