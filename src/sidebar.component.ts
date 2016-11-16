@@ -49,6 +49,7 @@ export const SIDEBAR_POSITION = {
     </aside>
 
     <div *ngIf="showOverlay"
+      [@visibleOverlayState]="_visibleOverlayState"
       aria-hidden="true"
       class="ng2-sidebar__overlay"
       [class.ng2-sidebar__overlay--style]="open && defaultStyles"
@@ -115,6 +116,9 @@ export const SIDEBAR_POSITION = {
       state('collapsed--top', style({ transform: 'translateY(-110%)' })),
       state('collapsed--bottom', style({ transform: 'translateY(110%)' })),
       transition('expanded--animate <=> *', animate('0.3s cubic-bezier(0, 0, 0.3, 1)'))
+    ]),
+    trigger('visibleOverlayState', [
+      state('visible', style({ pointerEvents: 'auto' }))
     ])
   ]
 })
@@ -146,6 +150,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
 
   /** @internal */
   _visibleSidebarState: string;
+
+  /** @internal */
+  _visibleOverlayState: string;
 
   @ViewChild('sidebar')
   private _elSidebar: ElementRef;
@@ -225,6 +232,8 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     this._visibleSidebarState = this.open ?
       (this.animate ? 'expanded--animate' : 'expanded') :
       `collapsed--${this.position}`;
+
+    this._visibleOverlayState = this.open ? 'visible' : null;
   }
 
   private _open() {
