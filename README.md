@@ -105,7 +105,7 @@ Note that this component uses Angular 2's [animation system](https://angular.io/
 | animate | boolean | `true` | Whether the sidebar should animate when opening/closing. |
 | defaultStyles | boolean | `false` | Applies some basic default styles to the sidebar. |
 | trapFocus | boolean | `true` | Keeps focus within the sidebar if it's open. |
-| autoFocus | boolean | `true` | Automaticaly focus the first focusable element |
+| autoFocus | boolean | `true` | Automatically focus the first focusable element |
 | sidebarClass | string | | Additional class name on the sidebar element. |
 | overlayClass | string | | Additional class name on the overlay element. |
 | ariaLabel | string | | String used for the sidebar's `aria-label` attribute. |
