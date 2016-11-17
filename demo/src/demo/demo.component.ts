@@ -12,6 +12,7 @@ import { SIDEBAR_POSITION } from 'ng2-sidebar';
       [showOverlay]="_showOverlay"
       [animate]="_animate"
       [trapFocus]="_trapFocus"
+      [autoFocus]="_autoFocus"
       [sidebarClass]="'demo-sidebar'"
       [ariaLabel]="'My sidebar'"
       (onOpen)="_onOpen()"
@@ -19,7 +20,7 @@ import { SIDEBAR_POSITION } from 'ng2-sidebar';
       (onAnimationStarted)="_onAnimationStarted($event)"
       (onAnimationDone)="_onAnimationDone($event)">
       <p>Sidebar contents</p>
-
+      
       <button class="demo-control" (click)="_toggleSidebar()">Close sidebar</button>
       <p><a closeSidebar>This will close the sidebar too</a></p>
     </ng2-sidebar>
@@ -38,6 +39,7 @@ import { SIDEBAR_POSITION } from 'ng2-sidebar';
       <button class="demo-control" (click)="_toggleShowOverlay()">Toggle showOverlay ({{_showOverlay}})</button>
       <button class="demo-control" (click)="_toggleAnimate()">Toggle animate ({{_animate}})</button>
       <button class="demo-control" (click)="_toggleTrapFocus()">Toggle trapFocus ({{_trapFocus}})</button>
+      <button class="demo-control" (click)="_toggleAutoFocus()">Toggle autoFocus ({{_autoFocus}})</button>
 
 
       <h1>Download</h1>
@@ -65,6 +67,7 @@ export class DemoComponent {
   private _showOverlay: boolean = false;
   private _animate: boolean = true;
   private _trapFocus: boolean = true;
+  private _autoFocus: boolean = true;
 
   private _POSITIONS = [SIDEBAR_POSITION.Left, SIDEBAR_POSITION.Right, SIDEBAR_POSITION.Top, SIDEBAR_POSITION.Bottom];
 
@@ -94,6 +97,10 @@ export class DemoComponent {
 
   private _toggleTrapFocus() {
     this._trapFocus = !this._trapFocus;
+  }
+
+   private _toggleAutoFocus() {
+    this._autoFocus = !this._autoFocus;
   }
 
   private _onOpen() {
