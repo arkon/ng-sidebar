@@ -139,6 +139,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
 
   @Input() ariaLabel: string;
   @Input() trapFocus: boolean = true;
+  @Input() autoFocus: boolean = true;
 
   @Output() onOpen: EventEmitter<null> = new EventEmitter<null>();
   @Output() onClose: EventEmitter<null> = new EventEmitter<null>();
@@ -264,7 +265,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // ==============================================================================================
 
   private _setFocusToFirstItem() {
-    if (this._focusableElements && this._focusableElements.length) {
+    if (this.autoFocus && this._focusableElements && this._focusableElements.length) {
       this._focusableElements[0].focus();
     }
   }
