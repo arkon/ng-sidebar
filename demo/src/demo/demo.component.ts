@@ -20,7 +20,7 @@ import { SIDEBAR_POSITION } from 'ng2-sidebar';
       (onAnimationStarted)="_onAnimationStarted($event)"
       (onAnimationDone)="_onAnimationDone($event)">
       <p>Sidebar contents</p>
-      
+
       <button class="demo-control" (click)="_toggleSidebar()">Close sidebar</button>
       <p><a closeSidebar>This will close the sidebar too</a></p>
     </ng2-sidebar>
