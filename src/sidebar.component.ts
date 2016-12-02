@@ -278,7 +278,8 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
 
   // Handles the ability to focus sidebar elements when it's open/closed
   private _setFocused(open: boolean) {
-    this._focusableElements = Array.from(
+    // Would use Array.from, but we need to support older browsers...
+    this._focusableElements = [].slice.call(
       this._elSidebar.nativeElement.querySelectorAll(this._focusableElementsString)) as Array<HTMLElement>;
 
     if (open) {
