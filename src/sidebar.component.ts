@@ -335,7 +335,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
           this._onClickOutsideAttached = true;
         }
 
-        if (this.keyClose) {
+        if (this.keyClose && !this._onKeyDownAttached) {
           this._document.body.addEventListener('keydown', this._onKeyDown);
           this._onKeyDownAttached = true;
         }
