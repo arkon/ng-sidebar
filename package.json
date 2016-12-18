@@ -28,22 +28,22 @@
   "typings": "./lib/index.d.ts",
   "scripts": {
     "lint": "tslint src/**/*.ts",
-    "start": "npm run lint && ngc",
-    "prepublish": "npm start"
+    "build": "npm run lint && ngc",
+    "prepublish": "npm run build"
   },
   "peerDependencies": {
     "@angular/core": "^2.0.0",
     "@angular/common": "^2.0.0"
   },
   "devDependencies": {
-    "@angular/common": "^2.3.0",
-    "@angular/compiler": "^2.3.0",
-    "@angular/compiler-cli": "^2.3.0",
-    "@angular/core": "^2.3.0",
-    "@angular/platform-browser": "^2.3.0",
+    "@angular/common": "^2.3.1",
+    "@angular/compiler": "^2.3.1",
+    "@angular/compiler-cli": "^2.3.1",
+    "@angular/core": "^2.3.1",
+    "@angular/platform-browser": "^2.3.1",
     "rxjs": "5.0.0-rc.4",
-    "tslint": "^4.0.2",
-    "typescript": "^2.1.4",
+    "tslint": "^4.1.1",
+    "typescript": "2.0.10",
     "zone.js": "^0.7.2"
   }
 }
