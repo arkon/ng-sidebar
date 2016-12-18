@@ -6,6 +6,7 @@ import { SIDEBAR_POSITION } from 'ng2-sidebar';
   template: `
     <ng2-sidebar
       [(open)]="_open"
+      [keyClose]="_keyClose"
       [defaultStyles]="true"
       [position]="_POSITIONS[_positionNum]"
       [closeOnClickOutside]="_closeOnClickOutside"
@@ -40,6 +41,7 @@ import { SIDEBAR_POSITION } from 'ng2-sidebar';
       <button class="demo-control" (click)="_toggleAnimate()">Toggle animate ({{_animate}})</button>
       <button class="demo-control" (click)="_toggleTrapFocus()">Toggle trapFocus ({{_trapFocus}})</button>
       <button class="demo-control" (click)="_toggleAutoFocus()">Toggle autoFocus ({{_autoFocus}})</button>
+      <button class="demo-control" (click)="_toggleKeyClose()">Toggle keyClose ({{_keyClose}})</button>
 
 
       <h1>Download</h1>
@@ -68,6 +70,7 @@ export class DemoComponent {
   private _animate: boolean = true;
   private _trapFocus: boolean = true;
   private _autoFocus: boolean = true;
+  private _keyClose: boolean = false;
 
   private _POSITIONS = [SIDEBAR_POSITION.Left, SIDEBAR_POSITION.Right, SIDEBAR_POSITION.Top, SIDEBAR_POSITION.Bottom];
 
@@ -99,8 +102,12 @@ export class DemoComponent {
     this._trapFocus = !this._trapFocus;
   }
 
-   private _toggleAutoFocus() {
+  private _toggleAutoFocus() {
     this._autoFocus = !this._autoFocus;
+  }
+
+  private _toggleKeyClose() {
+    this._keyClose = !this._keyClose;
   }
 
   private _onOpen() {

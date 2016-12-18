@@ -109,6 +109,8 @@ Note that this component uses Angular 2's [animation system](https://angular.io/
 | sidebarClass | string | | Additional class name on the sidebar element. |
 | overlayClass | string | | Additional class name on the overlay element. |
 | ariaLabel | string | | String used for the sidebar's `aria-label` attribute. |
+| keyClose | boolean | `false` | Close the sidebar when a keyboard button is pressed. |
+| keyCode | number | `27` | The [KeyCode](http://keycode.info/) for `keyClose`. |
 
 #### Outputs
 

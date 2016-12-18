@@ -127,6 +127,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Input() open: boolean = false;
   @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  @Input() keyClose: boolean = false;
+  @Input() keyCode: number = 27;
+
   @Input() position: string = SIDEBAR_POSITION.Left;
   @Input() closeOnClickOutside: boolean = false;
   @Input() showOverlay: boolean = false;
@@ -162,6 +165,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   private _closeDirectives: QueryList<CloseSidebar>;
 
   private _onClickOutsideAttached: boolean = false;
+  private _onKeyDownAttached: boolean = false;
 
   private _focusableElementsString: string = 'a[href], area[href], input:not([disabled]), select:not([disabled]),' +
     'textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]';
@@ -172,6 +176,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     this._manualClose = this._manualClose.bind(this);
     this._trapFocus = this._trapFocus.bind(this);
     this._onClickOutside = this._onClickOutside.bind(this);
+    this._onKeyDown = this._onKeyDown.bind(this);
   }
 
   ngAfterContentInit() {
@@ -193,8 +198,8 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
       this._setVisibleSidebarState();
     }
 
-    if (changes['closeOnClickOutside']) {
-      this._initCloseOnClickOutside();
+    if (changes['closeOnClickOutside'] || changes['keyClose']) {
+      this._initCloseListeners();
     }
 
     if (changes['position']) {
@@ -203,7 +208,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    this._destroyCloseOnClickOutside();
+    this._destroyCloseListeners();
 
     if (this._closeDirectives) {
       this._closeDirectives.forEach((dir: CloseSidebar) => {
@@ -240,7 +245,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   private _open() {
     this._setFocused(true);
 
-    this._initCloseOnClickOutside();
+    this._initCloseListeners();
 
     this.onOpen.emit(null);
   }
@@ -248,7 +253,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   private _close() {
     this._setFocused(false);
 
-    this._destroyCloseOnClickOutside();
+    this._destroyCloseListeners();
 
     this.onClose.emit(null);
   }
@@ -321,25 +326,45 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // On click outside
   // ==============================================================================================
 
-  private _initCloseOnClickOutside() {
-    if (this.open && this.closeOnClickOutside && !this._onClickOutsideAttached) {
+  private _initCloseListeners() {
+    if (this.open && (this.closeOnClickOutside || this.keyClose)) {
       // In a timeout so that things render first
       setTimeout(() => {
-        this._document.body.addEventListener('click', this._onClickOutside);
-        this._onClickOutsideAttached = true;
+        if (this.closeOnClickOutside && !this._onClickOutsideAttached) {
+          this._document.body.addEventListener('click', this._onClickOutside);
+          this._onClickOutsideAttached = true;
+        }
+
+        if (this.keyClose) {
+          this._document.body.addEventListener('keydown', this._onKeyDown);
+          this._onKeyDownAttached = true;
+        }
       });
     }
   }
 
-  private _destroyCloseOnClickOutside() {
+  private _destroyCloseListeners() {
     if (this._onClickOutsideAttached) {
       this._document.body.removeEventListener('click', this._onClickOutside);
       this._onClickOutsideAttached = false;
+    }
+
+    if (this._onKeyDownAttached) {
+      this._document.body.removeEventListener('keydown', this._onKeyDown);
+      this._onKeyDownAttached = false;
     }
   }
 
   private _onClickOutside(e: MouseEvent) {
     if (this._onClickOutsideAttached && this._elSidebar && !this._elSidebar.nativeElement.contains(e.target)) {
+      this._manualClose();
+    }
+  }
+
+  private _onKeyDown(e: KeyboardEvent | Event) {
+    e = e || window.event;
+
+    if ((e as KeyboardEvent).keyCode === this.keyCode) {
       this._manualClose();
     }
   }
