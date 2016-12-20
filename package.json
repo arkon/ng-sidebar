@@ -1,6 +1,6 @@
 {
   "name": "ng-sidebar",
-  "version": "1.8.1",
+  "version": "2.0.0",
   "description": "A sidebar component for Angular 2.",
   "repository": {
     "type": "git",
