@@ -1,10 +1,10 @@
 import { Component, AnimationTransitionEvent } from '@angular/core';
-import { SIDEBAR_POSITION } from 'ng2-sidebar';
+import { SIDEBAR_POSITION } from 'ng-sidebar';
 
 @Component({
   selector: 'demo',
   template: `
-    <ng2-sidebar
+    <ng-sidebar
       [(open)]="_open"
       [keyClose]="_keyClose"
       [defaultStyles]="true"
@@ -24,11 +24,11 @@ import { SIDEBAR_POSITION } from 'ng2-sidebar';
 
       <button class="demo-control" (click)="_toggleSidebar()">Close sidebar</button>
       <p><a closeSidebar>This will close the sidebar too</a></p>
-    </ng2-sidebar>
+    </ng-sidebar>
 
     <header class="demo-header">
       <button (click)="_toggleSidebar()" class="demo-header__toggle">Toggle sidebar</button>
-      <span>ng2-sidebar</span>
+      <span>ng-sidebar</span>
     </header>
 
     <section class="demo-contents">
@@ -46,8 +46,8 @@ import { SIDEBAR_POSITION } from 'ng2-sidebar';
 
       <h1>Download</h1>
 
-      <p>Download from <a href="https://www.npmjs.com/package/ng2-sidebar">NPM</a>.</p>
-      <p>Source code available on <a href="https://github.com/arkon/ng2-sidebar">GitHub</a>.</p>
+      <p>Download from <a href="https://www.npmjs.com/package/ng-sidebar">NPM</a>.</p>
+      <p>Source code available on <a href="https://github.com/arkon/ng-sidebar">GitHub</a>.</p>
 
 
       <h1>Some filler content</h1>

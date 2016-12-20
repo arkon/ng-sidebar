@@ -1,15 +1,15 @@
 {
-  "name": "ng2-sidebar-demo",
+  "name": "ng-sidebar-demo",
   "version": "0.0.0",
-  "description": "Demo of ng2-sidebar.",
+  "description": "Demo of ng-sidebar.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/arkon/ng2-sidebar.git"
+    "url": "https://github.com/arkon/ng-sidebar.git"
   },
   "author": "Eugene Cheung",
   "license": "MIT",
   "scripts": {
-    "install-lib": "npm uninstall ng2-sidebar && npm install",
+    "install-lib": "npm uninstall ng-sidebar && npm install",
     "sass": "node-sass src/style/style.scss public/style.css --output-style compressed",
     "start": "npm run sass && webpack-dev-server --progress --colors",
     "build": "npm run sass && webpack",
@@ -25,7 +25,7 @@
     "@angular/platform-browser": "^2.3.1",
     "@angular/platform-browser-dynamic": "^2.3.1",
     "es6-shim": "^0.35.2",
-    "ng2-sidebar": "file:../",
+    "ng-sidebar": "file:../",
     "reflect-metadata": "^0.1.8",
     "rxjs": "5.0.0-rc.4",
     "zone.js": "^0.7.2"

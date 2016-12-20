@@ -32,7 +32,7 @@ export const SIDEBAR_POSITION = {
 };
 
 @Component({
-  selector: 'ng2-sidebar',
+  selector: 'ng-sidebar',
   encapsulation: ViewEncapsulation.None,
   template: `
     <aside #sidebar
@@ -42,8 +42,8 @@ export const SIDEBAR_POSITION = {
       role="complementary"
       [attr.aria-hidden]="!open"
       [attr.aria-label]="ariaLabel"
-      class="ng2-sidebar ng2-sidebar--{{position}}"
-      [class.ng2-sidebar--style]="defaultStyles"
+      class="ng-sidebar ng-sidebar--{{position}}"
+      [class.ng-sidebar--style]="defaultStyles"
       [ngClass]="sidebarClass">
       <ng-content></ng-content>
     </aside>
@@ -51,48 +51,48 @@ export const SIDEBAR_POSITION = {
     <div *ngIf="showOverlay"
       [@visibleOverlayState]="_visibleOverlayState"
       aria-hidden="true"
-      class="ng2-sidebar__overlay"
-      [class.ng2-sidebar__overlay--style]="open && defaultStyles"
+      class="ng-sidebar__overlay"
+      [class.ng-sidebar__overlay--style]="open && defaultStyles"
       [ngClass]="overlayClass"></div>
   `,
   styles: [`
-    .ng2-sidebar {
+    .ng-sidebar {
       overflow: auto;
       pointer-events: none;
       position: fixed;
       z-index: 99999999;
     }
 
-      .ng2-sidebar--left {
+      .ng-sidebar--left {
         bottom: 0;
         left: 0;
         top: 0;
       }
 
-      .ng2-sidebar--right {
+      .ng-sidebar--right {
         bottom: 0;
         right: 0;
         top: 0;
       }
 
-      .ng2-sidebar--top {
+      .ng-sidebar--top {
         left: 0;
         right: 0;
         top: 0;
       }
 
-      .ng2-sidebar--bottom {
+      .ng-sidebar--bottom {
         bottom: 0;
         left: 0;
         right: 0;
       }
 
-      .ng2-sidebar--style {
+      .ng-sidebar--style {
         background: #fff;
         box-shadow: 0 0 2.5em rgba(85, 85, 85, 0.5);
       }
 
-    .ng2-sidebar__overlay {
+    .ng-sidebar__overlay {
       height: 100%;
       left: 0;
       pointer-events: none;
@@ -102,7 +102,7 @@ export const SIDEBAR_POSITION = {
       z-index: 99999998;
     }
 
-      .ng2-sidebar__overlay--style {
+      .ng-sidebar__overlay--style {
         background: #000;
         opacity: 0.75;
       }

@@ -1,16 +1,16 @@
-# ng2-sidebar
+# ng-sidebar
 
-[![NPM](https://nodei.co/npm/ng2-sidebar.png?compact=true)](https://nodei.co/npm/ng2-sidebar)
+[![NPM](https://nodei.co/npm/ng-sidebar.png?compact=true)](https://nodei.co/npm/ng-sidebar)
 
-**[Demo](https://echeung.me/ng2-sidebar)**
+**[Demo](https://echeung.me/ng-sidebar)**
 
-An Angular 2 sidebar component.
+An Angular 2+ sidebar component.
 
 
 ## Installation
 
 ```shell
-npm install --save ng2-sidebar
+npm install --save ng-sidebar
 ```
 
 ### SystemJS configuration
@@ -20,13 +20,13 @@ If you're using SystemJS, be sure to add the appropriate settings to your System
 ```js
 var map = {
   // ...
-  'ng2-sidebar': 'node_modules/ng2-sidebar',
+  'ng-sidebar': 'node_modules/ng-sidebar',
   // ...
 };
 
 var packages = {
   // ...
-  'ng2-sidebar': {
+  'ng-sidebar': {
     main: 'lib/index',
     defaultExtension: 'js'
   },
@@ -39,7 +39,7 @@ var packages = {
 Add `SidebarModule` to your app module:
 
 ```typescript
-import { SidebarModule } from 'ng2-sidebar';
+import { SidebarModule } from 'ng-sidebar';
 
 @NgModule({
   declarations: [AppComponent],
@@ -57,9 +57,9 @@ In your component, simply use the directive in your template:
 @Component({
   selector: 'app',
   template: `
-    <ng2-sidebar [(open)]="_open">
+    <ng-sidebar [(open)]="_open">
       <p>Sidebar contents</p>
-    </ng2-sidebar>
+    </ng-sidebar>
 
     <button (click)="_toggleSidebar()">Toggle sidebar</button>
   `
@@ -79,9 +79,9 @@ A directive is also provided to easily close the sidebar by clicking something i
 @Component({
   selector: 'example',
   template: `
-    <ng2-sidebar [(open)]="_open">
+    <ng-sidebar [(open)]="_open">
       <a closeSidebar>Closes the sidebar</a>
-    </ng2-sidebar>
+    </ng-sidebar>
   `
 })
 // ...
@@ -89,7 +89,7 @@ A directive is also provided to easily close the sidebar by clicking something i
 
 ### Browser support
 
-Note that this component uses Angular 2's [animation system](https://angular.io/docs/ts/latest/guide/animations.html), which relies on the Web Animations API. Unforunately, there is only [partial support](http://caniuse.com/#feat=web-animation) for this API in Firefox, Chrome, and Opera, so it's recommended to use [the web-animations.js polyfill](https://github.com/web-animations/web-animations-js) for support in other browsers.
+Note that this component uses Angular's [animation system](https://angular.io/docs/ts/latest/guide/animations.html), which relies on the Web Animations API. Unforunately, there is only [partial support](http://caniuse.com/#feat=web-animation) for this API in Firefox, Chrome, and Opera, so it's recommended to use [the web-animations.js polyfill](https://github.com/web-animations/web-animations-js) for support in other browsers.
 
 
 ### Options

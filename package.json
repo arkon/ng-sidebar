@@ -1,14 +1,14 @@
 {
-  "name": "ng2-sidebar",
+  "name": "ng-sidebar",
   "version": "1.8.1",
   "description": "A sidebar component for Angular 2.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/arkon/ng2-sidebar.git"
+    "url": "https://github.com/arkon/ng-sidebar.git"
   },
-  "homepage": "http://echeung.me/ng2-sidebar/",
+  "homepage": "http://echeung.me/ng-sidebar/",
   "bugs": {
-    "url": "https://github.com/arkon/ng2-sidebar/issues"
+    "url": "https://github.com/arkon/ng-sidebar/issues"
   },
   "files": [
     "src/*",
@@ -21,6 +21,9 @@
   "keywords": [
     "angular",
     "angular2",
+    "angular4",
+    "ng2",
+    "ng4",
     "sidebar",
     "component"
   ],
