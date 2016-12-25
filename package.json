@@ -1,7 +1,7 @@
 {
   "name": "ng-sidebar",
   "version": "2.0.0",
-  "description": "A sidebar component for Angular 2.",
+  "description": "Angular 2+ sidebar component.",
   "repository": {
     "type": "git",
     "url": "https://github.com/arkon/ng-sidebar.git"
@@ -39,14 +39,14 @@
     "@angular/common": "^2.0.0"
   },
   "devDependencies": {
-    "@angular/common": "^2.3.1",
-    "@angular/compiler": "^2.3.1",
-    "@angular/compiler-cli": "^2.3.1",
-    "@angular/core": "^2.3.1",
-    "@angular/platform-browser": "^2.3.1",
-    "rxjs": "5.0.0-rc.4",
-    "tslint": "^4.1.1",
+    "@angular/common": "^2.4.1",
+    "@angular/compiler": "^2.4.1",
+    "@angular/compiler-cli": "^2.4.1",
+    "@angular/core": "^2.4.1",
+    "@angular/platform-browser": "^2.4.1",
+    "rxjs": "5.0.1",
+    "tslint": "^4.2.0",
     "typescript": "2.0.10",
-    "zone.js": "^0.7.2"
+    "zone.js": "^0.7.4"
   }
 }
