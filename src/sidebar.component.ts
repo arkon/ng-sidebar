@@ -221,12 +221,12 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // ==============================================================================================
 
   /** @internal */
-  _animationStarted(e: AnimationTransitionEvent) {
+  _animationStarted(e: AnimationTransitionEvent): void {
     this.onAnimationStarted.emit(e);
   }
 
   /** @internal */
-  _animationDone(e: AnimationTransitionEvent) {
+  _animationDone(e: AnimationTransitionEvent): void {
     this.onAnimationDone.emit(e);
   }
 
@@ -234,7 +234,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // Sidebar toggling
   // ==============================================================================================
 
-  private _setVisibleSidebarState() {
+  private _setVisibleSidebarState(): void {
     this._visibleSidebarState = this.open ?
       (this.animate ? 'expanded--animate' : 'expanded') :
       `collapsed--${this.position}`;
@@ -242,7 +242,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     this._visibleOverlayState = this.open ? 'visible' : null;
   }
 
-  private _open() {
+  private _open(): void {
     this._setFocused(true);
 
     this._initCloseListeners();
@@ -250,7 +250,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     this.onOpen.emit(null);
   }
 
-  private _close() {
+  private _close(): void {
     this._setFocused(false);
 
     this._destroyCloseListeners();
@@ -258,7 +258,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     this.onClose.emit(null);
   }
 
-  private _manualClose() {
+  private _manualClose(): void {
     this.open = false;
     this.openChange.emit(false);
 
@@ -269,20 +269,20 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // Focus on open/close
   // ==============================================================================================
 
-  private _setFocusToFirstItem() {
+  private _setFocusToFirstItem(): void {
     if (this.autoFocus && this._focusableElements && this._focusableElements.length) {
       this._focusableElements[0].focus();
     }
   }
 
-  private _trapFocus(e: FocusEvent) {
+  private _trapFocus(e: FocusEvent): void {
     if (this.open && this.trapFocus && !this._elSidebar.nativeElement.contains(e.target)) {
       this._setFocusToFirstItem();
     }
   }
 
   // Handles the ability to focus sidebar elements when it's open/closed
-  private _setFocused(open: boolean) {
+  private _setFocused(open: boolean): void {
     this._focusableElements = Array.from(
       this._elSidebar.nativeElement.querySelectorAll(this._focusableElementsString)) as Array<HTMLElement>;
 
@@ -326,7 +326,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // On click outside
   // ==============================================================================================
 
-  private _initCloseListeners() {
+  private _initCloseListeners(): void {
     if (this.open && (this.closeOnClickOutside || this.keyClose)) {
       // In a timeout so that things render first
       setTimeout(() => {
@@ -343,7 +343,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     }
   }
 
-  private _destroyCloseListeners() {
+  private _destroyCloseListeners(): void {
     if (this._onClickOutsideAttached) {
       this._document.body.removeEventListener('click', this._onClickOutside);
       this._onClickOutsideAttached = false;
@@ -355,13 +355,13 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     }
   }
 
-  private _onClickOutside(e: MouseEvent) {
+  private _onClickOutside(e: MouseEvent): void {
     if (this._onClickOutsideAttached && this._elSidebar && !this._elSidebar.nativeElement.contains(e.target)) {
       this._manualClose();
     }
   }
 
-  private _onKeyDown(e: KeyboardEvent | Event) {
+  private _onKeyDown(e: KeyboardEvent | Event): void {
     e = e || window.event;
 
     if ((e as KeyboardEvent).keyCode === this.keyCode) {

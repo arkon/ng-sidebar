@@ -6,7 +6,7 @@ export class CloseSidebar {
 
   /** @internal */
   @HostListener('click')
-  _onClick() {
+  _onClick(): void {
     this.clicked.emit(null);
   }
 }
