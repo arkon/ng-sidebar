@@ -1,5 +1,4 @@
 import { Component, AnimationTransitionEvent } from '@angular/core';
-import { SIDEBAR_POSITION } from 'ng-sidebar';
 
 @Component({
   selector: 'demo',
@@ -72,13 +71,13 @@ export class DemoComponent {
   private _autoFocus: boolean = true;
   private _keyClose: boolean = false;
 
-  private _POSITIONS = [SIDEBAR_POSITION.Left, SIDEBAR_POSITION.Right, SIDEBAR_POSITION.Top, SIDEBAR_POSITION.Bottom];
+  private _POSITIONS: Array<string> = ['left', 'right', 'top', 'bottom'];
 
-  private _toggleSidebar() {
+  private _toggleSidebar(): void {
     this._open = !this._open;
   }
 
-  private _togglePosition() {
+  private _togglePosition(): void {
     this._positionNum++;
 
     if (this._positionNum === this._POSITIONS.length) {
@@ -86,43 +85,43 @@ export class DemoComponent {
     }
   }
 
-  private _toggleCloseOnClickOutside() {
+  private _toggleCloseOnClickOutside(): void {
     this._closeOnClickOutside = !this._closeOnClickOutside;
   }
 
-  private _toggleShowOverlay() {
+  private _toggleShowOverlay(): void {
     this._showOverlay = !this._showOverlay;
   }
 
-  private _toggleAnimate() {
+  private _toggleAnimate(): void {
     this._animate = !this._animate;
   }
 
-  private _toggleTrapFocus() {
+  private _toggleTrapFocus(): void {
     this._trapFocus = !this._trapFocus;
   }
 
-  private _toggleAutoFocus() {
+  private _toggleAutoFocus(): void {
     this._autoFocus = !this._autoFocus;
   }
 
-  private _toggleKeyClose() {
+  private _toggleKeyClose(): void {
     this._keyClose = !this._keyClose;
   }
 
-  private _onOpen() {
+  private _onOpen(): void {
     console.info('Sidebar opened');
   }
 
-  private _onClose() {
+  private _onClose(): void {
     console.info('Sidebar closed');
   }
 
-  private _onAnimationStarted(e: AnimationTransitionEvent) {
+  private _onAnimationStarted(e: AnimationTransitionEvent): void {
     console.info('Animation started', e);
   }
 
-  private _onAnimationDone(e: AnimationTransitionEvent) {
+  private _onAnimationDone(e: AnimationTransitionEvent): void {
     console.info('Animation done', e);
   }
 }

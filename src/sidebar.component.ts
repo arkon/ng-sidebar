@@ -25,13 +25,6 @@ import { DOCUMENT } from '@angular/platform-browser';
 
 import { CloseSidebar } from './close.directive';
 
-export const SIDEBAR_POSITION = {
-  Left: 'left',
-  Right: 'right',
-  Top: 'top',
-  Bottom: 'bottom'
-};
-
 @Component({
   selector: 'ng-sidebar',
   template: `
@@ -132,7 +125,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Input() keyClose: boolean = false;
   @Input() keyCode: number = 27;
 
-  @Input() position: string = SIDEBAR_POSITION.Left;
+  @Input() position: 'left' | 'right' | 'top' | 'bottom' = 'left';
   @Input() closeOnClickOutside: boolean = false;
   @Input() showOverlay: boolean = false;
   @Input() animate: boolean = true;

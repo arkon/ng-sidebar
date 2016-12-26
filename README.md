@@ -101,7 +101,7 @@ Note that this component uses Angular's [animation system](https://angular.io/do
 | Property name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
 | open | boolean | `false` | If the sidebar should be open. This should be two-way bound. |
-| position | `'left' | 'right' | 'top' | 'bottom'` | `'left'` | What side the sidebar should be docked to. `SIDEBAR_POSITION` can also be used instead of the strings. |
+| position | `'left' | 'right' | 'top' | 'bottom'` | `'left'` | What side the sidebar should be docked to. |
 | closeOnClickOutside | boolean | `false` | Whether clicking outside of the open sidebar will close it. |
 | showOverlay | boolean | `false` | If a translucent black overlay should appear over the page contents when the sidebar is open. |
 | animate | boolean | `true` | Whether the sidebar should animate when opening/closing. |
