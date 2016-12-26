@@ -1,6 +1,7 @@
 import {
   AfterContentInit,
   AnimationTransitionEvent,
+  ChangeDetectionStrategy,
   Component,
   ContentChildren,
   ElementRef,
@@ -33,7 +34,6 @@ export const SIDEBAR_POSITION = {
 
 @Component({
   selector: 'ng-sidebar',
-  encapsulation: ViewEncapsulation.None,
   template: `
     <aside #sidebar
       [@visibleSidebarState]="_visibleSidebarState"
@@ -120,7 +120,9 @@ export const SIDEBAR_POSITION = {
     trigger('visibleOverlayState', [
       state('visible', style({ pointerEvents: 'auto' }))
     ])
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
 })
 export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // `openChange` allows for 2-way data binding
