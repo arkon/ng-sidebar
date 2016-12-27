@@ -120,7 +120,7 @@ import { CloseSidebar } from './close.directive';
     ])
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // `openChange` allows for 2-way data binding
@@ -208,7 +208,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     }
 
     if (changes['position']) {
-      this.onPositionChange.emit(changes['position'].currentValue);
+      this.onPositionChange.emit(this.position);
       this._setVisibleSidebarState();
     }
   }
@@ -227,6 +227,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // Helpers
   // ==============================================================================================
 
+  /** @internal */
   get _height(): number {
     if (this._elSidebar.nativeElement) {
       return this._elSidebar.nativeElement.offsetHeight;
@@ -235,6 +236,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     return 0;
   }
 
+  /** @internal */
   get _width(): number {
     if (this._elSidebar.nativeElement) {
       return this._elSidebar.nativeElement.offsetWidth;

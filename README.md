@@ -61,6 +61,7 @@ In your component, simply use the directive in your template:
   template: `
     <!-- Container for sidebar(s) + page content -->
     <ng-sidebar-container>
+
       <!-- The sidebar -->
       <ng-sidebar [(open)]="_open">
         <p>Sidebar contents</p>
@@ -68,6 +69,7 @@ In your component, simply use the directive in your template:
 
       <!-- Page content -->
       <button (click)="_toggleSidebar()">Toggle sidebar</button>
+
     </ng-sidebar-container>
   `
 })
