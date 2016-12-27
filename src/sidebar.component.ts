@@ -36,6 +36,7 @@ import { CloseSidebar } from './close.directive';
       [attr.aria-hidden]="!open"
       [attr.aria-label]="ariaLabel"
       class="ng-sidebar ng-sidebar--{{position}}"
+      [class.ng-sidebar--push]="mode === 'push'"
       [class.ng-sidebar--style]="defaultStyles"
       [ngClass]="sidebarClass">
       <ng-content></ng-content>
@@ -85,6 +86,10 @@ import { CloseSidebar } from './close.directive';
         box-shadow: 0 0 2.5em rgba(85, 85, 85, 0.5);
       }
 
+        .ng-sidebar--push .ng-sidebar--style {
+          box-shadow: none;
+        }
+
     .ng-sidebar__backdrop {
       height: 100%;
       left: 0;
@@ -125,6 +130,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Input() keyClose: boolean = false;
   @Input() keyCode: number = 27;  // Default to ESCAPE key
 
+  @Input() mode: 'over' | 'push' = 'over';
   @Input() position: 'left' | 'right' | 'top' | 'bottom' = 'left';
   @Input() closeOnClickOutside: boolean = false;
   @Input() showBackdrop: boolean = false;
@@ -216,6 +222,27 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
       });
     }
   }
+
+
+  // Helpers
+  // ==============================================================================================
+
+  get _height(): number {
+    if (this._elSidebar.nativeElement) {
+      return this._elSidebar.nativeElement.offsetHeight;
+    }
+
+    return 0;
+  }
+
+  get _width(): number {
+    if (this._elSidebar.nativeElement) {
+      return this._elSidebar.nativeElement.offsetWidth;
+    }
+
+    return 0;
+  }
+
 
   // Animation callbacks
   // ==============================================================================================
