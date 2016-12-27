@@ -1,4 +1,7 @@
 import {
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   QueryList,
@@ -18,7 +21,7 @@ import { Sidebar } from './sidebar.component';
     </div>
   `,
   styles: [`
-    .ng-sidebar__container {
+    ng-sidebar-container {
       box-sizing: border-box;
       display: block;
     }
@@ -29,14 +32,26 @@ import { Sidebar } from './sidebar.component';
       overflow: auto;
     }
   `],
-  host: {
-    'class': 'ng-sidebar__container'
-  },
-  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
-export class SidebarContainer {
+export class SidebarContainer implements AfterContentInit {
   @ContentChildren(Sidebar)
   private _sidebars: QueryList<Sidebar>;
+
+  constructor(private _ref: ChangeDetectorRef) {}
+
+  ngAfterContentInit() {
+    if (this._sidebars) {
+      this._sidebars.changes.subscribe(() => this._change());
+
+      this._sidebars.forEach((sidebar: Sidebar) => {
+        sidebar.onOpen.subscribe(() => this._change());
+        sidebar.onClose.subscribe(() => this._change());
+        sidebar.onPositionChange.subscribe(() => this._change());
+      });
+    }
+  }
 
   /** @internal */
   _getStyles() {
@@ -72,5 +87,9 @@ export class SidebarContainer {
     return {
       margin: `${top}px ${right}px ${bottom}px ${left}px`
     };
+  }
+
+  private _change() {
+    this._ref.markForCheck();
   }
 }
