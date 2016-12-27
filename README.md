@@ -59,11 +59,16 @@ In your component, simply use the directive in your template:
 @Component({
   selector: 'app',
   template: `
-    <ng-sidebar [(open)]="_open">
-      <p>Sidebar contents</p>
-    </ng-sidebar>
+    <!-- Container for sidebar(s) + page content -->
+    <ng-sidebar-container>
+      <!-- The sidebar -->
+      <ng-sidebar [(open)]="_open">
+        <p>Sidebar contents</p>
+      </ng-sidebar>
 
-    <button (click)="_toggleSidebar()">Toggle sidebar</button>
+      <!-- Page content -->
+      <button (click)="_toggleSidebar()">Toggle sidebar</button>
+    </ng-sidebar-container>
   `
 })
 export class AppComponent {
@@ -77,16 +82,10 @@ export class AppComponent {
 
 A directive is also provided to easily close the sidebar by clicking something inside it:
 
-```typescript
-@Component({
-  selector: 'example',
-  template: `
-    <ng-sidebar [(open)]="_open">
-      <a closeSidebar>Closes the sidebar</a>
-    </ng-sidebar>
-  `
-})
-// ...
+```html
+<ng-sidebar [(open)]="_open">
+  <a closeSidebar>Closes the sidebar</a>
+</ng-sidebar>
 ```
 
 ### Browser support
@@ -101,6 +100,7 @@ Note that this component uses Angular's [animation system](https://angular.io/do
 | Property name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
 | open | boolean | `false` | If the sidebar should be open. This should be two-way bound. |
+| mode | `'over' | 'push'` | `'over'` | Whether to display the sidebar over the content or beside it. |
 | position | `'left' | 'right' | 'top' | 'bottom'` | `'left'` | What side the sidebar should be docked to. |
 | closeOnClickOutside | boolean | `false` | Whether clicking outside of the open sidebar will close it. |
 | showBackdrop | boolean | `false` | If a translucent black backdrop overlay should appear over the page contents when the sidebar is open. |

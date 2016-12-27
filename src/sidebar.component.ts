@@ -127,9 +127,6 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Input() open: boolean = false;
   @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  @Input() keyClose: boolean = false;
-  @Input() keyCode: number = 27;  // Default to ESCAPE key
-
   @Input() mode: 'over' | 'push' = 'over';
   @Input() position: 'left' | 'right' | 'top' | 'bottom' = 'left';
   @Input() closeOnClickOutside: boolean = false;
@@ -144,6 +141,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Input() ariaLabel: string;
   @Input() trapFocus: boolean = true;
   @Input() autoFocus: boolean = true;
+
+  @Input() keyClose: boolean = false;
+  @Input() keyCode: number = 27;  // Default to ESCAPE key
 
   @Output() onOpen: EventEmitter<null> = new EventEmitter<null>();
   @Output() onClose: EventEmitter<null> = new EventEmitter<null>();
