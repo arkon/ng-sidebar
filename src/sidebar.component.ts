@@ -149,6 +149,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     new EventEmitter<AnimationTransitionEvent>();
 
   /** @internal */
+  _opened: boolean;
+
+  /** @internal */
   _visibleSidebarState: string;
 
   /** @internal */
@@ -245,6 +248,8 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     this._initCloseListeners();
 
     this.onOpen.emit(null);
+
+    this._opened = true;
   }
 
   private _close(): void {
@@ -253,6 +258,8 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     this._destroyCloseListeners();
 
     this.onClose.emit(null);
+
+    this._opened = false;
   }
 
   private _manualClose(): void {
@@ -273,7 +280,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   private _trapFocus(e: FocusEvent): void {
-    if (this.open && this.trapFocus && !this._elSidebar.nativeElement.contains(e.target)) {
+    if (this._opened && this.trapFocus && this.mode === 'over' && !this._elSidebar.nativeElement.contains(e.target)) {
       this._setFocusToFirstItem();
     }
   }
