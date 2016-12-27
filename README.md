@@ -103,13 +103,13 @@ Note that this component uses Angular's [animation system](https://angular.io/do
 | open | boolean | `false` | If the sidebar should be open. This should be two-way bound. |
 | position | `'left' | 'right' | 'top' | 'bottom'` | `'left'` | What side the sidebar should be docked to. |
 | closeOnClickOutside | boolean | `false` | Whether clicking outside of the open sidebar will close it. |
-| showOverlay | boolean | `false` | If a translucent black overlay should appear over the page contents when the sidebar is open. |
+| showBackdrop | boolean | `false` | If a translucent black backdrop overlay should appear over the page contents when the sidebar is open. |
 | animate | boolean | `true` | Whether the sidebar should animate when opening/closing. |
 | defaultStyles | boolean | `false` | Applies some basic default styles to the sidebar. |
 | trapFocus | boolean | `true` | Keeps focus within the sidebar if it's open. |
 | autoFocus | boolean | `true` | Automatically focuses the first focusable element in the sidebar when opened. |
 | sidebarClass | string | | Additional class name on the sidebar element. |
-| overlayClass | string | | Additional class name on the overlay element. |
+| backdropClass | string | | Additional class name on the overlay element. |
 | ariaLabel | string | | String used for the sidebar's `aria-label` attribute. |
 | keyClose | boolean | `false` | Close the sidebar when a keyboard button is pressed. |
 | keyCode | number | `27` | The [KeyCode](http://keycode.info/) for `keyClose`. |

@@ -41,12 +41,12 @@ import { CloseSidebar } from './close.directive';
       <ng-content></ng-content>
     </aside>
 
-    <div *ngIf="showOverlay"
-      [@visibleOverlayState]="_visibleOverlayState"
+    <div *ngIf="showBackdrop"
+      [@visibleBackdropState]="_visibleBackdropState"
       aria-hidden="true"
-      class="ng-sidebar__overlay"
-      [class.ng-sidebar__overlay--style]="open && defaultStyles"
-      [ngClass]="overlayClass"></div>
+      class="ng-sidebar__backdrop"
+      [class.ng-sidebar__backdrop--style]="open && defaultStyles"
+      [ngClass]="backdropClass"></div>
   `,
   styles: [`
     .ng-sidebar {
@@ -85,7 +85,7 @@ import { CloseSidebar } from './close.directive';
         box-shadow: 0 0 2.5em rgba(85, 85, 85, 0.5);
       }
 
-    .ng-sidebar__overlay {
+    .ng-sidebar__backdrop {
       height: 100%;
       left: 0;
       pointer-events: none;
@@ -95,7 +95,7 @@ import { CloseSidebar } from './close.directive';
       z-index: 99999998;
     }
 
-      .ng-sidebar__overlay--style {
+      .ng-sidebar__backdrop--style {
         background: #000;
         opacity: 0.75;
       }
@@ -110,7 +110,7 @@ import { CloseSidebar } from './close.directive';
       state('collapsed--bottom', style({ transform: 'translateY(110%)' })),
       transition('expanded--animate <=> *', animate('0.3s cubic-bezier(0, 0, 0.3, 1)'))
     ]),
-    trigger('visibleOverlayState', [
+    trigger('visibleBackdropState', [
       state('visible', style({ pointerEvents: 'auto' }))
     ])
   ],
@@ -123,17 +123,17 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Input() keyClose: boolean = false;
-  @Input() keyCode: number = 27;
+  @Input() keyCode: number = 27;  // Default to ESCAPE key
 
   @Input() position: 'left' | 'right' | 'top' | 'bottom' = 'left';
   @Input() closeOnClickOutside: boolean = false;
-  @Input() showOverlay: boolean = false;
+  @Input() showBackdrop: boolean = false;
   @Input() animate: boolean = true;
 
   @Input() defaultStyles: boolean = false;
 
   @Input() sidebarClass: string;
-  @Input() overlayClass: string;
+  @Input() backdropClass: string;
 
   @Input() ariaLabel: string;
   @Input() trapFocus: boolean = true;
@@ -152,7 +152,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   _visibleSidebarState: string;
 
   /** @internal */
-  _visibleOverlayState: string;
+  _visibleBackdropState: string;
 
   @ViewChild('sidebar')
   private _elSidebar: ElementRef;
@@ -236,7 +236,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
       (this.animate ? 'expanded--animate' : 'expanded') :
       `collapsed--${this.position}`;
 
-    this._visibleOverlayState = this.open ? 'visible' : null;
+    this._visibleBackdropState = this.open ? 'visible' : null;
   }
 
   private _open(): void {
@@ -320,7 +320,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
 
-  // On click outside
+  // Event handlers
   // ==============================================================================================
 
   private _initCloseListeners(): void {
