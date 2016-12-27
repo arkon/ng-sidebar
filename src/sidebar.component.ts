@@ -86,7 +86,7 @@ import { CloseSidebar } from './close.directive';
         box-shadow: 0 0 2.5em rgba(85, 85, 85, 0.5);
       }
 
-        .ng-sidebar--push .ng-sidebar--style {
+        .ng-sidebar--push.ng-sidebar--style {
           box-shadow: none;
         }
 
