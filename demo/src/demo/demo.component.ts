@@ -39,7 +39,7 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
         <button class="demo-control" (click)="_toggleMode()">Toggle mode ({{_mode}})</button>
         <button class="demo-control" (click)="_togglePosition()">Toggle position ({{_POSITIONS[_positionNum]}})</button>
         <button class="demo-control" (click)="_toggleCloseOnClickOutside()">Toggle closeOnClickOutside ({{_closeOnClickOutside}})</button>
-        <button class="demo-control" (click)="_toggleshowBackdrop()">Toggle showBackdrop ({{_showBackdrop}})</button>
+        <button class="demo-control" (click)="_toggleShowBackdrop()">Toggle showBackdrop ({{_showBackdrop}})</button>
         <button class="demo-control" (click)="_toggleAnimate()">Toggle animate ({{_animate}})</button>
         <button class="demo-control" (click)="_toggleTrapFocus()">Toggle trapFocus ({{_trapFocus}})</button>
         <button class="demo-control" (click)="_toggleAutoFocus()">Toggle autoFocus ({{_autoFocus}})</button>
@@ -98,7 +98,7 @@ export class DemoComponent {
     this._closeOnClickOutside = !this._closeOnClickOutside;
   }
 
-  private _toggleshowBackdrop(): void {
+  private _toggleShowBackdrop(): void {
     this._showBackdrop = !this._showBackdrop;
   }
 

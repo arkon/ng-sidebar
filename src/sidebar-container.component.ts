@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  OnDestroy,
   QueryList,
   ViewEncapsulation
 } from '@angular/core';
@@ -35,7 +36,7 @@ import { Sidebar } from './sidebar.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class SidebarContainer implements AfterContentInit {
+export class SidebarContainer implements AfterContentInit, OnDestroy {
   @ContentChildren(Sidebar)
   private _sidebars: QueryList<Sidebar>;
 
@@ -43,14 +44,24 @@ export class SidebarContainer implements AfterContentInit {
 
   ngAfterContentInit() {
     if (this._sidebars) {
-      this._sidebars.changes.subscribe(() => this._change());
+      this._sidebars.changes.subscribe(() => this._markForCheck());
 
       this._sidebars.forEach((sidebar: Sidebar) => {
-        sidebar.onOpen.subscribe(() => this._change());
-        sidebar.onClose.subscribe(() => this._change());
-        sidebar.onPositionChange.subscribe(() => this._change());
+        sidebar.onOpen.subscribe(() => this._markForCheck());
+        sidebar.onClose.subscribe(() => this._markForCheck());
+        sidebar.onPositionChange.subscribe(() => this._markForCheck());
+        sidebar.onModeChange.subscribe(() => this._markForCheck());
       });
     }
+  }
+
+  ngOnDestroy() {
+    this._sidebars.forEach((sidebar: Sidebar) => {
+      sidebar.onOpen.unsubscribe();
+      sidebar.onClose.unsubscribe();
+      sidebar.onPositionChange.unsubscribe();
+      sidebar.onModeChange.unsubscribe();
+    });
   }
 
   /** @internal */
@@ -89,7 +100,8 @@ export class SidebarContainer implements AfterContentInit {
     };
   }
 
-  private _change() {
+  // Triggers change detection to recompute styles
+  private _markForCheck() {
     this._ref.markForCheck();
   }
 }

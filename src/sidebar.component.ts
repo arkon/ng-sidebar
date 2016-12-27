@@ -147,6 +147,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
 
   @Output() onOpen: EventEmitter<null> = new EventEmitter<null>();
   @Output() onClose: EventEmitter<null> = new EventEmitter<null>();
+  @Output() onModeChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() onPositionChange: EventEmitter<string> = new EventEmitter<string>();
 
   @Output() onAnimationStarted: EventEmitter<AnimationTransitionEvent> =
@@ -208,8 +209,15 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     }
 
     if (changes['position']) {
-      this.onPositionChange.emit(this.position);
       this._setVisibleSidebarState();
+
+      setTimeout(() => {
+        this.onPositionChange.emit(this.position);
+      });
+    }
+
+    if (changes['mode']) {
+      this.onModeChange.emit(this.mode);
     }
   }
 
