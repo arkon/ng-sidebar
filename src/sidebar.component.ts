@@ -369,7 +369,8 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
         el.setAttribute('tabindex', '-1');
       }
 
-      if (this._focusedBeforeOpen) {
+      // Set focus back to element before the sidebar was opened
+      if (this.autoFocus && this._focusedBeforeOpen) {
         this._focusedBeforeOpen.focus();
       }
 
