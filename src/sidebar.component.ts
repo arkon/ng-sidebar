@@ -168,8 +168,6 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @ViewChild('sidebar')
   private _elSidebar: ElementRef;
 
-  private _subscription: Subscription;
-
   private _onClickOutsideAttached: boolean = false;
   private _onKeyDownAttached: boolean = false;
 
@@ -177,6 +175,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     'textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]';
   private _focusableElements: Array<HTMLElement>;
   private _focusedBeforeOpen: HTMLElement;
+
+  private _openSub: Subscription;
+  private _closeSub: Subscription;
 
   constructor(
     @Inject(DOCUMENT) private _document /*: HTMLDocument */,
@@ -188,12 +189,8 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   ngAfterContentInit() {
-    this._subscription = this._sidebarService
-      .onClose(() => {
-        if (this._opened) {
-          this._manualClose();
-        }
-      });
+    this._openSub = this._sidebarService.onOpen(this._manualOpen);
+    this._closeSub = this._sidebarService.onClose(this._manualClose);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -227,7 +224,8 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     this._destroyCloseListeners();
 
-    this._subscription.unsubscribe();
+    this._openSub.unsubscribe();
+    this._closeSub.unsubscribe();
   }
 
 
@@ -293,26 +291,33 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   private _open(): void {
-    this._sidebarService.open();
-
     this._setFocused(true);
 
     this._initCloseListeners();
   }
 
-  private _close(): void {
-    this._sidebarService.close();
+  private _manualOpen(): void {
+    if (!this.open) {
+      this.open = true;
+      this.openChange.emit(true);
 
+      this._open();
+    }
+  }
+
+  private _close(): void {
     this._setFocused(false);
 
     this._destroyCloseListeners();
   }
 
   private _manualClose(): void {
-    this.open = false;
-    this.openChange.emit(false);
+    if (this.open) {
+      this.open = false;
+      this.openChange.emit(false);
 
-    this._close();
+      this._close();
+    }
   }
 
 
