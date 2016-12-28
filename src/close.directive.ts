@@ -1,12 +1,14 @@
-import { Directive, EventEmitter, HostListener, Output } from '@angular/core';
+import { Directive, HostListener } from '@angular/core';
+
+import { SidebarService } from './sidebar.service';
 
 @Directive({ selector: '[closeSidebar]' })
 export class CloseSidebar {
-  @Output() clicked: EventEmitter<null> = new EventEmitter<null>();
+  constructor(private _sidebarService: SidebarService) {}
 
   /** @internal */
   @HostListener('click')
   _onClick(): void {
-    this.clicked.emit(null);
+    this._sidebarService.close();
   }
 }

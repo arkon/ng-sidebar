@@ -3,7 +3,6 @@ import {
   AnimationTransitionEvent,
   ChangeDetectionStrategy,
   Component,
-  ContentChildren,
   ElementRef,
   EventEmitter,
   Inject,
@@ -14,7 +13,6 @@ import {
   SimpleChanges,
   ViewChild,
   ViewEncapsulation,
-  QueryList,
   trigger,
   state,
   style,
@@ -22,8 +20,9 @@ import {
   animate
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
+import { Subscription } from 'rxjs/Subscription';
 
-import { CloseSidebar } from './close.directive';
+import { SidebarService } from './sidebar.service';
 
 @Component({
   selector: 'ng-sidebar',
@@ -169,8 +168,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @ViewChild('sidebar')
   private _elSidebar: ElementRef;
 
-  @ContentChildren(CloseSidebar)
-  private _closeDirectives: QueryList<CloseSidebar>;
+  private _subscription: Subscription;
 
   private _onClickOutsideAttached: boolean = false;
   private _onKeyDownAttached: boolean = false;
@@ -180,7 +178,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   private _focusableElements: Array<HTMLElement>;
   private _focusedBeforeOpen: HTMLElement;
 
-  constructor(@Inject(DOCUMENT) private _document /*: HTMLDocument */) {
+  constructor(
+    @Inject(DOCUMENT) private _document /*: HTMLDocument */,
+    private _sidebarService: SidebarService) {
     this._manualClose = this._manualClose.bind(this);
     this._trapFocus = this._trapFocus.bind(this);
     this._onClickOutside = this._onClickOutside.bind(this);
@@ -188,11 +188,12 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   ngAfterContentInit() {
-    if (this._closeDirectives) {
-      this._closeDirectives.forEach((dir: CloseSidebar) => {
-        dir.clicked.subscribe(this._manualClose);
+    this._subscription = this._sidebarService
+      .onClose(() => {
+        if (this._opened) {
+          this._manualClose();
+        }
       });
-    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -226,11 +227,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     this._destroyCloseListeners();
 
-    if (this._closeDirectives) {
-      this._closeDirectives.forEach((dir: CloseSidebar) => {
-        dir.clicked.unsubscribe();
-      });
-    }
+    this._subscription.unsubscribe();
   }
 
 
@@ -296,12 +293,16 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   private _open(): void {
+    this._sidebarService.open();
+
     this._setFocused(true);
 
     this._initCloseListeners();
   }
 
   private _close(): void {
+    this._sidebarService.close();
+
     this._setFocused(false);
 
     this._destroyCloseListeners();
