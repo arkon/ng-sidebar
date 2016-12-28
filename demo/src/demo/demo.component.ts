@@ -17,8 +17,10 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
         [autoFocus]="_autoFocus"
         [sidebarClass]="'demo-sidebar'"
         [ariaLabel]="'My sidebar'"
-        (onOpen)="_onOpen()"
-        (onClose)="_onClose()"
+        (onOpenStart)="_onOpenStart()"
+        (onOpened)="_onOpened()"
+        (onCloseStart)="_onCloseStart()"
+        (onClosed)="_onClosed()"
         (onAnimationStarted)="_onAnimationStarted($event)"
         (onAnimationDone)="_onAnimationDone($event)">
         <p>Sidebar contents</p>
@@ -118,11 +120,19 @@ export class DemoComponent {
     this._keyClose = !this._keyClose;
   }
 
-  private _onOpen(): void {
+  private _onOpenStart(): void {
+    console.info('Sidebar opening');
+  }
+
+  private _onOpened(): void {
     console.info('Sidebar opened');
   }
 
-  private _onClose(): void {
+  private _onCloseStart(): void {
+    console.info('Sidebar closing');
+  }
+
+  private _onClosed(): void {
     console.info('Sidebar closed');
   }
 

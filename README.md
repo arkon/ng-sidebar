@@ -120,8 +120,10 @@ Note that this component uses Angular's [animation system](https://angular.io/do
 
 | Property name | Callback arguments | Description |
 | ------------- | ------------------ | ----------- |
-| onOpen | | Emitted when the sidebar is opened. |
-| onClose | | Emitted when the sidebar is closed. |
+| onOpenStart | | Emitted when the sidebar is opening. |
+| onOpened | | Emitted when the sidebar is opened. |
+| onCloseStart | | Emitted when the sidebar is closing. |
+| onClosed | | Emitted when the sidebar is closed. |
 | onPositionChange | `e: string` | Emitted when `position` is changed. |
 | onModeChange | `e: string` | Emitted when `mode` is changed. |
 | onAnimationStarted | `e: AnimationTransitionEvent` | Emitted when the animation is started. |

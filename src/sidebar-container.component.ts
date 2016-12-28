@@ -47,8 +47,8 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
       this._sidebars.changes.subscribe(() => this._markForCheck());
 
       this._sidebars.forEach((sidebar: Sidebar) => {
-        sidebar.onOpen.subscribe(() => this._markForCheck());
-        sidebar.onClose.subscribe(() => this._markForCheck());
+        sidebar.onOpened.subscribe(() => this._markForCheck());
+        sidebar.onClosed.subscribe(() => this._markForCheck());
         sidebar.onPositionChange.subscribe(() => this._markForCheck());
         sidebar.onModeChange.subscribe(() => this._markForCheck());
       });
@@ -57,8 +57,8 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
 
   ngOnDestroy() {
     this._sidebars.forEach((sidebar: Sidebar) => {
-      sidebar.onOpen.unsubscribe();
-      sidebar.onClose.unsubscribe();
+      sidebar.onOpened.unsubscribe();
+      sidebar.onClosed.unsubscribe();
       sidebar.onPositionChange.unsubscribe();
       sidebar.onModeChange.unsubscribe();
     });

@@ -145,8 +145,10 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Input() keyClose: boolean = false;
   @Input() keyCode: number = 27;  // Default to ESCAPE key
 
-  @Output() onOpen: EventEmitter<null> = new EventEmitter<null>();
-  @Output() onClose: EventEmitter<null> = new EventEmitter<null>();
+  @Output() onOpenStart: EventEmitter<null> = new EventEmitter<null>();
+  @Output() onOpened: EventEmitter<null> = new EventEmitter<null>();
+  @Output() onCloseStart: EventEmitter<null> = new EventEmitter<null>();
+  @Output() onClosed: EventEmitter<null> = new EventEmitter<null>();
   @Output() onModeChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() onPositionChange: EventEmitter<string> = new EventEmitter<string>();
 
@@ -260,11 +262,25 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   /** @internal */
   _animationStarted(e: AnimationTransitionEvent): void {
     this.onAnimationStarted.emit(e);
+
+    if (this.open) {
+      this.onOpenStart.emit(null);
+    } else {
+      this.onCloseStart.emit(null);
+    }
   }
 
   /** @internal */
   _animationDone(e: AnimationTransitionEvent): void {
     this.onAnimationDone.emit(e);
+
+    if (this.open) {
+      this.onOpened.emit(null);
+    } else {
+      this.onClosed.emit(null);
+    }
+
+    this._opened = this.open;
   }
 
 
@@ -283,20 +299,12 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     this._setFocused(true);
 
     this._initCloseListeners();
-
-    this.onOpen.emit(null);
-
-    this._opened = true;
   }
 
   private _close(): void {
     this._setFocused(false);
 
     this._destroyCloseListeners();
-
-    this.onClose.emit(null);
-
-    this._opened = false;
   }
 
   private _manualClose(): void {
