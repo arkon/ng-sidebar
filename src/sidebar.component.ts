@@ -258,7 +258,6 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     return 0;
   }
 
-
   private get _isLTR(): boolean {
     let dir: string = 'ltr';
 
@@ -345,14 +344,18 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // Focus on open/close
   // ==============================================================================================
 
+  private get _shouldTrapFocus(): boolean {
+    return this._opened && this.trapFocus && this.mode === 'over';
+  }
+
   private _setFocusToFirstItem(): void {
-    if (this.autoFocus && this._focusableElements && this._focusableElements.length) {
+    if (this._focusableElements && this._focusableElements.length) {
       this._focusableElements[0].focus();
     }
   }
 
   private _trapFocus(e: FocusEvent): void {
-    if (this._opened && this.trapFocus && this.mode === 'over' && !this._elSidebar.nativeElement.contains(e.target)) {
+    if (this._shouldTrapFocus && !this._elSidebar.nativeElement.contains(e.target)) {
       this._setFocusToFirstItem();
     }
   }
@@ -376,7 +379,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
         }
       }
 
-      this._setFocusToFirstItem();
+      if (this.autoFocus) {
+        this._setFocusToFirstItem();
+      }
 
       this._document.body.addEventListener('focus', this._trapFocus, true);
     } else {
@@ -390,12 +395,12 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
         el.setAttribute('tabindex', '-1');
       }
 
+      this._document.body.removeEventListener('focus', this._trapFocus, true);
+
       // Set focus back to element before the sidebar was opened
-      if (this.autoFocus && this._focusedBeforeOpen) {
+      if (this.autoFocus && this.mode === 'over' && this._focusedBeforeOpen) {
         this._focusedBeforeOpen.focus();
       }
-
-      this._document.body.removeEventListener('focus', this._trapFocus, true);
     }
   }
 
