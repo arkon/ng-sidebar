@@ -127,7 +127,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Input() mode: 'over' | 'push' = 'over';
-  @Input() position: 'left' | 'right' | 'top' | 'bottom' = 'left';
+  @Input() position: 'left' | 'right' | 'top' | 'bottom' | 'start' | 'end' = 'start';
   @Input() closeOnClickOutside: boolean = false;
   @Input() showBackdrop: boolean = false;
   @Input() animate: boolean = true;
@@ -209,15 +209,23 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     }
 
     if (changes['position']) {
+      // Handle 'start' and 'end' aliases
+      if (this.position === 'start') {
+        this.position = this._isLTR ? 'left' : 'right';
+      } else if (this.position === 'end') {
+        this.position = this._isLTR ? 'right' : 'left';
+      }
+
       this._setVisibleSidebarState();
 
+      // Emit change in timeout to allow for position change to be rendered first
       setTimeout(() => {
-        this.onPositionChange.emit(this.position);
+        this.onPositionChange.emit(changes['position'].currentValue);
       });
     }
 
     if (changes['mode']) {
-      this.onModeChange.emit(this.mode);
+      this.onModeChange.emit(changes['mode'].currentValue);
     }
   }
 
@@ -248,6 +256,19 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     }
 
     return 0;
+  }
+
+
+  private get _isLTR(): boolean {
+    let dir: string = 'ltr';
+
+    if (window.getComputedStyle) {
+      dir = window.getComputedStyle(this._document.body, null).getPropertyValue('direction');
+    } else {
+      dir = this._document.body.currentStyle.direction;
+    }
+
+    return dir === 'ltr';
   }
 
 
