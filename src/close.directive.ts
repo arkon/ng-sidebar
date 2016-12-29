@@ -1,13 +1,17 @@
-import { Directive, HostListener } from '@angular/core';
+import { Directive } from '@angular/core';
 
 import { SidebarService } from './sidebar.service';
 
-@Directive({ selector: '[closeSidebar]' })
+@Directive({
+  selector: '[closeSidebar]',
+  host: {
+    '(click)': '_onClick()'
+  }
+})
 export class CloseSidebar {
   constructor(private _sidebarService: SidebarService) {}
 
   /** @internal */
-  @HostListener('click')
   _onClick(): void {
     this._sidebarService.close();
   }
