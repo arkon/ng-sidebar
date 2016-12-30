@@ -274,23 +274,19 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // ==============================================================================================
 
   open(): void {
-    if (!this.opened) {
-      this.opened = true;
-      this.openedChange.emit(true);
+    this.opened = true;
+    this.openedChange.emit(true);
 
-      this._setFocused(true);
-      this._initCloseListeners();
-    }
+    this._setFocused();
+    this._initCloseListeners();
   }
 
   close(): void {
-    if (this.opened) {
-      this.opened = false;
-      this.openedChange.emit(false);
+    this.opened = false;
+    this.openedChange.emit(false);
 
-      this._setFocused(false);
-      this._destroyCloseListeners();
-    }
+    this._setFocused();
+    this._destroyCloseListeners();
   }
 
   private _toggleVisibleSidebarState(): void {
@@ -320,11 +316,11 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   // Handles the ability to focus sidebar elements when it's open/closed
-  private _setFocused(open: boolean): void {
+  private _setFocused(): void {
     this._focusableElements = Array.from(
       this._elSidebar.nativeElement.querySelectorAll(this._focusableElementsString)) as Array<HTMLElement>;
 
-    if (open) {
+    if (this.opened) {
       this._focusedBeforeOpen = this._document.activeElement as HTMLElement;
 
       // Restore focusability, with previous tabindex attributes

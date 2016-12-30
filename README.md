@@ -95,7 +95,16 @@ A directive is also provided to easily close the sidebar by clicking something i
 Note that this component uses Angular's [animation system](https://angular.io/docs/ts/latest/guide/animations.html), which relies on the Web Animations API. Unforunately, there is only [partial support](http://caniuse.com/#feat=web-animation) for this API in Firefox, Chrome, and Opera, so it's recommended to use [the web-animations.js polyfill](https://github.com/web-animations/web-animations-js) for support in other browsers.
 
 
-### Options
+### `<ng-sidebar-container>` options
+
+### Inputs
+
+| Property name | Type | Default | Description |
+| ------------- | ---- | ------- | ----------- |
+| backdropClass | string | | Additional class name on the overlay element. |
+
+
+### `<ng-sidebar>` options
 
 #### Inputs
 
@@ -107,11 +116,10 @@ Note that this component uses Angular's [animation system](https://angular.io/do
 | closeOnClickOutside | boolean | `false` | Whether clicking outside of the open sidebar will close it. |
 | showBackdrop | boolean | `false` | If a translucent black backdrop overlay should appear over the page contents when the sidebar is open. |
 | animate | boolean | `true` | Whether the sidebar should animate when opening/closing. |
-| defaultStyles | boolean | `false` | Applies some basic default styles to the sidebar. |
 | trapFocus | boolean | `true` | Keeps focus within the sidebar if it's open. |
 | autoFocus | boolean | `true` | Automatically focuses the first focusable element in the sidebar when opened. |
 | sidebarClass | string | | Additional class name on the sidebar element. |
-| backdropClass | string | | Additional class name on the overlay element. |
+| defaultStyles | boolean | `false` | Applies some basic default styles to the sidebar. |
 | ariaLabel | string | | String used for the sidebar's `aria-label` attribute. |
 | keyClose | boolean | `false` | Close the sidebar when a keyboard button is pressed. |
 | keyCode | number | `27` | The [KeyCode](http://keycode.info/) for `keyClose`. |

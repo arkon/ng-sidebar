@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  Input,
   OnDestroy,
   QueryList,
   ViewEncapsulation
@@ -17,6 +18,11 @@ import { Sidebar } from './sidebar.component';
   template: `
     <ng-content select="ng-sidebar"></ng-content>
 
+    <div *ngIf="_showBackdrop"
+      aria-hidden="true"
+      class="ng-sidebar__backdrop"
+      [ngClass]="backdropClass"></div>
+
     <div class="ng-sidebar__content" [ngStyle]="_getStyles()">
       <ng-content></ng-content>
     </div>
@@ -25,6 +31,18 @@ import { Sidebar } from './sidebar.component';
     ng-sidebar-container {
       box-sizing: border-box;
       display: block;
+    }
+
+    .ng-sidebar__backdrop {
+      background: #000;
+      height: 100%;
+      left: 0;
+      opacity: 0.75;
+      pointer-events: auto;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 99999998;
     }
 
     .ng-sidebar__content {
@@ -37,31 +55,26 @@ import { Sidebar } from './sidebar.component';
   encapsulation: ViewEncapsulation.None
 })
 export class SidebarContainer implements AfterContentInit, OnDestroy {
+  @Input() backdropClass: string;
+
   @ContentChildren(Sidebar)
   private _sidebars: QueryList<Sidebar>;
+
+  private _showBackdrop: boolean = false;
 
   constructor(private _ref: ChangeDetectorRef) {}
 
   ngAfterContentInit() {
-    if (this._sidebars) {
-      this._sidebars.changes.subscribe(() => this._markForCheck());
+    this._subscribe();
 
-      this._sidebars.forEach((sidebar: Sidebar) => {
-        sidebar.onOpened.subscribe(() => this._markForCheck());
-        sidebar.onClosed.subscribe(() => this._markForCheck());
-        sidebar.onPositionChange.subscribe(() => this._markForCheck());
-        sidebar.onModeChange.subscribe(() => this._markForCheck());
-      });
-    }
+    this._sidebars.changes.subscribe(() => {
+      this._unsubscribe();
+      this._subscribe();
+    });
   }
 
   ngOnDestroy() {
-    this._sidebars.forEach((sidebar: Sidebar) => {
-      sidebar.onOpened.unsubscribe();
-      sidebar.onClosed.unsubscribe();
-      sidebar.onPositionChange.unsubscribe();
-      sidebar.onModeChange.unsubscribe();
-    });
+    this._unsubscribe();
   }
 
   /** @internal */
@@ -100,8 +113,56 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
     };
   }
 
+  private _subscribe() {
+    if (this._sidebars) {
+      this._sidebars.forEach((sidebar: Sidebar) => {
+        sidebar.onOpenStart.subscribe(() => this._onToggle());
+        sidebar.onOpened.subscribe(() => this._markForCheck());
+        sidebar.onCloseStart.subscribe(() => this._onToggle());
+        sidebar.onClosed.subscribe(() => this._markForCheck());
+        sidebar.onPositionChange.subscribe(() => this._markForCheck());
+        sidebar.onModeChange.subscribe(() => this._markForCheck());
+      });
+    }
+  }
+
+  private _unsubscribe() {
+    if (this._sidebars) {
+      this._sidebars.forEach((sidebar: Sidebar) => {
+        sidebar.onOpenStart.unsubscribe();
+        sidebar.onOpened.unsubscribe();
+        sidebar.onCloseStart.unsubscribe();
+        sidebar.onClosed.unsubscribe();
+        sidebar.onPositionChange.unsubscribe();
+        sidebar.onModeChange.unsubscribe();
+      });
+    }
+  }
+
   // Triggers change detection to recompute styles
   private _markForCheck() {
     this._ref.markForCheck();
+  }
+
+  private _onToggle() {
+    // Check if we should show the backdrop
+    if (this._sidebars) {
+      let hasOpen = false;
+
+      const _sidebars = this._sidebars.toArray();
+      for (let i = 0; i < _sidebars.length; i++) {
+        const sidebar: Sidebar = _sidebars[i];
+
+        // Show backdrop if a single open sidebar has it set
+        if (sidebar.opened && sidebar.showBackdrop) {
+          hasOpen = true;
+          break;
+        }
+      }
+
+      this._showBackdrop = hasOpen;
+    }
+
+    this._markForCheck();
   }
 }
