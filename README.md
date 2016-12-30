@@ -53,7 +53,7 @@ class AppModule {}
 
 If you're using it in a feature module, you may need to add it as an import in that module as well.
 
-In your component, simply use the directive in your template:
+In your app component, simply use add a `<ng-sidebar-container>` wrapper, then place your `<ng-sidebar>`(s) and content within it:
 
 ```typescript
 @Component({
@@ -62,8 +62,8 @@ In your component, simply use the directive in your template:
     <!-- Container for sidebar(s) + page content -->
     <ng-sidebar-container>
 
-      <!-- The sidebar -->
-      <ng-sidebar [(open)]="_open">
+      <!-- A sidebar -->
+      <ng-sidebar [(opened)]="_opened">
         <p>Sidebar contents</p>
       </ng-sidebar>
 
@@ -74,10 +74,10 @@ In your component, simply use the directive in your template:
   `
 })
 export class AppComponent {
-  private _open: boolean = false;
+  private _opened: boolean = false;
 
   private _toggleSidebar() {
-    this._open = !this._open;
+    this._opened = !this._opened;
   }
 }
 ```
@@ -85,7 +85,7 @@ export class AppComponent {
 A directive is also provided to easily close the sidebar by clicking something inside it:
 
 ```html
-<ng-sidebar [(open)]="_open">
+<ng-sidebar [(opened)]="_opened">
   <a closeSidebar>Closes the sidebar</a>
 </ng-sidebar>
 ```
@@ -101,7 +101,7 @@ Note that this component uses Angular's [animation system](https://angular.io/do
 
 | Property name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
-| open | boolean | `false` | If the sidebar should be open. This should be two-way bound. |
+| opened | boolean | `false` | If the sidebar should be open. This should be two-way bound. |
 | mode | `'over' | 'push'` | `'over'` | Whether to display the sidebar over the content or beside it. |
 | position | `'left' | 'right' | 'top' | 'bottom' | 'start' | 'end'` | `'start'` | What side the sidebar should be docked to. `'start'` and `'end'` are aliases that respect the page's language (e.g. `start` is the same as `left` for English, but would be `right` for Hebrew. |
 | closeOnClickOutside | boolean | `false` | Whether clicking outside of the open sidebar will close it. |

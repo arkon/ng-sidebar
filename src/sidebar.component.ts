@@ -13,11 +13,11 @@ import {
   SimpleChanges,
   ViewChild,
   ViewEncapsulation,
-  trigger,
+  animate,
   state,
   style,
   transition,
-  animate
+  trigger
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
@@ -40,13 +40,6 @@ import { SidebarService } from './sidebar.service';
       [ngClass]="sidebarClass">
       <ng-content></ng-content>
     </aside>
-
-    <div *ngIf="showBackdrop"
-      [@visibleBackdropState]="_visibleBackdropState"
-      aria-hidden="true"
-      class="ng-sidebar__backdrop"
-      [class.ng-sidebar__backdrop--style]="open && defaultStyles"
-      [ngClass]="backdropClass"></div>
   `,
   styles: [`
     .ng-sidebar {
@@ -88,21 +81,6 @@ import { SidebarService } from './sidebar.service';
         .ng-sidebar--push.ng-sidebar--style {
           box-shadow: none;
         }
-
-    .ng-sidebar__backdrop {
-      height: 100%;
-      left: 0;
-      pointer-events: none;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 99999998;
-    }
-
-      .ng-sidebar__backdrop--style {
-        background: #000;
-        opacity: 0.75;
-      }
   `],
   animations: [
     trigger('visibleSidebarState', [
@@ -113,18 +91,15 @@ import { SidebarService } from './sidebar.service';
       state('collapsed--top', style({ transform: 'translateY(-110%)' })),
       state('collapsed--bottom', style({ transform: 'translateY(110%)' })),
       transition('expanded--animate <=> *', animate('0.3s cubic-bezier(0, 0, 0.3, 1)'))
-    ]),
-    trigger('visibleBackdropState', [
-      state('visible', style({ pointerEvents: 'auto' }))
     ])
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
-  // `openChange` allows for 2-way data binding
-  @Input() open: boolean = false;
-  @Output() openChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+  // `openedChange` allows for 2-way data binding
+  @Input() opened: boolean = false;
+  @Output() openedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Input() mode: 'over' | 'push' = 'over';
   @Input() position: 'left' | 'right' | 'top' | 'bottom' | 'start' | 'end' = 'start';
@@ -132,10 +107,8 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Input() showBackdrop: boolean = false;
   @Input() animate: boolean = true;
 
-  @Input() defaultStyles: boolean = false;
-
   @Input() sidebarClass: string;
-  @Input() backdropClass: string;
+  @Input() defaultStyles: boolean = false;
 
   @Input() ariaLabel: string;
   @Input() trapFocus: boolean = true;
@@ -162,9 +135,6 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   /** @internal */
   _visibleSidebarState: string;
 
-  /** @internal */
-  _visibleBackdropState: string;
-
   @ViewChild('sidebar')
   private _elSidebar: ElementRef;
 
@@ -182,26 +152,27 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   constructor(
     @Inject(DOCUMENT) private _document /*: HTMLDocument */,
     private _sidebarService: SidebarService) {
-    this._manualClose = this._manualClose.bind(this);
+    this.open = this.open.bind(this);
+    this.close = this.close.bind(this);
     this._trapFocus = this._trapFocus.bind(this);
     this._onClickOutside = this._onClickOutside.bind(this);
     this._onKeyDown = this._onKeyDown.bind(this);
   }
 
   ngAfterContentInit() {
-    this._openSub = this._sidebarService.onOpen(this._manualOpen);
-    this._closeSub = this._sidebarService.onClose(this._manualClose);
+    this._openSub = this._sidebarService.onOpen(this.open);
+    this._closeSub = this._sidebarService.onClose(this.close);
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['open']) {
-      if (this.open) {
-        this._open();
+    if (changes['opened']) {
+      if (this.opened) {
+        this.open();
       } else {
-        this._close();
+        this.close();
       }
 
-      this._setVisibleSidebarState();
+      this._toggleVisibleSidebarState();
     }
 
     if (changes['closeOnClickOutside'] || changes['keyClose']) {
@@ -216,7 +187,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
         this.position = this._isLTR ? 'right' : 'left';
       }
 
-      this._setVisibleSidebarState();
+      this._toggleVisibleSidebarState();
 
       // Emit change in timeout to allow for position change to be rendered first
       setTimeout(() => {
@@ -278,7 +249,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   _animationStarted(e: AnimationTransitionEvent): void {
     this.onAnimationStarted.emit(e);
 
-    if (this.open) {
+    if (this.opened) {
       this.onOpenStart.emit(null);
     } else {
       this.onCloseStart.emit(null);
@@ -289,55 +260,43 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   _animationDone(e: AnimationTransitionEvent): void {
     this.onAnimationDone.emit(e);
 
-    if (this.open) {
+    if (this.opened) {
       this.onOpened.emit(null);
     } else {
       this.onClosed.emit(null);
     }
 
-    this._opened = this.open;
+    this._opened = this.opened;
   }
 
 
   // Sidebar toggling
   // ==============================================================================================
 
-  private _setVisibleSidebarState(): void {
-    this._visibleSidebarState = this.open ?
+  open(): void {
+    if (!this.opened) {
+      this.opened = true;
+      this.openedChange.emit(true);
+
+      this._setFocused(true);
+      this._initCloseListeners();
+    }
+  }
+
+  close(): void {
+    if (this.opened) {
+      this.opened = false;
+      this.openedChange.emit(false);
+
+      this._setFocused(false);
+      this._destroyCloseListeners();
+    }
+  }
+
+  private _toggleVisibleSidebarState(): void {
+    this._visibleSidebarState = this.opened ?
       (this.animate ? 'expanded--animate' : 'expanded') :
       `collapsed--${this.position}`;
-
-    this._visibleBackdropState = this.open ? 'visible' : null;
-  }
-
-  private _open(): void {
-    this._setFocused(true);
-
-    this._initCloseListeners();
-  }
-
-  private _manualOpen(): void {
-    if (!this.open) {
-      this.open = true;
-      this.openChange.emit(true);
-
-      this._open();
-    }
-  }
-
-  private _close(): void {
-    this._setFocused(false);
-
-    this._destroyCloseListeners();
-  }
-
-  private _manualClose(): void {
-    if (this.open) {
-      this.open = false;
-      this.openChange.emit(false);
-
-      this._close();
-    }
   }
 
 
@@ -409,7 +368,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // ==============================================================================================
 
   private _initCloseListeners(): void {
-    if (this.open && (this.closeOnClickOutside || this.keyClose)) {
+    if (this.opened && (this.closeOnClickOutside || this.keyClose)) {
       // In a timeout so that things render first
       setTimeout(() => {
         if (this.closeOnClickOutside && !this._onClickOutsideAttached) {
@@ -439,7 +398,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
 
   private _onClickOutside(e: MouseEvent): void {
     if (this._onClickOutsideAttached && this._elSidebar && !this._elSidebar.nativeElement.contains(e.target)) {
-      this._manualClose();
+      this.close();
     }
   }
 
@@ -447,7 +406,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     e = e || window.event;
 
     if ((e as KeyboardEvent).keyCode === this.keyCode) {
-      this._manualClose();
+      this.close();
     }
   }
 }

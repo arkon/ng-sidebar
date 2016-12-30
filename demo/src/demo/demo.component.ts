@@ -5,7 +5,7 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
   template: `
     <ng-sidebar-container>
       <ng-sidebar
-        [(open)]="_open"
+        [(opened)]="_opened"
         [mode]="_mode"
         [keyClose]="_keyClose"
         [defaultStyles]="true"
@@ -25,19 +25,19 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
         (onAnimationDone)="_onAnimationDone($event)">
         <p>Sidebar contents</p>
 
-        <button class="demo-control" (click)="_toggleSidebar()">Close sidebar</button>
+        <button class="demo-control" (click)="_toggleOpened()">Close sidebar</button>
         <p><a closeSidebar>This will close the sidebar too</a></p>
       </ng-sidebar>
 
       <header class="demo-header">
-        <button (click)="_toggleSidebar()" class="demo-header__toggle">Toggle sidebar</button>
+        <button (click)="_toggleOpened()" class="demo-header__toggle">Toggle sidebar</button>
         <span>ng-sidebar</span>
       </header>
 
       <section class="demo-contents">
         <h1>Controls</h1>
 
-        <button class="demo-control" (click)="_toggleSidebar()">Toggle open ({{_open}})</button>
+        <button class="demo-control" (click)="_toggleOpened()">Toggle opened ({{_opened}})</button>
         <button class="demo-control" (click)="_toggleMode()">Toggle mode ({{_mode}})</button>
         <button class="demo-control" (click)="_togglePosition()">Toggle position ({{_POSITIONS[_positionNum]}})</button>
         <button class="demo-control" (click)="_toggleCloseOnClickOutside()">Toggle closeOnClickOutside ({{_closeOnClickOutside}})</button>
@@ -68,7 +68,7 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
   `
 })
 export class DemoComponent {
-  private _open: boolean = false;
+  private _opened: boolean = false;
   private _mode: string = 'over';
   private _positionNum: number = 0;
   private _closeOnClickOutside: boolean = false;
@@ -80,8 +80,8 @@ export class DemoComponent {
 
   private _POSITIONS: Array<string> = ['left', 'right', 'top', 'bottom'];
 
-  private _toggleSidebar(): void {
-    this._open = !this._open;
+  private _toggleOpened(): void {
+    this._opened = !this._opened;
   }
 
   private _toggleMode(): void {
