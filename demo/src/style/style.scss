@@ -3,6 +3,10 @@
 @import 'utils/variables';
 @import 'utils/core';
 
+.loading {
+  padding: 1em;
+}
+
 .demo-header {
   align-items: center;
   background: $brand;
@@ -23,6 +27,7 @@
     border: 0.15rem solid $white;
     border-left: 0;
     border-right: 0;
+    cursor: pointer;
     font-size: 0;
     height: 1.5rem;
     margin-right: 1rem;
