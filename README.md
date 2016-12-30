@@ -132,7 +132,7 @@ Note that this component uses Angular's [animation system](https://angular.io/do
 | onOpened | | Emitted when the sidebar is opened. |
 | onCloseStart | | Emitted when the sidebar is closing. |
 | onClosed | | Emitted when the sidebar is closed. |
-| onPositionChange | `e: string` | Emitted when `position` is changed. |
-| onModeChange | `e: string` | Emitted when `mode` is changed. |
-| onAnimationStarted | `e: AnimationTransitionEvent` | Emitted when the animation is started. |
+| onPositionChange | `position: string` | Emitted when `position` is changed. |
+| onModeChange | `mode: string` | Emitted when `mode` is changed. |
+| onAnimationStart | `e: AnimationTransitionEvent` | Emitted when the animation is started. |
 | onAnimationDone | `e: AnimationTransitionEvent` | Emitted when the animation is done. |

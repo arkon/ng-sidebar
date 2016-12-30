@@ -124,7 +124,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Output() onModeChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() onPositionChange: EventEmitter<string> = new EventEmitter<string>();
 
-  @Output() onAnimationStarted: EventEmitter<AnimationTransitionEvent> =
+  @Output() onAnimationStart: EventEmitter<AnimationTransitionEvent> =
     new EventEmitter<AnimationTransitionEvent>();
   @Output() onAnimationDone: EventEmitter<AnimationTransitionEvent> =
     new EventEmitter<AnimationTransitionEvent>();
@@ -247,7 +247,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
 
   /** @internal */
   _animationStarted(e: AnimationTransitionEvent): void {
-    this.onAnimationStarted.emit(e);
+    this.onAnimationStart.emit(e);
 
     if (this.opened) {
       this.onOpenStart.emit(null);
