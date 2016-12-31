@@ -8,7 +8,6 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
         [(opened)]="_opened"
         [mode]="_mode"
         [keyClose]="_keyClose"
-        [defaultStyles]="true"
         [position]="_POSITIONS[_positionNum]"
         [closeOnClickOutside]="_closeOnClickOutside"
         [showBackdrop]="_showBackdrop"

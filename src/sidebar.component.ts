@@ -29,7 +29,6 @@ import { SidebarService } from './sidebar.service';
       [class.ng-sidebar--opened]="opened"
       [class.ng-sidebar--animate]="animate"
       [class.ng-sidebar--push]="mode === 'push'"
-      [class.ng-sidebar--style]="defaultStyles"
       [ngClass]="sidebarClass"
       (transitionend)="_onTransitionEnd($event)">
       <ng-content></ng-content>
@@ -104,15 +103,6 @@ import { SidebarService } from './sidebar.service';
       transform: none;
       will-change: initial;
     }
-
-    .ng-sidebar--style {
-      background: #fff;
-      box-shadow: 0 0 2.5em rgba(85, 85, 85, 0.5);
-    }
-
-      .ng-sidebar--push.ng-sidebar--style {
-        box-shadow: none;
-      }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
@@ -127,7 +117,6 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Input() animate: boolean = true;
 
   @Input() sidebarClass: string;
-  @Input() defaultStyles: boolean = false;
 
   @Input() ariaLabel: string;
   @Input() trapFocus: boolean = true;

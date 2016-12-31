@@ -115,7 +115,6 @@ A directive is also provided to easily close the sidebar by clicking something i
 | trapFocus | boolean | `true` | Keeps focus within the sidebar if it's open. |
 | autoFocus | boolean | `true` | Automatically focuses the first focusable element in the sidebar when opened. |
 | sidebarClass | string | | Additional class name on the sidebar element. |
-| defaultStyles | boolean | `false` | Applies some basic default styles to the sidebar. |
 | ariaLabel | string | | String used for the sidebar's `aria-label` attribute. |
 | keyClose | boolean | `false` | Close the sidebar when a keyboard button is pressed. |
 | keyCode | number | `27` | The [KeyCode](http://keycode.info/) for `keyClose`. |

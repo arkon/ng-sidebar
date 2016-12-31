@@ -47,7 +47,13 @@
   }
 
 .demo-sidebar {
+  background: #fff;
+  box-shadow: 0 0 2.5em rgba(85, 85, 85, 0.5);
   padding: 2em 1em;
+
+  &.ng-sidebar--push {
+    box-shadow: none;
+  }
 }
 
 .demo-contents {
@@ -59,6 +65,7 @@
   background-color: $light-grey;
   border: 1px solid $dark-grey;
   cursor: pointer;
+  margin-bottom: 0.5em;
   padding: 0.5em 2em;
   transition: background-color 0.15s;
 
