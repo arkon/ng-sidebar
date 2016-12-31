@@ -86,7 +86,7 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
 
     if (this._sidebars) {
       this._sidebars.forEach((sidebar: Sidebar) => {
-        if (sidebar && sidebar._opened && sidebar.mode === 'push') {
+        if (sidebar && sidebar.opened && sidebar.mode === 'push') {
           switch (sidebar.position) {
             case 'left':
               left = Math.max(left, sidebar._width);

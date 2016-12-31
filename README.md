@@ -90,10 +90,6 @@ A directive is also provided to easily close the sidebar by clicking something i
 </ng-sidebar>
 ```
 
-### Browser support
-
-Note that this component uses Angular's [animation system](https://angular.io/docs/ts/latest/guide/animations.html), which relies on the Web Animations API. Unforunately, there is only [partial support](http://caniuse.com/#feat=web-animation) for this API in Firefox, Chrome, and Opera, so it's recommended to use [the web-animations.js polyfill](https://github.com/web-animations/web-animations-js) for support in other browsers.
-
 
 ### `<ng-sidebar-container>` options
 
@@ -134,5 +130,3 @@ Note that this component uses Angular's [animation system](https://angular.io/do
 | onClosed | | Emitted when the sidebar is closed. |
 | onPositionChange | `position: string` | Emitted when `position` is changed. |
 | onModeChange | `mode: string` | Emitted when `mode` is changed. |
-| onAnimationStart | `e: AnimationTransitionEvent` | Emitted when the animation is started. |
-| onAnimationDone | `e: AnimationTransitionEvent` | Emitted when the animation is done. |

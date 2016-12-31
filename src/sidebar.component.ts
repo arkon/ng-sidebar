@@ -1,6 +1,5 @@
 import {
   AfterContentInit,
-  AnimationTransitionEvent,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -12,12 +11,7 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
-  ViewEncapsulation,
-  animate,
-  state,
-  style,
-  transition,
-  trigger
+  ViewEncapsulation
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
@@ -28,16 +22,16 @@ import { SidebarService } from './sidebar.service';
   selector: 'ng-sidebar',
   template: `
     <aside #sidebar
-      [@visibleSidebarState]="_visibleSidebarState"
-      (@visibleSidebarState.start)="_animationStarted($event)"
-      (@visibleSidebarState.done)="_animationDone($event)"
       role="complementary"
       [attr.aria-hidden]="!open"
       [attr.aria-label]="ariaLabel"
       class="ng-sidebar ng-sidebar--{{position}}"
+      [class.ng-sidebar--opened]="opened"
+      [class.ng-sidebar--animate]="animate"
       [class.ng-sidebar--push]="mode === 'push'"
       [class.ng-sidebar--style]="defaultStyles"
-      [ngClass]="sidebarClass">
+      [ngClass]="sidebarClass"
+      (transitionend)="_onTransitionEnd($event)">
       <ng-content></ng-content>
     </aside>
   `,
@@ -46,6 +40,7 @@ import { SidebarService } from './sidebar.service';
       overflow: auto;
       pointer-events: none;
       position: fixed;
+      will-change: transform;
       z-index: 99999999;
     }
 
@@ -53,46 +48,72 @@ import { SidebarService } from './sidebar.service';
         bottom: 0;
         left: 0;
         top: 0;
+        -webkit-transform: translateX(-110%);
+        -moz-transform: translateX(-110%);
+        -ms-transform: translateX(-110%);
+        -o-transform: translateX(-110%);
+        transform: translateX(-110%);
       }
 
       .ng-sidebar--right {
         bottom: 0;
         right: 0;
         top: 0;
+        -webkit-transform: translateX(110%);
+        -moz-transform: translateX(110%);
+        -ms-transform: translateX(110%);
+        -o-transform: translateX(110%);
+        transform: translateX(110%);
       }
 
       .ng-sidebar--top {
         left: 0;
         right: 0;
         top: 0;
+        -webkit-transform: translateY(-110%);
+        -moz-transform: translateY(-110%);
+        -ms-transform: translateY(-110%);
+        -o-transform: translateY(-110%);
+        transform: translateY(-110%);
       }
 
       .ng-sidebar--bottom {
         bottom: 0;
         left: 0;
         right: 0;
+        -webkit-transform: translateY(110%);
+        -moz-transform: translateY(110%);
+        -ms-transform: translateY(110%);
+        -o-transform: translateY(110%);
+        transform: translateY(110%);
       }
 
-      .ng-sidebar--style {
-        background: #fff;
-        box-shadow: 0 0 2.5em rgba(85, 85, 85, 0.5);
-      }
+    .ng-sidebar--animate.ng-sidebar {
+      -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
+      -moz-transition: -moz-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
+      -o-transition: -o-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
+      transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
+    }
 
-        .ng-sidebar--push.ng-sidebar--style {
-          box-shadow: none;
-        }
+    .ng-sidebar--opened.ng-sidebar {
+      pointer-events: auto;
+      -webkit-transform: none;
+      -moz-transform: none;
+      -ms-transform: none;
+      -o-transform: none;
+      transform: none;
+      will-change: initial;
+    }
+
+    .ng-sidebar--style {
+      background: #fff;
+      box-shadow: 0 0 2.5em rgba(85, 85, 85, 0.5);
+    }
+
+      .ng-sidebar--push.ng-sidebar--style {
+        box-shadow: none;
+      }
   `],
-  animations: [
-    trigger('visibleSidebarState', [
-      state('expanded', style({ transform: 'none', pointerEvents: 'auto', willChange: 'initial' })),
-      state('expanded--animate', style({ transform: 'none', pointerEvents: 'auto', willChange: 'initial' })),
-      state('collapsed--left', style({ transform: 'translateX(-110%)' })),
-      state('collapsed--right', style({ transform: 'translateX(110%)' })),
-      state('collapsed--top', style({ transform: 'translateY(-110%)' })),
-      state('collapsed--bottom', style({ transform: 'translateY(110%)' })),
-      transition('expanded--animate <=> *', animate('0.3s cubic-bezier(0, 0, 0.3, 1)'))
-    ])
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
@@ -102,9 +123,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Output() openedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Input() mode: 'over' | 'push' = 'over';
-  @Input() position: 'left' | 'right' | 'top' | 'bottom' | 'start' | 'end' = 'start';
-  @Input() closeOnClickOutside: boolean = false;
-  @Input() showBackdrop: boolean = false;
+  @Input() position: 'start' | 'end' | 'left' | 'right' | 'top' | 'bottom' = 'start';
   @Input() animate: boolean = true;
 
   @Input() sidebarClass: string;
@@ -113,6 +132,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Input() ariaLabel: string;
   @Input() trapFocus: boolean = true;
   @Input() autoFocus: boolean = true;
+
+  @Input() showBackdrop: boolean = false;
+  @Input() closeOnClickOutside: boolean = false;
 
   @Input() keyClose: boolean = false;
   @Input() keyCode: number = 27;  // Default to ESCAPE key
@@ -124,30 +146,19 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Output() onModeChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() onPositionChange: EventEmitter<string> = new EventEmitter<string>();
 
-  @Output() onAnimationStart: EventEmitter<AnimationTransitionEvent> =
-    new EventEmitter<AnimationTransitionEvent>();
-  @Output() onAnimationDone: EventEmitter<AnimationTransitionEvent> =
-    new EventEmitter<AnimationTransitionEvent>();
-
-  /** @internal */
-  _opened: boolean;
-
-  /** @internal */
-  _visibleSidebarState: string;
-
   @ViewChild('sidebar')
   private _elSidebar: ElementRef;
 
-  private _onClickOutsideAttached: boolean = false;
-  private _onKeyDownAttached: boolean = false;
+  private _openSub: Subscription;
+  private _closeSub: Subscription;
 
   private _focusableElementsString: string = 'a[href], area[href], input:not([disabled]), select:not([disabled]),' +
     'textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]';
   private _focusableElements: Array<HTMLElement>;
   private _focusedBeforeOpen: HTMLElement;
 
-  private _openSub: Subscription;
-  private _closeSub: Subscription;
+  private _onClickOutsideAttached: boolean = false;
+  private _onKeyDownAttached: boolean = false;
 
   constructor(
     @Inject(DOCUMENT) private _document /*: HTMLDocument */,
@@ -171,8 +182,6 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
       } else {
         this.close();
       }
-
-      this._toggleVisibleSidebarState();
     }
 
     if (changes['closeOnClickOutside'] || changes['keyClose']) {
@@ -186,8 +195,6 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
       } else if (this.position === 'end') {
         this.position = this._isLTR ? 'right' : 'left';
       }
-
-      this._toggleVisibleSidebarState();
 
       // Emit change in timeout to allow for position change to be rendered first
       setTimeout(() => {
@@ -242,34 +249,6 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
 
-  // Animation callbacks
-  // ==============================================================================================
-
-  /** @internal */
-  _animationStarted(e: AnimationTransitionEvent): void {
-    this.onAnimationStart.emit(e);
-
-    if (this.opened) {
-      this.onOpenStart.emit(null);
-    } else {
-      this.onCloseStart.emit(null);
-    }
-  }
-
-  /** @internal */
-  _animationDone(e: AnimationTransitionEvent): void {
-    this.onAnimationDone.emit(e);
-
-    if (this.opened) {
-      this.onOpened.emit(null);
-    } else {
-      this.onClosed.emit(null);
-    }
-
-    this._opened = this.opened;
-  }
-
-
   // Sidebar toggling
   // ==============================================================================================
 
@@ -277,22 +256,47 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     this.opened = true;
     this.openedChange.emit(true);
 
+    this.onOpenStart.emit();
+
     this._setFocused();
     this._initCloseListeners();
+
+    if (!this.animate) {
+      setTimeout(() => {
+        if (this.opened) {
+          this.onOpened.emit();
+        }
+      });
+    }
   }
 
   close(): void {
     this.opened = false;
     this.openedChange.emit(false);
 
+    this.onCloseStart.emit();
+
     this._setFocused();
     this._destroyCloseListeners();
+
+    if (!this.animate) {
+      setTimeout(() => {
+        if (!this.opened) {
+          this.onClosed.emit();
+        }
+      });
+    }
   }
 
-  private _toggleVisibleSidebarState(): void {
-    this._visibleSidebarState = this.opened ?
-      (this.animate ? 'expanded--animate' : 'expanded') :
-      `collapsed--${this.position}`;
+  /** @internal */
+  _onTransitionEnd(e: TransitionEvent) {
+    if (e.target === this._elSidebar.nativeElement && e.propertyName.endsWith('transform')) {
+      if (this.opened) {
+        this.onOpened.emit();
+      } else {
+        this.onClosed.emit();
+      }
+    }
   }
 
 
@@ -300,7 +304,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // ==============================================================================================
 
   private get _shouldTrapFocus(): boolean {
-    return this._opened && this.trapFocus && this.mode === 'over';
+    return this.opened && this.trapFocus && this.mode === 'over';
   }
 
   private _setFocusToFirstItem(): void {
@@ -360,7 +364,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
 
-  // Event handlers
+  // Close event handlers
   // ==============================================================================================
 
   private _initCloseListeners(): void {
