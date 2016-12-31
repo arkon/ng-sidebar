@@ -228,10 +228,13 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   private get _isLTR(): boolean {
     let dir: string = 'ltr';
 
-    if (window.getComputedStyle) {
-      dir = window.getComputedStyle(this._document.body, null).getPropertyValue('direction');
-    } else {
-      dir = this._document.body.currentStyle.direction;
+    // If `window` doesn't exist, this isn't in the context of a browser...
+    if (window) {
+      if (window.getComputedStyle) {
+        dir = window.getComputedStyle(this._document.body, null).getPropertyValue('direction');
+      } else {
+        dir = this._document.body.currentStyle.direction;
+      }
     }
 
     return dir === 'ltr';
