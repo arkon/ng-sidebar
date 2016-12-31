@@ -23,12 +23,11 @@ import { SidebarService } from './sidebar.service';
   template: `
     <aside #sidebar
       role="complementary"
-      [attr.aria-hidden]="!open"
+      [attr.aria-hidden]="!opened"
       [attr.aria-label]="ariaLabel"
-      class="ng-sidebar ng-sidebar--{{position}}"
-      [class.ng-sidebar--opened]="opened"
+      class="ng-sidebar ng-sidebar--{{opened ? 'opened' : 'closed'}} ng-sidebar--{{position}} ng-sidebar--{{mode}}"
+      [class.ng-sidebar--inert]="!opened && mode !== 'dock'"
       [class.ng-sidebar--animate]="animate"
-      [class.ng-sidebar--push]="mode === 'push'"
       [ngClass]="sidebarClass"
       (transitionend)="_onTransitionEnd($event)">
       <ng-content></ng-content>
@@ -37,9 +36,7 @@ import { SidebarService } from './sidebar.service';
   styles: [`
     .ng-sidebar {
       overflow: auto;
-      pointer-events: none;
       position: fixed;
-      will-change: transform;
       z-index: 99999999;
     }
 
@@ -87,6 +84,11 @@ import { SidebarService } from './sidebar.service';
         transform: translateY(110%);
       }
 
+    .ng-sidebar--inert {
+      pointer-events: none;
+      will-change: transform;
+    }
+
     .ng-sidebar--animate.ng-sidebar {
       -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
       -moz-transition: -moz-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
@@ -112,8 +114,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Input() opened: boolean = false;
   @Output() openedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  @Input() mode: 'over' | 'push' = 'over';
+  @Input() mode: 'over' | 'dock' | 'push' = 'over';
   @Input() position: 'start' | 'end' | 'left' | 'right' | 'top' | 'bottom' = 'start';
+  @Input() dockedSize: string = '0px';
   @Input() animate: boolean = true;
 
   @Input() sidebarClass: string;
@@ -248,6 +251,8 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     this.opened = true;
     this.openedChange.emit(true);
 
+    this._elSidebar.nativeElement.style.transform = null;
+
     this.onOpenStart.emit();
 
     this._setFocused();
@@ -265,6 +270,10 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   close(): void {
     this.opened = false;
     this.openedChange.emit(false);
+
+    if (this.mode === 'dock' && parseFloat(this.dockedSize) > 0) {
+      this._elSidebar.nativeElement.style.transform = `translateX(calc(-100% + ${this.dockedSize}))`;
+    }
 
     this.onCloseStart.emit();
 

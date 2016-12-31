@@ -6,9 +6,10 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
     <ng-sidebar-container>
       <ng-sidebar
         [(opened)]="_opened"
-        [mode]="_mode"
+        [mode]="_MODES[_modeNum]"
         [keyClose]="_keyClose"
         [position]="_POSITIONS[_positionNum]"
+        [dockedSize]="'50px'"
         [closeOnClickOutside]="_closeOnClickOutside"
         [showBackdrop]="_showBackdrop"
         [animate]="_animate"
@@ -37,7 +38,7 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
         <h1>Controls</h1>
 
         <button class="demo-control" (click)="_toggleOpened()">Toggle opened ({{_opened}})</button>
-        <button class="demo-control" (click)="_toggleMode()">Toggle mode ({{_mode}})</button>
+        <button class="demo-control" (click)="_toggleMode()">Toggle mode ({{_MODES[_modeNum]}})</button>
         <button class="demo-control" (click)="_togglePosition()">Toggle position ({{_POSITIONS[_positionNum]}})</button>
         <button class="demo-control" (click)="_toggleCloseOnClickOutside()">Toggle closeOnClickOutside ({{_closeOnClickOutside}})</button>
         <button class="demo-control" (click)="_toggleShowBackdrop()">Toggle showBackdrop ({{_showBackdrop}})</button>
@@ -68,7 +69,7 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
 })
 export class DemoComponent {
   private _opened: boolean = false;
-  private _mode: string = 'over';
+  private _modeNum: number = 0;
   private _positionNum: number = 0;
   private _closeOnClickOutside: boolean = false;
   private _showBackdrop: boolean = false;
@@ -77,6 +78,7 @@ export class DemoComponent {
   private _autoFocus: boolean = true;
   private _keyClose: boolean = false;
 
+  private _MODES: Array<string> = ['over', 'dock', 'push'];
   private _POSITIONS: Array<string> = ['left', 'right', 'top', 'bottom'];
 
   private _toggleOpened(): void {
@@ -84,7 +86,11 @@ export class DemoComponent {
   }
 
   private _toggleMode(): void {
-    this._mode = this._mode === 'over' ? 'push' : 'over';
+    this._modeNum++;
+
+    if (this._modeNum === this._MODES.length) {
+      this._modeNum = 0;
+    }
   }
 
   private _togglePosition(): void {
