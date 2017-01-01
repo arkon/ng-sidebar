@@ -35,6 +35,7 @@ import { SidebarService } from './sidebar.service';
   `,
   styles: [`
     .ng-sidebar {
+      background-color: #fff;
       overflow: auto;
       position: fixed;
       z-index: 99999999;
