@@ -182,10 +182,20 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // Helpers
   // ==============================================================================================
 
+  private get _isDocked(): boolean {
+    return this.mode === 'dock' && this.dockedSize && !this.opened;
+  }
+
+  private get _isModeOver(): boolean {
+    return this.mode === 'over';
+  }
+
   /** @internal */
   get _height(): number {
     if (this._elSidebar.nativeElement) {
-      return this._elSidebar.nativeElement.offsetHeight;
+      return this._isDocked ?
+        parseFloat(this.dockedSize) :
+        this._elSidebar.nativeElement.offsetHeight;
     }
 
     return 0;
@@ -194,7 +204,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   /** @internal */
   get _width(): number {
     if (this._elSidebar.nativeElement) {
-      return this._elSidebar.nativeElement.offsetWidth;
+      return this._isDocked ?
+        parseFloat(this.dockedSize) :
+        this._elSidebar.nativeElement.offsetWidth;
     }
 
     return 0;
@@ -297,7 +309,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // ==============================================================================================
 
   private get _shouldTrapFocus(): boolean {
-    return this.opened && this.trapFocus && this.mode === 'over';
+    return this.opened && this.trapFocus && this._isModeOver;
   }
 
   private _setFocusToFirstItem(): void {
@@ -350,7 +362,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
       this._document.body.removeEventListener('focus', this._trapFocus, true);
 
       // Set focus back to element before the sidebar was opened
-      if (this.autoFocus && this.mode === 'over' && this._focusedBeforeOpen) {
+      if (this.autoFocus && this._isModeOver && this._focusedBeforeOpen) {
         this._focusedBeforeOpen.focus();
       }
     }

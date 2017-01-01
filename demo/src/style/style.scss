@@ -13,13 +13,7 @@
   box-shadow: 0 0.1em 1.5em rgba($dark-grey, 0.5);
   color: $white;
   display: flex;
-  margin-bottom: 2em;
   padding: 1em;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1;
 }
 
   .demo-header__toggle {
@@ -47,17 +41,15 @@
   }
 
 .demo-sidebar {
-  box-shadow: 0 0 2.5em rgba(85, 85, 85, 0.5);
   padding: 2em 1em;
 
-  &.ng-sidebar--push {
-    box-shadow: none;
+  &.ng-sidebar--over {
+    box-shadow: 0 0 2.5em rgba(85, 85, 85, 0.5);
   }
 }
 
 .demo-contents {
-  margin-top: 1em;
-  padding: 2em;
+  padding: 0 2em;
 }
 
 .demo-control {
