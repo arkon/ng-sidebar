@@ -63,7 +63,7 @@ In your app component, simply use add a `<ng-sidebar-container>` wrapper, then p
     <ng-sidebar-container>
 
       <!-- A sidebar -->
-      <ng-sidebar [(opened)]="_opened">
+      <ng-sidebar [(open)]="_opened">
         <p>Sidebar contents</p>
       </ng-sidebar>
 
@@ -85,7 +85,7 @@ export class AppComponent {
 A directive is also provided to easily close the sidebar by clicking something inside it:
 
 ```html
-<ng-sidebar [(opened)]="_opened">
+<ng-sidebar [(open)]="_opened">
   <a closeSidebar>Closes the sidebar</a>
 </ng-sidebar>
 ```
