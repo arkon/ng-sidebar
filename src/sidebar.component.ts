@@ -29,6 +29,7 @@ import { SidebarService } from './sidebar.service';
       [class.ng-sidebar--inert]="!opened && mode !== 'dock'"
       [class.ng-sidebar--animate]="animate"
       [ngClass]="sidebarClass"
+      [ngStyle]="_getStyles()"
       (transitionend)="_onTransitionEnd($event)">
       <ng-content></ng-content>
     </aside>
@@ -37,7 +38,9 @@ import { SidebarService } from './sidebar.service';
     .ng-sidebar {
       background-color: #fff;
       overflow: auto;
+      pointer-events: auto;
       position: fixed;
+      will-change: initial;
       z-index: 99999999;
     }
 
@@ -95,16 +98,6 @@ import { SidebarService } from './sidebar.service';
       -moz-transition: -moz-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
       -o-transition: -o-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
       transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
-    }
-
-    .ng-sidebar--opened.ng-sidebar {
-      pointer-events: auto;
-      -webkit-transform: none;
-      -moz-transform: none;
-      -ms-transform: none;
-      -o-transform: none;
-      transform: none;
-      will-change: initial;
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -252,8 +245,6 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     this.opened = true;
     this.openedChange.emit(true);
 
-    this._elSidebar.nativeElement.style.transform = null;
-
     this.onOpenStart.emit();
 
     this._setFocused();
@@ -272,10 +263,6 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     this.opened = false;
     this.openedChange.emit(false);
 
-    if (this.mode === 'dock' && parseFloat(this.dockedSize) > 0) {
-      this._elSidebar.nativeElement.style.transform = `translateX(calc(-100% + ${this.dockedSize}))`;
-    }
-
     this.onCloseStart.emit();
 
     this._setFocused();
@@ -291,7 +278,29 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   /** @internal */
-  _onTransitionEnd(e: TransitionEvent) {
+  _getStyles(): Object {
+    let transformStyle = null;
+
+    if (this.opened) {
+      transformStyle = 'none';
+      // -webkit-transform: none;
+      // -moz-transform: none;
+      // -ms-transform: none;
+      // -o-transform: none;
+      // transform: none;
+    }
+
+    if (!this.opened && this.mode === 'dock' && parseFloat(this.dockedSize) > 0) {
+      transformStyle = `translateX(calc(-100% + ${this.dockedSize}))`;
+    }
+
+    return {
+      transform: transformStyle
+    };
+  }
+
+  /** @internal */
+  _onTransitionEnd(e: TransitionEvent): void {
     if (e.target === this._elSidebar.nativeElement && e.propertyName.endsWith('transform')) {
       if (this.opened) {
         this.onOpened.emit();
