@@ -106,18 +106,19 @@ A directive is also provided to easily close the sidebar by clicking something i
 
 | Property name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
-| opened | boolean | `false` | If the sidebar should be open. This should be two-way bound. |
-| mode | `'over' | 'push'` | `'over'` | Whether to display the sidebar over the content or beside it. |
+| opened | boolean | `false` | Controls the opened state of the sidebar. This should be two-way bound. |
+| mode | `'over' | 'push' | 'dock'` | `'over'` | Display the sidebar over the content when open, beside it when open, or slightly open. |
+| dockedSize | string | `'0px'` | When `mode` is set to `'dock'`, this value indicates how much of the sidebar is still visible when "closed". |
 | position | `'left' | 'right' | 'top' | 'bottom' | 'start' | 'end'` | `'start'` | What side the sidebar should be docked to. `'start'` and `'end'` are aliases that respect the page's language (e.g. `start` is the same as `left` for English, but would be `right` for Hebrew. |
 | closeOnClickOutside | boolean | `false` | Whether clicking outside of the open sidebar will close it. |
 | showBackdrop | boolean | `false` | If a translucent black backdrop overlay should appear over the page contents when the sidebar is open. |
-| animate | boolean | `true` | Whether the sidebar should animate when opening/closing. |
-| trapFocus | boolean | `true` | Keeps focus within the sidebar if it's open. |
-| autoFocus | boolean | `true` | Automatically focuses the first focusable element in the sidebar when opened. |
+| animate | boolean | `true` | Animate the opening/closing of the sidebar. |
+| trapFocus | boolean | `true` | Keeps focus within the sidebar when open. |
+| autoFocus | boolean | `true` | Automatically focus the first focusable element in the sidebar when opened. |
 | sidebarClass | string | | Additional class name on the sidebar element. |
-| ariaLabel | string | | String used for the sidebar's `aria-label` attribute. |
+| ariaLabel | string | | Value for the sidebar's `aria-label` attribute. |
 | keyClose | boolean | `false` | Close the sidebar when a keyboard button is pressed. |
-| keyCode | number | `27` | The [KeyCode](http://keycode.info/) for `keyClose`. |
+| keyCode | number | `27` | The [key code](http://keycode.info/) for `keyClose`. |
 
 #### Outputs
 
