@@ -78,7 +78,7 @@ export class DemoComponent {
   private _autoFocus: boolean = true;
   private _keyClose: boolean = false;
 
-  private _MODES: Array<string> = ['over', 'dock', 'push'];
+  private _MODES: Array<string> = ['over', 'push', 'dock'];
   private _POSITIONS: Array<string> = ['left', 'right', 'top', 'bottom'];
 
   private _toggleOpened(): void {

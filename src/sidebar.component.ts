@@ -29,7 +29,7 @@ import { SidebarService } from './sidebar.service';
       [class.ng-sidebar--inert]="!opened && mode !== 'dock'"
       [class.ng-sidebar--animate]="animate"
       [ngClass]="sidebarClass"
-      [ngStyle]="_getStyles()"
+      [ngStyle]="_getTransformStyle()"
       (transitionend)="_onTransitionEnd($event)">
       <ng-content></ng-content>
     </aside>
@@ -75,8 +75,6 @@ import { SidebarService } from './sidebar.service';
 
     .ng-sidebar--animate.ng-sidebar {
       -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
-      -moz-transition: -moz-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
-      -o-transition: -o-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
       transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
     }
   `],
@@ -88,9 +86,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   @Input() opened: boolean = false;
   @Output() openedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  @Input() mode: 'over' | 'dock' | 'push' = 'over';
-  @Input() position: 'start' | 'end' | 'left' | 'right' | 'top' | 'bottom' = 'start';
+  @Input() mode: 'over' | 'push' | 'dock' = 'over';
   @Input() dockedSize: string = '0px';
+  @Input() position: 'start' | 'end' | 'left' | 'right' | 'top' | 'bottom' = 'start';
   @Input() animate: boolean = true;
 
   @Input() sidebarClass: string;
@@ -258,23 +256,19 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
   /** @internal */
-  _getStyles(): Object {
-    let transformStyle: string = null;
+  _getTransformStyle(): CSSStyleDeclaration {
+    let transformStyle: string = 'none';
 
-    if (this.opened) {
-      transformStyle = 'none';
-      // -webkit-transform: none;
-      // -moz-transform: none;
-      // -ms-transform: none;
-      // -o-transform: none;
-      // transform: none;
-    } else {
+    if (!this.opened) {
       transformStyle = `translate${(this.position === 'left' || this.position === 'right') ? 'X' : 'Y'}`;
 
       const leftOrTop: boolean = this.position === 'left' || this.position === 'top';
-      const translate: string = `${leftOrTop ? '-' : ''}${this.mode === 'dock' ? '100' : '110'}%`;
+      const isDocked: boolean = this.mode === 'dock';
 
-      if (this.mode === 'dock' && parseFloat(this.dockedSize) > 0) {
+      // We use 110% for non-docked modes in an attempt to hide any box-shadow
+      const translate: string = `${leftOrTop ? '-' : ''}${isDocked ? '100' : '110'}%`;
+
+      if (isDocked && parseFloat(this.dockedSize) > 0) {
         transformStyle += `(calc(${translate} ${leftOrTop ? '+' : '-'} ${this.dockedSize}))`;
       } else {
         transformStyle += `(${translate})`;
@@ -282,8 +276,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     }
 
     return {
+      webkitTransform: transformStyle,
       transform: transformStyle
-    };
+    } as CSSStyleDeclaration;
   }
 
   /** @internal */
