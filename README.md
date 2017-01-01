@@ -101,7 +101,9 @@ You can also use the `open()` and `close()` functions:
 ```
 
 
-### `<ng-sidebar-container>` options
+## Options
+
+### `<ng-sidebar-container>`
 
 ### Inputs
 
@@ -110,7 +112,7 @@ You can also use the `open()` and `close()` functions:
 | backdropClass | string | | Additional class name on the overlay element. |
 
 
-### `<ng-sidebar>` options
+### `<ng-sidebar>`
 
 #### Inputs
 
