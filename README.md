@@ -90,6 +90,16 @@ A directive is also provided to easily close the sidebar by clicking something i
 </ng-sidebar>
 ```
 
+You can also use the `open()` and `close()` functions:
+
+```html
+<ng-sidebar #sidebar>
+  <button (click)="sidebar.close()">Close sidebar</button>
+</ng-sidebar>
+
+<button (click)="sidebar.open()">Open sidebar</button>
+```
+
 
 ### `<ng-sidebar-container>` options
 
