@@ -48,44 +48,24 @@ import { SidebarService } from './sidebar.service';
         bottom: 0;
         left: 0;
         top: 0;
-        -webkit-transform: translateX(-110%);
-        -moz-transform: translateX(-110%);
-        -ms-transform: translateX(-110%);
-        -o-transform: translateX(-110%);
-        transform: translateX(-110%);
       }
 
       .ng-sidebar--right {
         bottom: 0;
         right: 0;
         top: 0;
-        -webkit-transform: translateX(110%);
-        -moz-transform: translateX(110%);
-        -ms-transform: translateX(110%);
-        -o-transform: translateX(110%);
-        transform: translateX(110%);
       }
 
       .ng-sidebar--top {
         left: 0;
         right: 0;
         top: 0;
-        -webkit-transform: translateY(-110%);
-        -moz-transform: translateY(-110%);
-        -ms-transform: translateY(-110%);
-        -o-transform: translateY(-110%);
-        transform: translateY(-110%);
       }
 
       .ng-sidebar--bottom {
         bottom: 0;
         left: 0;
         right: 0;
-        -webkit-transform: translateY(110%);
-        -moz-transform: translateY(110%);
-        -ms-transform: translateY(110%);
-        -o-transform: translateY(110%);
-        transform: translateY(110%);
       }
 
     .ng-sidebar--inert {
@@ -279,7 +259,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
 
   /** @internal */
   _getStyles(): Object {
-    let transformStyle = null;
+    let transformStyle: string = null;
 
     if (this.opened) {
       transformStyle = 'none';
@@ -288,10 +268,17 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
       // -ms-transform: none;
       // -o-transform: none;
       // transform: none;
-    }
+    } else {
+      transformStyle = `translate${(this.position === 'left' || this.position === 'right') ? 'X' : 'Y'}`;
 
-    if (!this.opened && this.mode === 'dock' && parseFloat(this.dockedSize) > 0) {
-      transformStyle = `translateX(calc(-100% + ${this.dockedSize}))`;
+      const leftOrTop: boolean = this.position === 'left' || this.position === 'top';
+      const translate: string = `${leftOrTop ? '-' : ''}${this.mode === 'dock' ? '100' : '110'}%`;
+
+      if (this.mode === 'dock' && parseFloat(this.dockedSize) > 0) {
+        transformStyle += `(calc(${translate} ${leftOrTop ? '+' : '-'} ${this.dockedSize}))`;
+      } else {
+        transformStyle += `(${translate})`;
+      }
     }
 
     return {
