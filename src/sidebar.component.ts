@@ -29,8 +29,7 @@ import { SidebarService } from './sidebar.service';
       [class.ng-sidebar--inert]="!opened && mode !== 'dock'"
       [class.ng-sidebar--animate]="animate"
       [ngClass]="sidebarClass"
-      [ngStyle]="_getTransformStyle()"
-      (transitionend)="_onTransitionEnd($event)">
+      [ngStyle]="_getTransformStyle()">
       <ng-content></ng-content>
     </aside>
   `,
@@ -129,6 +128,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     private _sidebarService: SidebarService) {
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
+    this._onTransitionEnd = this._onTransitionEnd.bind(this);
     this._trapFocus = this._trapFocus.bind(this);
     this._onClickOutside = this._onClickOutside.bind(this);
     this._onKeyDown = this._onKeyDown.bind(this);
@@ -179,84 +179,6 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   }
 
 
-  // Helpers
-  // ==============================================================================================
-
-  /**
-   * Returns whether the sidebar is "docked" -- i.e. it is closed but in dock mode.
-   *
-   * @return {boolean} Sidebar is docked.
-   */
-  private get _isDocked(): boolean {
-    return this.mode === 'dock' && this.dockedSize && !this.opened;
-  }
-
-  /**
-   * Returns whether the sidebar is set to the default "over" mode.
-   *
-   * @return {boolean} Sidebar mode is "over".
-   */
-  private get _isModeOver(): boolean {
-    return this.mode === 'over';
-  }
-
-  /**
-   * @internal
-   *
-   * Returns the rendered height of the sidebar (or the docked size).
-   * This is used in the sidebar container.
-   *
-   * @return {number} Height of sidebar.
-   */
-  get _height(): number {
-    if (this._elSidebar.nativeElement) {
-      return this._isDocked ?
-        parseFloat(this.dockedSize) :
-        this._elSidebar.nativeElement.offsetHeight;
-    }
-
-    return 0;
-  }
-
-  /**
-   * @internal
-   *
-   * Returns the rendered width of the sidebar (or the docked size).
-   * This is used in the sidebar container.
-   *
-   * @return {number} Width of sidebar.
-   */
-  get _width(): number {
-    if (this._elSidebar.nativeElement) {
-      return this._isDocked ?
-        parseFloat(this.dockedSize) :
-        this._elSidebar.nativeElement.offsetWidth;
-    }
-
-    return 0;
-  }
-
-  /**
-   * Returns whether the page is in LTR mode. Defaults to `true` if it can't be computed.
-   *
-   * @return {boolean} Page is LTR.
-   */
-  private get _isLTR(): boolean {
-    let dir: string = 'ltr';
-
-    // If `window` doesn't exist, this isn't in the context of a browser...
-    if (window) {
-      if (window.getComputedStyle) {
-        dir = window.getComputedStyle(this._document.body, null).getPropertyValue('direction');
-      } else {
-        dir = this._document.body.currentStyle.direction;
-      }
-    }
-
-    return dir === 'ltr';
-  }
-
-
   // Sidebar toggling
   // ==============================================================================================
 
@@ -271,6 +193,8 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
 
     this._setFocused();
     this._initCloseListeners();
+
+    this._elSidebar.nativeElement.addEventListener('transitionend', this._onTransitionEnd);
 
     if (!this.animate) {
       setTimeout(() => {
@@ -289,6 +213,8 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     this.openedChange.emit(false);
 
     this.onCloseStart.emit();
+
+    this._elSidebar.nativeElement.addEventListener('transitionend', this._onTransitionEnd);
 
     this._setFocused();
     this._destroyCloseListeners();
@@ -347,6 +273,8 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
       } else {
         this.onClosed.emit();
       }
+
+      this._elSidebar.nativeElement.removeEventListener('transitionend', this._onTransitionEnd);
     }
   }
 
@@ -490,5 +418,83 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     if ((e as KeyboardEvent).keyCode === this.keyCode) {
       this.close();
     }
+  }
+
+
+  // Helpers
+  // ==============================================================================================
+
+  /**
+   * Returns whether the sidebar is "docked" -- i.e. it is closed but in dock mode.
+   *
+   * @return {boolean} Sidebar is docked.
+   */
+  private get _isDocked(): boolean {
+    return this.mode === 'dock' && this.dockedSize && !this.opened;
+  }
+
+  /**
+   * Returns whether the sidebar is set to the default "over" mode.
+   *
+   * @return {boolean} Sidebar mode is "over".
+   */
+  private get _isModeOver(): boolean {
+    return this.mode === 'over';
+  }
+
+  /**
+   * @internal
+   *
+   * Returns the rendered height of the sidebar (or the docked size).
+   * This is used in the sidebar container.
+   *
+   * @return {number} Height of sidebar.
+   */
+  get _height(): number {
+    if (this._elSidebar.nativeElement) {
+      return this._isDocked ?
+        parseFloat(this.dockedSize) :
+        this._elSidebar.nativeElement.offsetHeight;
+    }
+
+    return 0;
+  }
+
+  /**
+   * @internal
+   *
+   * Returns the rendered width of the sidebar (or the docked size).
+   * This is used in the sidebar container.
+   *
+   * @return {number} Width of sidebar.
+   */
+  get _width(): number {
+    if (this._elSidebar.nativeElement) {
+      return this._isDocked ?
+        parseFloat(this.dockedSize) :
+        this._elSidebar.nativeElement.offsetWidth;
+    }
+
+    return 0;
+  }
+
+  /**
+   * Returns whether the page is in LTR mode. Defaults to `true` if it can't be computed.
+   *
+   * @return {boolean} Page is LTR.
+   */
+  private get _isLTR(): boolean {
+    let dir: string = 'ltr';
+
+    // If `window` doesn't exist, this isn't in the context of a browser...
+    if (window) {
+      if (window.getComputedStyle) {
+        dir = window.getComputedStyle(this._document.body, null).getPropertyValue('direction');
+      } else {
+        dir = this._document.body.currentStyle.direction;
+      }
+    }
+
+    return dir === 'ltr';
   }
 }
