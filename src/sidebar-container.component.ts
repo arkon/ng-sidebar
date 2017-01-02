@@ -64,7 +64,7 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
 
   constructor(private _ref: ChangeDetectorRef) {}
 
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     this._subscribe();
 
     this._sidebars.changes.subscribe(() => {
@@ -73,12 +73,18 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this._unsubscribe();
   }
 
-  /** @internal */
-  _getStyles() {
+  /**
+   * @internal
+   *
+   * Computes `margin` value to push page contents to accommodate open sidebars as needed.
+   *
+   * @return {CSSStyleDeclaration} margin styles for the page content.
+   */
+  _getStyles(): CSSStyleDeclaration {
     let left = 0,
         right = 0,
         top = 0,
@@ -110,10 +116,10 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
 
     return {
       margin: `${top}px ${right}px ${bottom}px ${left}px`
-    };
+    } as CSSStyleDeclaration;
   }
 
-  private _subscribe() {
+  private _subscribe(): void {
     if (this._sidebars) {
       this._sidebars.forEach((sidebar: Sidebar) => {
         sidebar.onOpenStart.subscribe(() => this._onToggle());
@@ -126,7 +132,7 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
     }
   }
 
-  private _unsubscribe() {
+  private _unsubscribe(): void {
     if (this._sidebars) {
       this._sidebars.forEach((sidebar: Sidebar) => {
         sidebar.onOpenStart.unsubscribe();
@@ -139,13 +145,17 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
     }
   }
 
-  // Triggers change detection to recompute styles
-  private _markForCheck() {
+  /**
+   * Triggers change detection to recompute styles.
+   */
+  private _markForCheck(): void {
     this._ref.markForCheck();
   }
 
-  private _onToggle() {
-    // Check if we should show the backdrop
+  /**
+   * Check if we should show the backdrop when a sidebar is toggled.
+   */
+  private _onToggle(): void {
     if (this._sidebars) {
       let hasOpen = false;
 

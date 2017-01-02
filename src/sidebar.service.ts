@@ -7,11 +7,11 @@ export class SidebarService {
   private _openObserver: Subject<void> = new Subject<void>();
   private _closeObserver: Subject<void> = new Subject<void>();
 
-  open() {
+  open(): void {
     this._openObserver.next();
   }
 
-  close() {
+  close(): void {
     this._closeObserver.next();
   }
 

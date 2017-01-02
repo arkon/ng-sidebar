@@ -37,15 +37,15 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
       <section class="demo-contents">
         <h1>Controls</h1>
 
-        <button class="demo-control" (click)="_toggleOpened()">Toggle opened ({{_opened}})</button>
-        <button class="demo-control" (click)="_toggleMode()">Toggle mode ({{_MODES[_modeNum]}})</button>
-        <button class="demo-control" (click)="_togglePosition()">Toggle position ({{_POSITIONS[_positionNum]}})</button>
-        <button class="demo-control" (click)="_toggleCloseOnClickOutside()">Toggle closeOnClickOutside ({{_closeOnClickOutside}})</button>
-        <button class="demo-control" (click)="_toggleShowBackdrop()">Toggle showBackdrop ({{_showBackdrop}})</button>
-        <button class="demo-control" (click)="_toggleAnimate()">Toggle animate ({{_animate}})</button>
-        <button class="demo-control" (click)="_toggleTrapFocus()">Toggle trapFocus ({{_trapFocus}})</button>
-        <button class="demo-control" (click)="_toggleAutoFocus()">Toggle autoFocus ({{_autoFocus}})</button>
-        <button class="demo-control" (click)="_toggleKeyClose()">Toggle keyClose ({{_keyClose}})</button>
+        <button class="demo-control" (click)="_toggleOpened()">opened ({{_opened}})</button>
+        <button class="demo-control" (click)="_toggleMode()">mode ({{_MODES[_modeNum]}})</button>
+        <button class="demo-control" (click)="_togglePosition()">position ({{_POSITIONS[_positionNum]}})</button>
+        <button class="demo-control" (click)="_toggleCloseOnClickOutside()">closeOnClickOutside ({{_closeOnClickOutside}})</button>
+        <button class="demo-control" (click)="_toggleShowBackdrop()">showBackdrop ({{_showBackdrop}})</button>
+        <button class="demo-control" (click)="_toggleAnimate()">animate ({{_animate}})</button>
+        <button class="demo-control" (click)="_toggleTrapFocus()">trapFocus ({{_trapFocus}})</button>
+        <button class="demo-control" (click)="_toggleAutoFocus()">autoFocus ({{_autoFocus}})</button>
+        <button class="demo-control" (click)="_toggleKeyClose()">keyClose ({{_keyClose}})</button>
 
 
         <h1>Download</h1>

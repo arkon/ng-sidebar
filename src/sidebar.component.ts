@@ -134,12 +134,12 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     this._onKeyDown = this._onKeyDown.bind(this);
   }
 
-  ngAfterContentInit() {
+  ngAfterContentInit(): void {
     this._openSub = this._sidebarService.onOpen(this.open);
     this._closeSub = this._sidebarService.onClose(this.close);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes['opened']) {
       if (this.opened) {
         this.open();
@@ -171,7 +171,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this._destroyCloseListeners();
 
     this._openSub.unsubscribe();
@@ -182,15 +182,32 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // Helpers
   // ==============================================================================================
 
+  /**
+   * Returns whether the sidebar is "docked" -- i.e. it is closed but in dock mode.
+   *
+   * @return {boolean} Sidebar is docked.
+   */
   private get _isDocked(): boolean {
     return this.mode === 'dock' && this.dockedSize && !this.opened;
   }
 
+  /**
+   * Returns whether the sidebar is set to the default "over" mode.
+   *
+   * @return {boolean} Sidebar mode is "over".
+   */
   private get _isModeOver(): boolean {
     return this.mode === 'over';
   }
 
-  /** @internal */
+  /**
+   * @internal
+   *
+   * Returns the rendered height of the sidebar (or the docked size).
+   * This is used in the sidebar container.
+   *
+   * @return {number} Height of sidebar.
+   */
   get _height(): number {
     if (this._elSidebar.nativeElement) {
       return this._isDocked ?
@@ -201,7 +218,14 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     return 0;
   }
 
-  /** @internal */
+  /**
+   * @internal
+   *
+   * Returns the rendered width of the sidebar (or the docked size).
+   * This is used in the sidebar container.
+   *
+   * @return {number} Width of sidebar.
+   */
   get _width(): number {
     if (this._elSidebar.nativeElement) {
       return this._isDocked ?
@@ -212,6 +236,11 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     return 0;
   }
 
+  /**
+   * Returns whether the page is in LTR mode. Defaults to `true` if it can't be computed.
+   *
+   * @return {boolean} Page is LTR.
+   */
   private get _isLTR(): boolean {
     let dir: string = 'ltr';
 
@@ -231,6 +260,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // Sidebar toggling
   // ==============================================================================================
 
+  /**
+   * Opens the sidebar and emits the appropriate events.
+   */
   open(): void {
     this.opened = true;
     this.openedChange.emit(true);
@@ -249,6 +281,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     }
   }
 
+  /**
+   * Closes the sidebar and emits the appropriate events.
+   */
   close(): void {
     this.opened = false;
     this.openedChange.emit(false);
@@ -267,7 +302,13 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     }
   }
 
-  /** @internal */
+  /**
+   * @internal
+   *
+   * Computes the transform styles for the sidebar template.
+   *
+   * @return {CSSStyleDeclaration} The transform styles, with the WebKit-prefixed version as well.
+   */
   _getTransformStyle(): CSSStyleDeclaration {
     let transformStyle: string = 'none';
 
@@ -293,7 +334,12 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     } as CSSStyleDeclaration;
   }
 
-  /** @internal */
+  /**
+   * @internal
+   *
+   * Handles the `transitionend` event on the sidebar to emit the onOpened/onClosed events after
+   * the transform transition is completed.
+   */
   _onTransitionEnd(e: TransitionEvent): void {
     if (e.target === this._elSidebar.nativeElement && e.propertyName.endsWith('transform')) {
       if (this.opened) {
@@ -308,23 +354,37 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // Focus on open/close
   // ==============================================================================================
 
+  /**
+   * Returns whether focus should be trapped within the sidebar.
+   *
+   * @return {boolean} Trap focus inside sidebar.
+   */
   private get _shouldTrapFocus(): boolean {
     return this.opened && this.trapFocus && this._isModeOver;
   }
 
+  /**
+   * Focuses the first focusable element inside the sidebar.
+   */
   private _setFocusToFirstItem(): void {
     if (this._focusableElements && this._focusableElements.length) {
       this._focusableElements[0].focus();
     }
   }
 
+  /**
+   * Loops focus back to the start of the sidebar if set to do so.
+   */
   private _trapFocus(e: FocusEvent): void {
     if (this._shouldTrapFocus && !this._elSidebar.nativeElement.contains(e.target)) {
       this._setFocusToFirstItem();
     }
   }
 
-  // Handles the ability to focus sidebar elements when it's open/closed
+  /**
+   * Handles the ability to focus sidebar elements when it's open/closed to ensure that the sidebar is inert
+   * when appropriate.
+   */
   private _setFocused(): void {
     this._focusableElements = Array.from(
       this._elSidebar.nativeElement.querySelectorAll(this._focusableElementsString)) as Array<HTMLElement>;
@@ -372,6 +432,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   // Close event handlers
   // ==============================================================================================
 
+  /**
+   * Initializes event handlers for the closeOnClickOutside and keyClose options.
+   */
   private _initCloseListeners(): void {
     if (this.opened && (this.closeOnClickOutside || this.keyClose)) {
       // In a timeout so that things render first
@@ -389,6 +452,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     }
   }
 
+  /**
+   * Destroys the event handlers from _initCloseListeners.
+   */
   private _destroyCloseListeners(): void {
     if (this._onClickOutsideAttached) {
       this._document.body.removeEventListener('click', this._onClickOutside);
@@ -401,12 +467,23 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     }
   }
 
+  /**
+   * Handles `click` events on anything while the sidebar is open for the closeOnClickOutside option.
+   * Programatically closes the sidebar if a click occurs outside the sidebar.
+   *
+   * @param e {MouseEvent} Mouse click event.
+   */
   private _onClickOutside(e: MouseEvent): void {
     if (this._onClickOutsideAttached && this._elSidebar && !this._elSidebar.nativeElement.contains(e.target)) {
       this.close();
     }
   }
 
+  /**
+   * Handles the `keydown` event for the keyClose option.
+   *
+   * @param e {KeyboardEvent} Normalized keydown event.
+   */
   private _onKeyDown(e: KeyboardEvent | Event): void {
     e = e || window.event;
 
