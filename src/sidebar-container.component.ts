@@ -119,28 +119,38 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
     } as CSSStyleDeclaration;
   }
 
+  /**
+   * Subscribes from all sidebar events to react properly.
+   */
   private _subscribe(): void {
     if (this._sidebars) {
       this._sidebars.forEach((sidebar: Sidebar) => {
         sidebar.onOpenStart.subscribe(() => this._onToggle());
         sidebar.onOpened.subscribe(() => this._markForCheck());
+
         sidebar.onCloseStart.subscribe(() => this._onToggle());
         sidebar.onClosed.subscribe(() => this._markForCheck());
-        sidebar.onPositionChange.subscribe(() => this._markForCheck());
+
         sidebar.onModeChange.subscribe(() => this._markForCheck());
+        sidebar.onPositionChange.subscribe(() => this._markForCheck());
       });
     }
   }
 
+  /**
+   * Unsubscribes from all sidebars.
+   */
   private _unsubscribe(): void {
     if (this._sidebars) {
       this._sidebars.forEach((sidebar: Sidebar) => {
         sidebar.onOpenStart.unsubscribe();
         sidebar.onOpened.unsubscribe();
+
         sidebar.onCloseStart.unsubscribe();
         sidebar.onClosed.unsubscribe();
-        sidebar.onPositionChange.unsubscribe();
+
         sidebar.onModeChange.unsubscribe();
+        sidebar.onPositionChange.unsubscribe();
       });
     }
   }
