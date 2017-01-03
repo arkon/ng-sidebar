@@ -128,8 +128,9 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
     private _sidebarService: SidebarService) {
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
+
     this._onTransitionEnd = this._onTransitionEnd.bind(this);
-    this._trapFocus = this._trapFocus.bind(this);
+    this._onFocusTrap = this._onFocusTrap.bind(this);
     this._onClickOutside = this._onClickOutside.bind(this);
     this._onKeyDown = this._onKeyDown.bind(this);
   }
@@ -303,7 +304,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
   /**
    * Loops focus back to the start of the sidebar if set to do so.
    */
-  private _trapFocus(e: FocusEvent): void {
+  private _onFocusTrap(e: FocusEvent): void {
     if (this._shouldTrapFocus && !this._elSidebar.nativeElement.contains(e.target)) {
       this._setFocusToFirstItem();
     }
@@ -335,7 +336,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
         this._setFocusToFirstItem();
       }
 
-      this._document.body.addEventListener('focus', this._trapFocus, true);
+      this._document.body.addEventListener('focus', this._onFocusTrap, true);
     } else {
       // Manually make all focusable elements unfocusable, saving existing tabindex attributes
       for (let el of this._focusableElements) {
@@ -347,7 +348,7 @@ export class Sidebar implements AfterContentInit, OnChanges, OnDestroy {
         el.setAttribute('tabindex', '-1');
       }
 
-      this._document.body.removeEventListener('focus', this._trapFocus, true);
+      this._document.body.removeEventListener('focus', this._onFocusTrap, true);
 
       // Set focus back to element before the sidebar was opened
       if (this.autoFocus && this._isModeOver && this._focusedBeforeOpen) {
