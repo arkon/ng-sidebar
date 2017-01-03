@@ -36,6 +36,11 @@ var packages = {
 };
 ```
 
+## Changelog
+
+See the [releases page](https://github.com/arkon/ng-sidebar/releases) in the GitHub repo.
+
+
 ## Usage
 
 Add `SidebarModule` to your app module:
@@ -73,7 +78,7 @@ In your app component, simply use add a `<ng-sidebar-container>` wrapper, then p
     </ng-sidebar-container>
   `
 })
-export class AppComponent {
+class AppComponent {
   private _opened: boolean = false;
 
   private _toggleSidebar() {
@@ -85,7 +90,7 @@ export class AppComponent {
 A directive is also provided to easily close the sidebar by clicking something inside it:
 
 ```html
-<ng-sidebar [(opened)]="_opened">
+<ng-sidebar>
   <a closeSidebar>Closes the sidebar</a>
 </ng-sidebar>
 ```
@@ -122,13 +127,13 @@ You can also use the `open()` and `close()` functions:
 | mode | `'over' | 'push' | 'dock'` | `'over'` | Display the sidebar over the content when open, beside it when open, or slightly open. |
 | dockedSize | string | `'0px'` | When `mode` is set to `'dock'`, this value indicates how much of the sidebar is still visible when "closed". |
 | position | `'left' | 'right' | 'top' | 'bottom' | 'start' | 'end'` | `'start'` | What side the sidebar should be docked to. `'start'` and `'end'` are aliases that respect the page's language (e.g. `start` is the same as `left` for English, but would be `right` for Hebrew. |
-| closeOnClickOutside | boolean | `false` | Whether clicking outside of the open sidebar will close it. |
-| showBackdrop | boolean | `false` | If a translucent black backdrop overlay should appear over the page contents when the sidebar is open. |
 | animate | boolean | `true` | Animate the opening/closing of the sidebar. |
-| trapFocus | boolean | `true` | Keeps focus within the sidebar when open. |
-| autoFocus | boolean | `true` | Automatically focus the first focusable element in the sidebar when opened. |
 | sidebarClass | string | | Additional class name on the sidebar element. |
 | ariaLabel | string | | Value for the sidebar's `aria-label` attribute. |
+| trapFocus | boolean | `true` | Keeps focus within the sidebar when open. |
+| autoFocus | boolean | `true` | Automatically focus the first focusable element in the sidebar when opened. |
+| showBackdrop | boolean | `false` | If a translucent black backdrop overlay should appear over the page contents when the sidebar is open. |
+| closeOnClickOutside | boolean | `false` | Whether clicking outside of the open sidebar will close it. |
 | keyClose | boolean | `false` | Close the sidebar when a keyboard button is pressed. |
 | keyCode | number | `27` | The [key code](http://keycode.info/) for `keyClose`. |
 
@@ -140,5 +145,5 @@ You can also use the `open()` and `close()` functions:
 | onOpened | | Emitted when the sidebar is opened. |
 | onCloseStart | | Emitted when the sidebar is closing. |
 | onClosed | | Emitted when the sidebar is closed. |
-| onPositionChange | `position: string` | Emitted when `position` is changed. |
 | onModeChange | `mode: string` | Emitted when `mode` is changed. |
+| onPositionChange | `position: string` | Emitted when `position` is changed. |
