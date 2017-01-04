@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
     "noUnusedParameters": true,
     "noUnusedLocals": true,
@@ -9,6 +9,7 @@
     "experimentalDecorators": true,
     "declaration": true,
     "stripInternal": true,
+    "skipLibCheck": true,
     "outDir": "lib/",
     "lib": ["dom", "es5", "es2015.core", "es2015.collection", "es2015.promise"]
   },
@@ -18,6 +19,8 @@
   "compileOnSave": false,
   "buildOnSave": false,
   "angularCompilerOptions": {
-    "genDir": "factories"
+    "strictMetadataEmit": true,
+    "genDir": "factories",
+    "debug": true
   }
 }

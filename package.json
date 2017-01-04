@@ -31,7 +31,7 @@
   "typings": "./lib/index.d.ts",
   "scripts": {
     "lint": "tslint src/**/*.ts",
-    "build": "npm run lint && ngc",
+    "build": "npm run lint && rimraf lib && ngc",
     "prepublish": "npm run build"
   },
   "peerDependencies": {
@@ -44,6 +44,7 @@
     "@angular/compiler-cli": "^2.4.1",
     "@angular/core": "^2.4.1",
     "@angular/platform-browser": "^2.4.1",
+    "rimraf": "^2.5.4",
     "rxjs": "5.0.1",
     "tslint": "^4.2.0",
     "typescript": "2.0.10",
