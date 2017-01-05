@@ -333,7 +333,7 @@ export class Sidebar implements OnChanges, OnDestroy {
         this._focusFirstItem();
       }
 
-      this._document.body.addEventListener('focus', this._onFocusTrap, true);
+      this._document.addEventListener('focus', this._onFocusTrap, true);
     } else {
       // Manually make all focusable elements unfocusable, saving existing tabindex attributes
       for (let el of this._focusableElements) {
@@ -345,7 +345,7 @@ export class Sidebar implements OnChanges, OnDestroy {
         el.setAttribute('tabindex', '-1');
       }
 
-      this._document.body.removeEventListener('focus', this._onFocusTrap, true);
+      this._document.removeEventListener('focus', this._onFocusTrap, true);
 
       // Set focus back to element before the sidebar was opened
       if (this.autoFocus && this._isModeOver && this._focusedBeforeOpen) {
@@ -366,12 +366,12 @@ export class Sidebar implements OnChanges, OnDestroy {
       // In a timeout so that things render first
       setTimeout(() => {
         if (this.closeOnClickOutside && !this._onClickOutsideAttached) {
-          this._document.body.addEventListener('click', this._onClickOutside);
+          this._document.addEventListener('click', this._onClickOutside);
           this._onClickOutsideAttached = true;
         }
 
         if (this.keyClose && !this._onKeyDownAttached) {
-          this._document.body.addEventListener('keydown', this._onKeyDown);
+          this._document.addEventListener('keydown', this._onKeyDown);
           this._onKeyDownAttached = true;
         }
       });
@@ -383,12 +383,12 @@ export class Sidebar implements OnChanges, OnDestroy {
    */
   private _destroyCloseListeners(): void {
     if (this._onClickOutsideAttached) {
-      this._document.body.removeEventListener('click', this._onClickOutside);
+      this._document.removeEventListener('click', this._onClickOutside);
       this._onClickOutsideAttached = false;
     }
 
     if (this._onKeyDownAttached) {
-      this._document.body.removeEventListener('keydown', this._onKeyDown);
+      this._document.removeEventListener('keydown', this._onKeyDown);
       this._onKeyDownAttached = false;
     }
   }
