@@ -106,6 +106,41 @@ You can also use the `open()` and `close()` functions:
 ```
 
 
+## Styling
+
+Various class names are attached to the sidebar and container for easier styling.
+
+### Sidebar
+
+| Class name | Description |
+| ---------- | ----------- |
+| `ng-sidebar` | Always on the sidebar element. |
+| `ng-sidebar--opened` | When `opened` is `true`. |
+| `ng-sidebar--closed` | When `opened` is `false`. |
+| `ng-sidebar--left` | When `position` is `'left'` (or the `'start'`/`'end'` aliases are equivalent to `'left'`). |
+| `ng-sidebar--right` | When `position` is `'right'` (or the `'start'`/`'end'` aliases are equivalent to `'right'`). |
+| `ng-sidebar--top` | When `position` is `'top'`. |
+| `ng-sidebar--bottom` | When `position` is `'bottom'`. |
+| `ng-sidebar--over` | When `mode` is `'over'`. |
+| `ng-sidebar--push` | When `mode` is `'push'`. |
+| `ng-sidebar--dock` | When `mode` is `'dock'`. |
+| `ng-sidebar--inert` | Ignores pointer clicks. Class is applied when the sidebar is closed. |
+| `ng-sidebar--animate` | When `animate` is `true`. |
+
+### Backdrop
+
+| Class name | Description |
+| ---------- | ----------- |
+| `ng-sidebar__backdrop` | Class of the backdrop `div`. Note that the `div` is only in the DOM when the backdrop is shown. |
+
+### Page content
+
+| Class name | Description |
+| ---------- | ----------- |
+| `ng-sidebar__content` | Class of the wrapper `div` for the page content. |
+
+
+
 ## Options
 
 ### `<ng-sidebar-container>`
@@ -141,6 +176,7 @@ You can also use the `open()` and `close()` functions:
 
 | Property name | Callback arguments | Description |
 | ------------- | ------------------ | ----------- |
+| openedChange | `opened: boolean` | Emitted when `opened` is modified. This allows for you to do "two-way binding" (i.e. `[(opened)]`). |
 | onOpenStart | | Emitted when the sidebar is opening. |
 | onOpened | | Emitted when the sidebar is opened. |
 | onCloseStart | | Emitted when the sidebar is closing. |
