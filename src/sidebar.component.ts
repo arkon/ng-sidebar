@@ -233,7 +233,7 @@ export class Sidebar implements OnChanges, OnDestroy {
    *
    * @return {CSSStyleDeclaration} The transform styles, with the WebKit-prefixed version as well.
    */
-  _getTransformStyle(): CSSStyleDeclaration {
+  _getTransformStyle(): Partial<CSSStyleDeclaration> {
     let transformStyle: string = 'none';
 
     if (!this.opened) {
@@ -255,7 +255,7 @@ export class Sidebar implements OnChanges, OnDestroy {
     return {
       webkitTransform: transformStyle,
       transform: transformStyle
-    } as CSSStyleDeclaration;
+    };
   }
 
   /**
