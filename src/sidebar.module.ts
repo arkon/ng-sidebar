@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Sidebar } from './sidebar.component';
@@ -12,11 +12,4 @@ import { CloseSidebar } from './close.directive';
   exports: [Sidebar, SidebarContainer, CloseSidebar],
   providers: [SidebarService]
 })
-export class SidebarModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: SidebarModule,
-      providers: [SidebarService]
-    };
-  }
-}
+export class SidebarModule {}
