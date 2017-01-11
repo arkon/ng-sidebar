@@ -37,7 +37,7 @@ import { SidebarService } from './sidebar.service';
       background-color: #fff;
       overflow: auto;
       pointer-events: auto;
-      position: fixed;
+      position: absolute;
       will-change: initial;
       z-index: 99999999;
     }

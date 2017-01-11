@@ -31,6 +31,7 @@ import { Sidebar } from './sidebar.component';
     ng-sidebar-container {
       box-sizing: border-box;
       display: block;
+      position: relative;
     }
 
     .ng-sidebar__backdrop {
