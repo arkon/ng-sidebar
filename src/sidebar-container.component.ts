@@ -85,7 +85,7 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
    *
    * @return {CSSStyleDeclaration} margin styles for the page content.
    */
-  _getStyles(): Partial<CSSStyleDeclaration> {
+  _getStyles(): CSSStyleDeclaration {
     let left = 0,
         right = 0,
         top = 0,
@@ -117,7 +117,7 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
 
     return {
       margin: `${top}px ${right}px ${bottom}px ${left}px`
-    };
+    } as CSSStyleDeclaration;
   }
 
   /**
