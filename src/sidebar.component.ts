@@ -239,14 +239,14 @@ export class Sidebar implements OnChanges, OnDestroy {
     if (!this.opened) {
       transformStyle = `translate${(this.position === 'left' || this.position === 'right') ? 'X' : 'Y'}`;
 
-      const leftOrTop: boolean = this.position === 'left' || this.position === 'top';
+      const isLeftOrTop: boolean = this.position === 'left' || this.position === 'top';
       const isDockMode: boolean = this.mode === 'dock';
 
       // We use 110% for non-docked modes in an attempt to hide any box-shadow
-      const translateAmt: string = `${leftOrTop ? '-' : ''}${isDockMode ? '100' : '110'}%`;
+      const translateAmt: string = `${isLeftOrTop ? '-' : ''}${isDockMode ? '100' : '110'}%`;
 
       if (isDockMode && parseFloat(this.dockedSize) > 0) {
-        transformStyle += `(calc(${translateAmt} ${leftOrTop ? '+' : '-'} ${this.dockedSize}))`;
+        transformStyle += `(calc(${translateAmt} ${isLeftOrTop ? '+' : '-'} ${this.dockedSize}))`;
       } else {
         transformStyle += `(${translateAmt})`;
       }
