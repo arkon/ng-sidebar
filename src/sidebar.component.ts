@@ -108,8 +108,9 @@ export class Sidebar implements OnChanges, OnDestroy {
   @Output() onModeChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() onPositionChange: EventEmitter<string> = new EventEmitter<string>();
 
+  /** @internal */
   @ViewChild('sidebar')
-  private _elSidebar: ElementRef;
+  _elSidebar: ElementRef;
 
   private _openSub: Subscription;
   private _closeSub: Subscription;

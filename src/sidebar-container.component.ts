@@ -58,10 +58,12 @@ import { Sidebar } from './sidebar.component';
 export class SidebarContainer implements AfterContentInit, OnDestroy {
   @Input() backdropClass: string;
 
-  @ContentChildren(Sidebar)
-  private _sidebars: QueryList<Sidebar>;
+  /** @internal */
+  _showBackdrop: boolean = false;
 
-  private _showBackdrop: boolean = false;
+  /** @internal */
+  @ContentChildren(Sidebar)
+  _sidebars: QueryList<Sidebar>;
 
   constructor(private _ref: ChangeDetectorRef) {}
 
