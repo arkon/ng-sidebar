@@ -28,7 +28,7 @@ import { SidebarService } from './sidebar.service';
       [class.ng-sidebar--inert]="!opened && mode !== 'dock'"
       [class.ng-sidebar--animate]="animate"
       [ngClass]="sidebarClass"
-      [ngStyle]="_getTransformStyle()">
+      [ngStyle]="_getStyle()">
       <ng-content></ng-content>
     </aside>
   `,
@@ -37,7 +37,7 @@ import { SidebarService } from './sidebar.service';
       background-color: #fff;
       overflow: auto;
       pointer-events: auto;
-      position: absolute;
+      position: fixed;
       will-change: initial;
       z-index: 99999999;
     }
@@ -234,8 +234,9 @@ export class Sidebar implements OnChanges, OnDestroy {
    *
    * @return {CSSStyleDeclaration} The transform styles, with the WebKit-prefixed version as well.
    */
-  _getTransformStyle(): CSSStyleDeclaration {
+  _getStyle(): CSSStyleDeclaration {
     let transformStyle: string = 'none';
+    let marginStyle = {};
 
     if (!this.opened) {
       transformStyle = `translate${(this.position === 'left' || this.position === 'right') ? 'X' : 'Y'}`;
@@ -247,16 +248,20 @@ export class Sidebar implements OnChanges, OnDestroy {
       const translateAmt: string = `${isLeftOrTop ? '-' : ''}${isDockMode ? '100' : '110'}%`;
 
       if (isDockMode && parseFloat(this.dockedSize) > 0) {
-        transformStyle += `(calc(${translateAmt} ${isLeftOrTop ? '+' : '-'} ${this.dockedSize}))`;
-      } else {
-        transformStyle += `(${translateAmt})`;
+        const marginPos = `margin${this._upperCaseFirst(this.position)}`;
+
+        marginStyle = {
+          [marginPos]: this.dockedSize
+        };
       }
+
+      transformStyle += `(${translateAmt})`;
     }
 
-    return {
+    return Object.assign(marginStyle, {
       webkitTransform: transformStyle,
       transform: transformStyle
-    } as CSSStyleDeclaration;
+    }) as CSSStyleDeclaration;
   }
 
   /**
@@ -495,5 +500,14 @@ export class Sidebar implements OnChanges, OnDestroy {
     }
 
     return dir === 'ltr';
+  }
+
+  /**
+   * Makes a string's first letter uppercase.
+   *
+   * @return {string} Original string, but with first letter in upper case.
+   */
+  private _upperCaseFirst(str) {
+    return str.charAt(0).toUpperCase() + str.substring(1);
   }
 }
