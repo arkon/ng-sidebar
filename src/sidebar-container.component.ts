@@ -56,6 +56,7 @@ import { Sidebar } from './sidebar.component';
   encapsulation: ViewEncapsulation.None
 })
 export class SidebarContainer implements AfterContentInit, OnDestroy {
+  @Input() enableBackdrop: boolean = true;
   @Input() backdropClass: string;
 
   /** @internal */
@@ -169,7 +170,7 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
    * Check if we should show the backdrop when a sidebar is toggled.
    */
   private _onToggle(): void {
-    if (this._sidebars) {
+    if (this._sidebars && this.enableBackdrop) {
       let hasOpen = false;
 
       const _sidebars = this._sidebars.toArray();
