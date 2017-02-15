@@ -195,6 +195,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
       }
 
       this.showBackdrop = hasOpen;
+      this.showBackdropChange.emit(hasOpen);
     }
 
     this._markForCheck();
