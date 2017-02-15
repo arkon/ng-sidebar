@@ -4,12 +4,12 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  EventEmitter,
   Input,
-  Output,
   OnDestroy,
+  Output,
   QueryList,
-  ViewEncapsulation,
-  EventEmitter
+  ViewEncapsulation
 } from '@angular/core';
 
 import { Sidebar } from './sidebar.component';
@@ -180,7 +180,7 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
         const sidebar: Sidebar = _sidebars[i];
 
         // Show backdrop if a single open sidebar has it set
-        if (sidebar.opened && sidebar.showBackdropOnOpen) {
+        if (sidebar.opened && sidebar.showBackdrop) {
           hasOpen = true;
           break;
         }
