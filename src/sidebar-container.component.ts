@@ -6,8 +6,10 @@ import {
   ContentChildren,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   Output,
+  SimpleChanges,
   QueryList,
   ViewEncapsulation
 } from '@angular/core';
@@ -57,12 +59,12 @@ import { Sidebar } from './sidebar.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class SidebarContainer implements AfterContentInit, OnDestroy {
+export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy {
   @Input() backdropClass: string;
   @Input() allowSidebarBackdropControl: boolean = true;
 
   @Input() showBackdrop: boolean = false;
-  @Output() showBackdropChange = new EventEmitter<null>();
+  @Output() showBackdropChange = new EventEmitter<boolean>();
 
   /** @internal */
   @ContentChildren(Sidebar)
@@ -77,6 +79,12 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
       this._unsubscribe();
       this._subscribe();
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['showBackdrop']) {
+      this.showBackdropChange.emit(changes['showBackdrop'].currentValue);
+    }
   }
 
   ngOnDestroy(): void {
