@@ -149,7 +149,6 @@ Various class names are attached to the sidebar and container for easier styling
 
 | Property name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
-| enableBackdrop | boolean | `true` | Allow backdrop to be shown. |
 | backdropClass | string | | Additional class name on the overlay element. |
 
 
