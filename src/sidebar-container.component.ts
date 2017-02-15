@@ -4,8 +4,12 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
+  Output,
+  SimpleChanges,
   QueryList,
   ViewEncapsulation
 } from '@angular/core';
@@ -18,7 +22,7 @@ import { Sidebar } from './sidebar.component';
   template: `
     <ng-content select="ng-sidebar"></ng-content>
 
-    <div *ngIf="_showBackdrop"
+    <div *ngIf="showBackdrop"
       aria-hidden="true"
       class="ng-sidebar__backdrop"
       [ngClass]="backdropClass"></div>
@@ -55,11 +59,12 @@ import { Sidebar } from './sidebar.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class SidebarContainer implements AfterContentInit, OnDestroy {
+export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy {
   @Input() backdropClass: string;
+  @Input() allowSidebarBackdropControl: boolean = true;
 
-  /** @internal */
-  _showBackdrop: boolean = false;
+  @Input() showBackdrop: boolean = false;
+  @Output() showBackdropChange = new EventEmitter<boolean>();
 
   /** @internal */
   @ContentChildren(Sidebar)
@@ -74,6 +79,12 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
       this._unsubscribe();
       this._subscribe();
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['showBackdrop']) {
+      this.showBackdropChange.emit(changes['showBackdrop'].currentValue);
+    }
   }
 
   ngOnDestroy(): void {
@@ -169,7 +180,7 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
    * Check if we should show the backdrop when a sidebar is toggled.
    */
   private _onToggle(): void {
-    if (this._sidebars) {
+    if (this._sidebars && this.allowSidebarBackdropControl) {
       let hasOpen = false;
 
       const _sidebars = this._sidebars.toArray();
@@ -183,7 +194,8 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
         }
       }
 
-      this._showBackdrop = hasOpen;
+      this.showBackdrop = hasOpen;
+      this.showBackdropChange.emit(hasOpen);
     }
 
     this._markForCheck();
