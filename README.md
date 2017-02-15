@@ -150,7 +150,14 @@ Various class names are attached to the sidebar and container for easier styling
 | Property name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
 | backdropClass | string | | Additional class name on the overlay element. |
+| showBackdrop | boolean | `false` | Controls the backdrop state of the sidebar container. This should be two-way bound. |
+| allowSidebarBackdropControl | boolean | `true` | Determines if the container component respects the sidebar's `showBackdropOnOpen` input. |
 
+#### Outputs
+
+| Property name | Callback arguments | Description |
+| ------------- | ------------------ | ----------- |
+| showBackdropChange | `showBackdrop: boolean` | Emitted when `showBackdrop` is modified. This allows for you to do "two-way binding" (i.e. `[(showBackdrop)]`). |
 
 ### `<ng-sidebar>`
 
@@ -167,7 +174,7 @@ Various class names are attached to the sidebar and container for easier styling
 | ariaLabel | string | | Value for the sidebar's `aria-label` attribute. |
 | trapFocus | boolean | `true` | Keeps focus within the sidebar when open. |
 | autoFocus | boolean | `true` | Automatically focus the first focusable element in the sidebar when opened. |
-| showBackdrop | boolean | `false` | If a translucent black backdrop overlay should appear over the page contents when the sidebar is open. |
+| showBackdropOnOpen | boolean | `false` | If a translucent black backdrop overlay should appear over the page contents when the sidebar is opened. |
 | closeOnClickOutside | boolean | `false` | Whether clicking outside of the open sidebar will close it. |
 | keyClose | boolean | `false` | Close the sidebar when a keyboard button is pressed. |
 | keyCode | number | `27` | The [key code](http://keycode.info/) for `keyClose`. |

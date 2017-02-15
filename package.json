@@ -31,7 +31,7 @@
   "typings": "./lib/index.d.ts",
   "scripts": {
     "lint": "tslint src/**/*.ts",
-    "build": "npm run lint && rimraf lib && ngc",
+    "build": "npm run lint && rimraf lib && tsc",
     "prepublish": "npm run build"
   },
   "peerDependencies": {

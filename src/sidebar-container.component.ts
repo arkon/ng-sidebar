@@ -5,9 +5,11 @@ import {
   Component,
   ContentChildren,
   Input,
+  Output,
   OnDestroy,
   QueryList,
-  ViewEncapsulation
+  ViewEncapsulation,
+  EventEmitter
 } from '@angular/core';
 
 import { Sidebar } from './sidebar.component';
@@ -18,7 +20,7 @@ import { Sidebar } from './sidebar.component';
   template: `
     <ng-content select="ng-sidebar"></ng-content>
 
-    <div *ngIf="_showBackdrop"
+    <div *ngIf="showBackdrop"
       aria-hidden="true"
       class="ng-sidebar__backdrop"
       [ngClass]="backdropClass"></div>
@@ -57,9 +59,10 @@ import { Sidebar } from './sidebar.component';
 })
 export class SidebarContainer implements AfterContentInit, OnDestroy {
   @Input() backdropClass: string;
+  @Input() allowSidebarBackdropControl: boolean = true;
 
-  /** @internal */
-  _showBackdrop: boolean = false;
+  @Input() showBackdrop: boolean = false;
+  @Output() showBackdropChange = new EventEmitter<null>();
 
   /** @internal */
   @ContentChildren(Sidebar)
@@ -169,7 +172,7 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
    * Check if we should show the backdrop when a sidebar is toggled.
    */
   private _onToggle(): void {
-    if (this._sidebars) {
+    if (this._sidebars && this.allowSidebarBackdropControl) {
       let hasOpen = false;
 
       const _sidebars = this._sidebars.toArray();
@@ -177,13 +180,13 @@ export class SidebarContainer implements AfterContentInit, OnDestroy {
         const sidebar: Sidebar = _sidebars[i];
 
         // Show backdrop if a single open sidebar has it set
-        if (sidebar.opened && sidebar.showBackdrop) {
+        if (sidebar.opened && sidebar.showBackdropOnOpen) {
           hasOpen = true;
           break;
         }
       }
 
-      this._showBackdrop = hasOpen;
+      this.showBackdrop = hasOpen;
     }
 
     this._markForCheck();
