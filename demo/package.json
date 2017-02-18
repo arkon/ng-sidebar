@@ -27,8 +27,8 @@
     "es6-shim": "^0.35.3",
     "ng-sidebar": "file:../",
     "reflect-metadata": "^0.1.9",
-    "rxjs": "5.1.0",
-    "zone.js": "^0.7.6"
+    "rxjs": "5.1.1",
+    "zone.js": "^0.7.7"
   },
   "devDependencies": {
     "gh-pages": "^0.12.0",
