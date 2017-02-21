@@ -120,12 +120,17 @@ export class Sidebar implements OnChanges, OnDestroy {
   private _focusableElements: Array<HTMLElement>;
   private _focusedBeforeOpen: HTMLElement;
 
+  private _clickEvent: string = 'click';
   private _onClickOutsideAttached: boolean = false;
   private _onKeyDownAttached: boolean = false;
 
   constructor(
     @Inject(DOCUMENT) private _document /*: HTMLDocument */,
     private _sidebarService: SidebarService) {
+    if (this._isIOS() && 'ontouchstart' in window) {
+      this._clickEvent = 'touchstart';
+    }
+
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
 
@@ -372,7 +377,7 @@ export class Sidebar implements OnChanges, OnDestroy {
       // In a timeout so that things render first
       setTimeout(() => {
         if (this.closeOnClickOutside && !this._onClickOutsideAttached) {
-          this._document.addEventListener('click', this._onClickOutside);
+          this._document.addEventListener(this._clickEvent, this._onClickOutside);
           this._onClickOutsideAttached = true;
         }
 
@@ -389,7 +394,7 @@ export class Sidebar implements OnChanges, OnDestroy {
    */
   private _destroyCloseListeners(): void {
     if (this._onClickOutsideAttached) {
-      this._document.removeEventListener('click', this._onClickOutside);
+      this._document.removeEventListener(this._clickEvent, this._onClickOutside);
       this._onClickOutsideAttached = false;
     }
 
@@ -483,6 +488,15 @@ export class Sidebar implements OnChanges, OnDestroy {
   }
 
   /**
+   * Makes a string's first letter uppercase.
+   *
+   * @return {string} Original string, but with first letter in upper case.
+   */
+  private _upperCaseFirst(str) {
+    return str.charAt(0).toUpperCase() + str.substring(1);
+  }
+
+  /**
    * Returns whether the page is in LTR mode. Defaults to `true` if it can't be computed.
    *
    * @return {boolean} Page's language direction is left-to-right.
@@ -503,11 +517,11 @@ export class Sidebar implements OnChanges, OnDestroy {
   }
 
   /**
-   * Makes a string's first letter uppercase.
+   * Returns whether or not the current device is an iOS device.
    *
-   * @return {string} Original string, but with first letter in upper case.
+   * @return {boolean} Device is an iOS device (i.e. iPod touch/iPhone/iPad).
    */
-  private _upperCaseFirst(str) {
-    return str.charAt(0).toUpperCase() + str.substring(1);
+  private _isIOS(): boolean {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   }
 }
