@@ -522,6 +522,6 @@ export class Sidebar implements OnChanges, OnDestroy {
    * @return {boolean} Device is an iOS device (i.e. iPod touch/iPhone/iPad).
    */
   private _isIOS(): boolean {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
   }
 }
