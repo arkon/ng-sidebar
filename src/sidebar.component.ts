@@ -101,6 +101,9 @@ export class Sidebar implements OnChanges, OnDestroy {
   @Input() keyClose: boolean = false;
   @Input() keyCode: number = 27;  // Default to ESCAPE key
 
+  @Input() autoCollapseHeight: number;
+  @Input() autoCollapseWidth: number;
+
   @Output() onOpenStart: EventEmitter<null> = new EventEmitter<null>();
   @Output() onOpened: EventEmitter<null> = new EventEmitter<null>();
   @Output() onCloseStart: EventEmitter<null> = new EventEmitter<null>();
@@ -120,9 +123,12 @@ export class Sidebar implements OnChanges, OnDestroy {
   private _focusableElements: Array<HTMLElement>;
   private _focusedBeforeOpen: HTMLElement;
 
+  private _wasCollapsed: boolean;
+
   private _clickEvent: string = 'click';
   private _onClickOutsideAttached: boolean = false;
   private _onKeyDownAttached: boolean = false;
+  private _onResizeAttached: boolean = false;
 
   constructor(
     @Inject(DOCUMENT) private _document /*: HTMLDocument */,
@@ -138,6 +144,8 @@ export class Sidebar implements OnChanges, OnDestroy {
     this._onFocusTrap = this._onFocusTrap.bind(this);
     this._onClickOutside = this._onClickOutside.bind(this);
     this._onKeyDown = this._onKeyDown.bind(this);
+
+    this._onResize = this._onResize.bind(this);
 
     this._openSub = this._sidebarService.onOpen(this.open);
     this._closeSub = this._sidebarService.onClose(this.close);
@@ -173,10 +181,15 @@ export class Sidebar implements OnChanges, OnDestroy {
     if (changes['mode']) {
       this.onModeChange.emit(changes['mode'].currentValue);
     }
+
+    if (changes['autoCollapseHeight'] || changes['autoCollapseWidth']) {
+      this._initCollapseListeners();
+    }
   }
 
   ngOnDestroy(): void {
     this._destroyCloseListeners();
+    this._destroyCollapseListeners();
 
     this._openSub.unsubscribe();
     this._closeSub.unsubscribe();
@@ -426,6 +439,54 @@ export class Sidebar implements OnChanges, OnDestroy {
 
     if ((e as KeyboardEvent).keyCode === this.keyCode) {
       this.close();
+    }
+  }
+
+
+  // Auto collapse handlers
+  // ==============================================================================================
+
+  private _initCollapseListeners(): void {
+    if (this.autoCollapseHeight || this.autoCollapseWidth) {
+      // In a timeout so that things render first
+      setTimeout(() => {
+        if (!this._onResizeAttached) {
+          window.addEventListener('resize', this._onResize);
+          this._onResizeAttached = true;
+        }
+      });
+    }
+  }
+
+  private _destroyCollapseListeners(): void {
+    if (this._onResizeAttached) {
+      window.removeEventListener('resize', this._onResize);
+      this._onResizeAttached = false;
+    }
+  }
+
+  private _onResize(): void {
+    const winHeight: number = window.innerHeight;
+    const winWidth: number = window.innerWidth;
+
+    if (this.autoCollapseHeight) {
+      if (winHeight <= this.autoCollapseHeight && this.opened) {
+        this._wasCollapsed = true;
+        this.close();
+      } else if (winHeight > this.autoCollapseHeight && this._wasCollapsed) {
+        this.open();
+        this._wasCollapsed = false;
+      }
+    }
+
+    if (this.autoCollapseWidth) {
+      if (winWidth <= this.autoCollapseHeight && this.opened) {
+        this._wasCollapsed = true;
+        this.close();
+      } else if (winWidth > this.autoCollapseHeight && this._wasCollapsed) {
+        this.open();
+        this._wasCollapsed = false;
+      }
     }
   }
 
