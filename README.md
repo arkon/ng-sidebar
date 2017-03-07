@@ -110,6 +110,8 @@ You can also use the `open()` and `close()` functions:
 
 Various class names are attached to the sidebar and container for easier styling.
 
+If you are using Angular 2's default emulated view encapsulation, you may have to use the `/deep/` selector to target the sidebar's classes. Check out [Angular's documentation](https://angular.io/docs/ts/latest/guide/component-styles.html#!#-deep-) for more details.
+
 ### Sidebar
 
 | Class name | Description |
