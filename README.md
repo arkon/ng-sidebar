@@ -50,13 +50,11 @@ import { SidebarModule } from 'ng-sidebar';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, SidebarModule],
+  imports: [BrowserModule, SidebarModule.forRoot()],
   bootstrap: [AppComponent],
 })
 class AppModule {}
 ```
-
-If you're using it in a feature module, you may need to add it as an import in that module as well.
 
 In your app component, simply use add a `<ng-sidebar-container>` wrapper, then place your `<ng-sidebar>`(s) and content within it:
 
