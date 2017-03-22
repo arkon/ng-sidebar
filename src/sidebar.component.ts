@@ -89,6 +89,9 @@ export class Sidebar implements OnChanges, OnDestroy {
   @Input() position: 'start' | 'end' | 'left' | 'right' | 'top' | 'bottom' = 'start';
   @Input() animate: boolean = true;
 
+  @Input() autoCollapseHeight: number;
+  @Input() autoCollapseWidth: number;
+
   @Input() sidebarClass: string;
 
   @Input() ariaLabel: string;
@@ -100,9 +103,6 @@ export class Sidebar implements OnChanges, OnDestroy {
 
   @Input() keyClose: boolean = false;
   @Input() keyCode: number = 27;  // Default to ESCAPE key
-
-  @Input() autoCollapseHeight: number;
-  @Input() autoCollapseWidth: number;
 
   @Output() onOpenStart: EventEmitter<null> = new EventEmitter<null>();
   @Output() onOpened: EventEmitter<null> = new EventEmitter<null>();
