@@ -480,10 +480,10 @@ export class Sidebar implements OnChanges, OnDestroy {
     }
 
     if (this.autoCollapseWidth) {
-      if (winWidth <= this.autoCollapseHeight && this.opened) {
+      if (winWidth <= this.autoCollapseWidth && this.opened) {
         this._wasCollapsed = true;
         this.close();
-      } else if (winWidth > this.autoCollapseHeight && this._wasCollapsed) {
+      } else if (winWidth > this.autoCollapseWidth && this._wasCollapsed) {
         this.open();
         this._wasCollapsed = false;
       }
