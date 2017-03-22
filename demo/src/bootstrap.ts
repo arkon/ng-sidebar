@@ -9,7 +9,7 @@ enableProdMode();
 
 @NgModule({
   declarations: [DemoComponent],
-  imports: [BrowserModule, SidebarModule],
+  imports: [BrowserModule, SidebarModule.forRoot()],
   bootstrap: [DemoComponent],
 })
 class DemoAppModule {}

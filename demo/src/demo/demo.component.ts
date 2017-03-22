@@ -10,6 +10,8 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
         [keyClose]="_keyClose"
         [position]="_POSITIONS[_positionNum]"
         [dockedSize]="'50px'"
+        [autoCollapseHeight]="_autoCollapseHeight"
+        [autoCollapseWidth]="_autoCollapseWidth"
         [closeOnClickOutside]="_closeOnClickOutside"
         [showBackdrop]="_showBackdrop"
         [animate]="_animate"
@@ -37,15 +39,28 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
       <section class="demo-contents">
         <h1>Controls</h1>
 
-        <button class="demo-control" (click)="_toggleOpened()">opened ({{_opened}})</button>
-        <button class="demo-control" (click)="_toggleMode()">mode ({{_MODES[_modeNum]}})</button>
-        <button class="demo-control" (click)="_togglePosition()">position ({{_POSITIONS[_positionNum]}})</button>
-        <button class="demo-control" (click)="_toggleCloseOnClickOutside()">closeOnClickOutside ({{_closeOnClickOutside}})</button>
-        <button class="demo-control" (click)="_toggleShowBackdrop()">showBackdrop ({{_showBackdrop}})</button>
-        <button class="demo-control" (click)="_toggleAnimate()">animate ({{_animate}})</button>
-        <button class="demo-control" (click)="_toggleTrapFocus()">trapFocus ({{_trapFocus}})</button>
-        <button class="demo-control" (click)="_toggleAutoFocus()">autoFocus ({{_autoFocus}})</button>
-        <button class="demo-control" (click)="_toggleKeyClose()">keyClose ({{_keyClose}})</button>
+        <div>
+          <button class="demo-control" (click)="_toggleOpened()">opened ({{_opened}})</button>
+          <button class="demo-control" (click)="_toggleMode()">mode ({{_MODES[_modeNum]}})</button>
+          <button class="demo-control" (click)="_togglePosition()">position ({{_POSITIONS[_positionNum]}})</button>
+        </div>
+
+        <div>
+          <button class="demo-control" (click)="_toggleAutoCollapseHeight()">Auto collapse at 500px height ({{_autoCollapseHeight ? 'true' : 'false'}})</button>
+          <button class="demo-control" (click)="_toggleAutoCollapseWidth()">Auto collapse at 500px width ({{_autoCollapseWidth ? 'true' : 'false'}})</button>
+        </div>
+
+        <div>
+          <button class="demo-control" (click)="_toggleCloseOnClickOutside()">closeOnClickOutside ({{_closeOnClickOutside}})</button>
+          <button class="demo-control" (click)="_toggleShowBackdrop()">showBackdrop ({{_showBackdrop}})</button>
+          <button class="demo-control" (click)="_toggleAnimate()">animate ({{_animate}})</button>
+        </div>
+
+        <div>
+          <button class="demo-control" (click)="_toggleTrapFocus()">trapFocus ({{_trapFocus}})</button>
+          <button class="demo-control" (click)="_toggleAutoFocus()">autoFocus ({{_autoFocus}})</button>
+          <button class="demo-control" (click)="_toggleKeyClose()">keyClose ({{_keyClose}})</button>
+        </div>
 
 
         <h1>Download</h1>
@@ -77,6 +92,8 @@ export class DemoComponent {
   private _trapFocus: boolean = true;
   private _autoFocus: boolean = true;
   private _keyClose: boolean = false;
+  private _autoCollapseHeight: number = null;
+  private _autoCollapseWidth: number = null;
 
   private _MODES: Array<string> = ['over', 'push', 'dock'];
   private _POSITIONS: Array<string> = ['left', 'right', 'top', 'bottom'];
@@ -91,6 +108,14 @@ export class DemoComponent {
     if (this._modeNum === this._MODES.length) {
       this._modeNum = 0;
     }
+  }
+
+  private _toggleAutoCollapseHeight(): void {
+    this._autoCollapseHeight = this._autoCollapseHeight ? null : 500;
+  }
+
+  private _toggleAutoCollapseWidth(): void {
+    this._autoCollapseWidth = this._autoCollapseWidth ? null : 500;
   }
 
   private _togglePosition(): void {
