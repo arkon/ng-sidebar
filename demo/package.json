@@ -19,21 +19,21 @@
     "node": ">=6"
   },
   "dependencies": {
-    "@angular/common": "^2.4.9",
-    "@angular/compiler": "^2.4.9",
-    "@angular/core": "^2.4.9",
-    "@angular/platform-browser": "^2.4.9",
-    "@angular/platform-browser-dynamic": "^2.4.9",
+    "@angular/common": "^4.0.0",
+    "@angular/compiler": "^4.0.0",
+    "@angular/core": "^4.0.0",
+    "@angular/platform-browser": "^4.0.0",
+    "@angular/platform-browser-dynamic": "^4.0.0",
     "es6-shim": "^0.35.3",
     "ng-sidebar": "file:../",
     "reflect-metadata": "^0.1.10",
-    "rxjs": "5.2.0",
-    "zone.js": "^0.7.8"
+    "rxjs": "^5.2.0",
+    "zone.js": "^0.8.5"
   },
   "devDependencies": {
     "gh-pages": "^0.12.0",
-    "node-sass": "^4.5.0",
-    "ts-loader": "^2.0.1",
+    "node-sass": "^4.5.1",
+    "ts-loader": "^2.0.3",
     "typescript": "^2.2.1",
     "webpack": "^1.14.0",
     "webpack-dev-server": "^1.16.2"

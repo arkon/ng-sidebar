@@ -35,19 +35,19 @@
     "prepublish": "npm run build"
   },
   "peerDependencies": {
-    "@angular/core": "^2.3.0",
-    "@angular/common": "^2.3.0"
+    "@angular/core": ">2.3.0",
+    "@angular/common": ">2.3.0"
   },
   "devDependencies": {
-    "@angular/common": "^2.4.9",
-    "@angular/compiler": "^2.4.9",
-    "@angular/compiler-cli": "^2.4.9",
-    "@angular/core": "^2.4.9",
-    "@angular/platform-browser": "^2.4.9",
+    "@angular/common": "^4.0.0",
+    "@angular/compiler": "^4.0.0",
+    "@angular/compiler-cli": "^4.0.0",
+    "@angular/core": "^4.0.0",
+    "@angular/platform-browser": "^4.0.0",
     "rimraf": "^2.6.1",
-    "rxjs": "5.2.0",
+    "rxjs": "^5.2.0",
     "tslint": "^4.5.1",
     "typescript": "^2.2.1",
-    "zone.js": "^0.7.8"
+    "zone.js": "^0.8.5"
   }
 }
