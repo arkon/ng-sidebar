@@ -137,6 +137,8 @@ export class Sidebar implements OnChanges, OnDestroy {
       this._clickEvent = 'touchstart';
     }
 
+    this._normalizePosition();
+
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
 
@@ -166,11 +168,7 @@ export class Sidebar implements OnChanges, OnDestroy {
 
     if (changes['position']) {
       // Handle "start" and "end" aliases
-      if (this.position === 'start') {
-        this.position = this._isLTR ? 'left' : 'right';
-      } else if (this.position === 'end') {
-        this.position = this._isLTR ? 'right' : 'left';
-      }
+      this._normalizePosition();
 
       // Emit change in timeout to allow for position change to be rendered first
       setTimeout(() => {
@@ -546,6 +544,18 @@ export class Sidebar implements OnChanges, OnDestroy {
     }
 
     return 0;
+  }
+
+  /**
+   * "Normalizes" position. For example, "start" would be "left" if the page is
+   * LTR.
+   */
+  private _normalizePosition(): void {
+    if (this.position === 'start') {
+      this.position = this._isLTR ? 'left' : 'right';
+    } else if (this.position === 'end') {
+      this.position = this._isLTR ? 'right' : 'left';
+    }
   }
 
   /**
