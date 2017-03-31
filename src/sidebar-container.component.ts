@@ -127,10 +127,16 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
         }
       });
     }
-
     return {
-      margin: `${top}px ${right}px ${bottom}px ${left}px`
+      top:`${top}px`,
+      left:`${left}px`,
+      right:`${right}px`,
+      bottom:`${bottom}px`,
+      position:"relative"
     } as CSSStyleDeclaration;
+//     return {
+//       margin: `${top}px ${right}px ${bottom}px ${left}px`
+//     } as CSSStyleDeclaration;
   }
 
   /**
