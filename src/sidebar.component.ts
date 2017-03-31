@@ -7,6 +7,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Output,
   SimpleChanges,
   ViewChild,
@@ -79,7 +80,7 @@ import { SidebarService } from './sidebar.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class Sidebar implements OnChanges, OnDestroy {
+export class Sidebar implements OnInit, OnChanges, OnDestroy {
   // `openedChange` allows for "2-way" data binding
   @Input() opened: boolean = false;
   @Output() openedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -151,6 +152,16 @@ export class Sidebar implements OnChanges, OnDestroy {
 
     this._openSub = this._sidebarService.onOpen(this.open);
     this._closeSub = this._sidebarService.onClose(this.close);
+  }
+
+  ngOnInit() {
+    // Prevents an initial transition hiccup in IE (issue #59)
+    if (this.animate) {
+      this.animate = false;
+      setTimeout(() => {
+        this.animate = true;
+      });
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
