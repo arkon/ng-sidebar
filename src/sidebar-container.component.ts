@@ -104,9 +104,26 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
         top = 0,
         bottom = 0;
 
+    let resetStyles = {
+      margin: null,
+      position: null,
+      top: null,
+      right: null,
+      bottom: null,
+      left: null
+    };
+
     if (this._sidebars) {
-      this._sidebars.forEach((sidebar: Sidebar) => {
-        if (sidebar && (sidebar.mode === 'push' && sidebar.opened) || sidebar.mode === 'dock') {
+      const sidebars: Array<Sidebar> = this._sidebars.toArray();
+      for (let i = 0; i < sidebars.length; i++) {
+        const sidebar: Sidebar = sidebars[i];
+
+        if (!sidebar) {
+          return;
+        }
+
+        if ((sidebar.opened && (sidebar.mode === 'push' || sidebar.mode === 'slide')) ||
+            sidebar.mode === 'dock') {
           switch (sidebar.position) {
             case 'left':
               left = Math.max(left, sidebar._width);
@@ -124,13 +141,26 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
               bottom = Math.max(bottom, sidebar._height);
               break;
           }
+
+          // Slide content over to accommodate sidebar
+          // TODO: this is sort of weird when there's multiple sidebars, isn't it?
+          if (sidebar.mode === 'slide') {
+            return Object.assign(resetStyles, {
+              position: 'relative',
+              top: `${top}px`,
+              right: `${right}px`,
+              bottom: `${bottom}px`,
+              left: `${left}px`
+            }) as CSSStyleDeclaration;
+          }
         }
-      });
+      }
     }
 
-    return {
+    // Split available space between sidebar and content
+    return Object.assign(resetStyles, {
       margin: `${top}px ${right}px ${bottom}px ${left}px`
-    } as CSSStyleDeclaration;
+    }) as CSSStyleDeclaration;
   }
 
   /**

@@ -85,7 +85,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   @Input() opened: boolean = false;
   @Output() openedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  @Input() mode: 'over' | 'push' | 'dock' = 'over';
+  @Input() mode: 'over' | 'push' | 'slide' | 'dock' = 'over';
   @Input() dockedSize: string = '0px';
   @Input() position: 'start' | 'end' | 'left' | 'right' | 'top' | 'bottom' = 'start';
   @Input() animate: boolean = true;
@@ -103,7 +103,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   @Input() closeOnClickOutside: boolean = false;
 
   @Input() keyClose: boolean = false;
-  @Input() keyCode: number = 27;  // Default to ESCAPE key
+  @Input() keyCode: number = 27;  // Default to ESC key
 
   @Output() onOpenStart: EventEmitter<null> = new EventEmitter<null>();
   @Output() onOpened: EventEmitter<null> = new EventEmitter<null>();
