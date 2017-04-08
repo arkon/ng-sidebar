@@ -149,6 +149,7 @@ If you are using Angular 2's default emulated view encapsulation, you may have t
 
 | Property name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
+| sidebarContentClass | string | | Additional class name on the `div` wrapping the page contents. |
 | backdropClass | string | | Additional class name on the overlay element. |
 | showBackdrop | boolean | `false` | Controls the backdrop state of the sidebar container. This should be two-way bound. |
 | allowSidebarBackdropControl | boolean | `true` | Determines if the container component respects the sidebar's `showBackdrop` input option. |

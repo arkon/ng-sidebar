@@ -27,7 +27,9 @@ import { Sidebar } from './sidebar.component';
       class="ng-sidebar__backdrop"
       [ngClass]="backdropClass"></div>
 
-    <div class="ng-sidebar__content" [ngStyle]="_getStyles()">
+    <div class="ng-sidebar__content"
+      [ngClass]="sidebarContentClass"
+      [ngStyle]="_getStyles()">
       <ng-content></ng-content>
     </div>
   `,
@@ -60,6 +62,7 @@ import { Sidebar } from './sidebar.component';
   encapsulation: ViewEncapsulation.None
 })
 export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy {
+  @Input() sidebarContentClass: string;
   @Input() backdropClass: string;
   @Input() allowSidebarBackdropControl: boolean = true;
 
