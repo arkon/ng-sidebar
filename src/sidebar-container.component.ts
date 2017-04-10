@@ -4,13 +4,15 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   Output,
-  SimpleChanges,
   QueryList,
+  Renderer2,
+  SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 
@@ -38,6 +40,11 @@ import { Sidebar } from './sidebar.component';
       position: relative;
     }
 
+      ng-sidebar-container.ng-sidebar-container--animate {
+        -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
+        transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
+      }
+
     .ng-sidebar__backdrop {
       background: #000;
       height: 100%;
@@ -56,12 +63,16 @@ import { Sidebar } from './sidebar.component';
       overflow: auto;
     }
   `],
+  host: {
+    '[class.ng-sidebar-container--animate]': 'animate'
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy {
   @Input() backdropClass: string;
   @Input() allowSidebarBackdropControl: boolean = true;
+  @Input() animate: boolean = true;
 
   @Input() showBackdrop: boolean = false;
   @Output() showBackdropChange = new EventEmitter<boolean>();
@@ -70,7 +81,10 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   @ContentChildren(Sidebar)
   _sidebars: QueryList<Sidebar>;
 
-  constructor(private _ref: ChangeDetectorRef) {}
+  constructor(
+    private _ref: ChangeDetectorRef,
+    private _renderer: Renderer2,
+    private _el: ElementRef) {}
 
   ngAfterContentInit(): void {
     this._subscribe();
@@ -104,26 +118,25 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
         top = 0,
         bottom = 0;
 
-    let resetStyles = {
-      margin: null,
-      position: null,
-      top: null,
-      right: null,
-      bottom: null,
-      left: null
-    };
-
     if (this._sidebars) {
-      const sidebars: Array<Sidebar> = this._sidebars.toArray();
-      for (let i = 0; i < sidebars.length; i++) {
-        const sidebar: Sidebar = sidebars[i];
+      this._sidebars.forEach((sidebar: Sidebar) => {
+        if (!sidebar) { return; }
 
-        if (!sidebar) {
-          return;
+        if (sidebar.mode === 'slide') {
+          if (sidebar.opened) {
+            const isLeftOrTop: boolean = sidebar.position === 'left' || sidebar.position === 'top';
+            const isLeftOrRight: boolean = sidebar.position === 'left' || sidebar.position === 'right';
+
+            const transformDir: string = isLeftOrRight ? 'X' : 'Y';
+            const transformAmt: string = `${isLeftOrTop ? '' : '-'}${isLeftOrRight ? sidebar._width : sidebar._height}`;
+
+            this._renderer.setStyle(this._el.nativeElement, 'transform', `translate${transformDir}(${transformAmt}px)`);
+          } else {
+            this._renderer.removeStyle(this._el.nativeElement, 'transform');
+          }
         }
 
-        if ((sidebar.opened && (sidebar.mode === 'push' || sidebar.mode === 'slide')) ||
-            sidebar.mode === 'dock') {
+        if ((sidebar.mode === 'push' && sidebar.opened) || sidebar.mode === 'dock') {
           switch (sidebar.position) {
             case 'left':
               left = Math.max(left, sidebar._width);
@@ -141,26 +154,13 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
               bottom = Math.max(bottom, sidebar._height);
               break;
           }
-
-          // Slide content over to accommodate sidebar
-          // TODO: this is sort of weird when there's multiple sidebars, isn't it?
-          if (sidebar.mode === 'slide') {
-            return Object.assign(resetStyles, {
-              position: 'relative',
-              top: `${top}px`,
-              right: `${right}px`,
-              bottom: `${bottom}px`,
-              left: `${left}px`
-            }) as CSSStyleDeclaration;
-          }
         }
-      }
+      });
     }
 
-    // Split available space between sidebar and content
-    return Object.assign(resetStyles, {
+    return {
       margin: `${top}px ${right}px ${bottom}px ${left}px`
-    }) as CSSStyleDeclaration;
+    } as CSSStyleDeclaration;
   }
 
   /**

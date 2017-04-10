@@ -125,7 +125,7 @@ If you are using Angular 2's default emulated view encapsulation, you may have t
 | `ng-sidebar--push` | When `mode` is `'push'`. |
 | `ng-sidebar--dock` | When `mode` is `'dock'`. |
 | `ng-sidebar--inert` | Ignores pointer clicks. Class is applied when the sidebar is closed. |
-| `ng-sidebar--animate` | When `animate` is `true`. |
+| `ng-sidebar--animate` | When `animate` is `true` for a sidebar. |
 
 ### Backdrop
 
@@ -137,6 +137,7 @@ If you are using Angular 2's default emulated view encapsulation, you may have t
 
 | Class name | Description |
 | ---------- | ----------- |
+| `ng-sidebar-container--animate` | When `animate` is `true` for the container. |
 | `ng-sidebar__content` | Class of the wrapper `div` for the page content. |
 
 
@@ -152,6 +153,7 @@ If you are using Angular 2's default emulated view encapsulation, you may have t
 | backdropClass | string | | Additional class name on the overlay element. |
 | showBackdrop | boolean | `false` | Controls the backdrop state of the sidebar container. This should be two-way bound. |
 | allowSidebarBackdropControl | boolean | `true` | Determines if the container component respects the sidebar's `showBackdrop` input option. |
+| animate | boolean | `true` | Animates the container sliding. |
 
 #### Outputs
 

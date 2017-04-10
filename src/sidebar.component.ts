@@ -265,14 +265,16 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     let transformStyle: string = 'none';
     let marginStyle = {};
 
-    if (!this.opened) {
+    const isSlideMode: boolean = this.mode === 'slide';
+
+    if (!this.opened || isSlideMode) {
       transformStyle = `translate${(this.position === 'left' || this.position === 'right') ? 'X' : 'Y'}`;
 
       const isLeftOrTop: boolean = this.position === 'left' || this.position === 'top';
       const isDockMode: boolean = this.mode === 'dock';
 
       // We use 110% for non-docked modes in an attempt to hide any box-shadow
-      const translateAmt: string = `${isLeftOrTop ? '-' : ''}${isDockMode ? '100' : '110'}%`;
+      const translateAmt: string = `${isLeftOrTop ? '-' : ''}${(isDockMode || isSlideMode) ? '100' : '110'}%`;
 
       if (isDockMode && parseFloat(this.dockedSize) > 0) {
         const marginPos = `margin${this._upperCaseFirst(this.position)}`;
