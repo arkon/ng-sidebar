@@ -62,6 +62,11 @@ import { Sidebar } from './sidebar.component';
       height: 100%;
       overflow: auto;
     }
+
+      .ng-sidebar-container--animate .ng-sidebar__content {
+        -webkit-transition: margin 0.3s cubic-bezier(0, 0, 0.3, 1);
+        transition: margin 0.3s cubic-bezier(0, 0, 0.3, 1);
+      }
   `],
   host: {
     '[class.ng-sidebar-container--animate]': 'animate'
