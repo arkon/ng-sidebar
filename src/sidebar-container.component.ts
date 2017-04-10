@@ -185,6 +185,8 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
 
         sidebar.onModeChange.subscribe(() => this._markForCheck());
         sidebar.onPositionChange.subscribe(() => this._markForCheck());
+
+        sidebar._onRerender.subscribe(() => this._markForCheck());
       });
     }
   }
@@ -203,6 +205,8 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
 
         sidebar.onModeChange.unsubscribe();
         sidebar.onPositionChange.unsubscribe();
+
+        sidebar._onRerender.unsubscribe();
       });
     }
   }

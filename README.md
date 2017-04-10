@@ -104,6 +104,16 @@ You can also use the `open()` and `close()` functions:
 ```
 
 
+## Functions
+
+The sidebar has a few public functions:
+
+| Function | Description |
+| `open()` | Opens the sidebar. |
+| `close()` | Closes the sidebar. |
+| `triggerRerender()` | Manually trigger a re-render of the container. Useful if the sidebar contents might change. |
+
+
 ## Styling
 
 Various class names are attached to the sidebar and container for easier styling.

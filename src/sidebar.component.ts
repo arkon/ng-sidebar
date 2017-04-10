@@ -113,6 +113,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   @Output() onPositionChange: EventEmitter<string> = new EventEmitter<string>();
 
   /** @internal */
+  @Output() _onRerender: EventEmitter<null> = new EventEmitter<null>();
+
+  /** @internal */
   @ViewChild('sidebar')
   _elSidebar: ElementRef;
 
@@ -252,6 +255,13 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
         }
       });
     }
+  }
+
+  /**
+   * Manually trigger a re-render of the container. Useful if the sidebar contents might change.
+   */
+  triggerRerender(): void {
+    this._onRerender.emit();
   }
 
   /**
