@@ -35,8 +35,8 @@
     "prepublish": "npm run build"
   },
   "peerDependencies": {
-    "@angular/core": ">=2.3.0",
-    "@angular/common": ">=2.3.0"
+    "@angular/core": ">=4.0.0",
+    "@angular/common": ">=4.0.0"
   },
   "devDependencies": {
     "@angular/common": "^4.0.1",
