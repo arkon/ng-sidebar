@@ -109,6 +109,7 @@ You can also use the `open()` and `close()` functions:
 The sidebar has a few public functions:
 
 | Function | Description |
+| -------- | ----------- |
 | `open()` | Opens the sidebar. |
 | `close()` | Closes the sidebar. |
 | `triggerRerender()` | Manually trigger a re-render of the container. Useful if the sidebar contents might change. |
