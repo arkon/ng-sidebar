@@ -1,8 +1,6 @@
 import {
   ModuleWithProviders,
-  NgModule,
-  Optional,
-  SkipSelf
+  NgModule
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -22,11 +20,5 @@ export class SidebarModule {
     return {
       ngModule: SidebarModule
     };
-  }
-
-  constructor (@Optional() @SkipSelf() parentModule: SidebarModule) {
-    if (parentModule) {
-      throw new Error('SidebarModule is already loaded. Import it in the AppModule only');
-    }
   }
 }
