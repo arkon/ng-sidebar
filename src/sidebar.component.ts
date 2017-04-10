@@ -85,7 +85,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   @Input() opened: boolean = false;
   @Output() openedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  @Input() mode: 'over' | 'push' | 'dock' = 'over';
+  @Input() mode: 'over' | 'push' | 'slide' | 'dock' = 'over';
   @Input() dockedSize: string = '0px';
   @Input() position: 'start' | 'end' | 'left' | 'right' | 'top' | 'bottom' = 'start';
   @Input() animate: boolean = true;
@@ -103,7 +103,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   @Input() closeOnClickOutside: boolean = false;
 
   @Input() keyClose: boolean = false;
-  @Input() keyCode: number = 27;  // Default to ESCAPE key
+  @Input() keyCode: number = 27;  // Default to ESC key
 
   @Output() onOpenStart: EventEmitter<null> = new EventEmitter<null>();
   @Output() onOpened: EventEmitter<null> = new EventEmitter<null>();
@@ -265,14 +265,15 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     let transformStyle: string = 'none';
     let marginStyle = {};
 
-    if (!this.opened) {
+    const isSlideMode: boolean = this.mode === 'slide';
+
+    if (!this.opened || isSlideMode) {
       transformStyle = `translate${(this.position === 'left' || this.position === 'right') ? 'X' : 'Y'}`;
 
       const isLeftOrTop: boolean = this.position === 'left' || this.position === 'top';
       const isDockMode: boolean = this.mode === 'dock';
 
-      // We use 110% for non-docked modes in an attempt to hide any box-shadow
-      const translateAmt: string = `${isLeftOrTop ? '-' : ''}${isDockMode ? '100' : '110'}%`;
+      const translateAmt: string = `${isLeftOrTop ? '-' : ''}100%`;
 
       if (isDockMode && parseFloat(this.dockedSize) > 0) {
         const marginPos = `margin${this._upperCaseFirst(this.position)}`;

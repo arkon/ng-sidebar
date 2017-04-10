@@ -95,7 +95,7 @@ export class DemoComponent {
   private _autoCollapseHeight: number = null;
   private _autoCollapseWidth: number = null;
 
-  private _MODES: Array<string> = ['over', 'push', 'dock'];
+  private _MODES: Array<string> = ['over', 'push', 'slide', 'dock'];
   private _POSITIONS: Array<string> = ['left', 'right', 'top', 'bottom'];
 
   private _toggleOpened(): void {

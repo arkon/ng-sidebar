@@ -4,13 +4,15 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   Output,
-  SimpleChanges,
   QueryList,
+  Renderer2,
+  SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 
@@ -40,6 +42,11 @@ import { Sidebar } from './sidebar.component';
       position: relative;
     }
 
+      ng-sidebar-container.ng-sidebar-container--animate {
+        -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
+        transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
+      }
+
     .ng-sidebar__backdrop {
       background: #000;
       height: 100%;
@@ -57,7 +64,15 @@ import { Sidebar } from './sidebar.component';
       height: 100%;
       overflow: auto;
     }
+
+      .ng-sidebar-container--animate .ng-sidebar__content {
+        -webkit-transition: margin 0.3s cubic-bezier(0, 0, 0.3, 1);
+        transition: margin 0.3s cubic-bezier(0, 0, 0.3, 1);
+      }
   `],
+  host: {
+    '[class.ng-sidebar-container--animate]': 'animate'
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
@@ -65,6 +80,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   @Input() sidebarContentClass: string;
   @Input() backdropClass: string;
   @Input() allowSidebarBackdropControl: boolean = true;
+  @Input() animate: boolean = true;
 
   @Input() showBackdrop: boolean = false;
   @Output() showBackdropChange = new EventEmitter<boolean>();
@@ -73,7 +89,10 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   @ContentChildren(Sidebar)
   _sidebars: QueryList<Sidebar>;
 
-  constructor(private _ref: ChangeDetectorRef) {}
+  constructor(
+    private _ref: ChangeDetectorRef,
+    private _renderer: Renderer2,
+    private _el: ElementRef) {}
 
   ngAfterContentInit(): void {
     this._subscribe();
@@ -109,7 +128,23 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
 
     if (this._sidebars) {
       this._sidebars.forEach((sidebar: Sidebar) => {
-        if (sidebar && (sidebar.mode === 'push' && sidebar.opened) || sidebar.mode === 'dock') {
+        if (!sidebar) { return; }
+
+        if (sidebar.mode === 'slide') {
+          if (sidebar.opened) {
+            const isLeftOrTop: boolean = sidebar.position === 'left' || sidebar.position === 'top';
+            const isLeftOrRight: boolean = sidebar.position === 'left' || sidebar.position === 'right';
+
+            const transformDir: string = isLeftOrRight ? 'X' : 'Y';
+            const transformAmt: string = `${isLeftOrTop ? '' : '-'}${isLeftOrRight ? sidebar._width : sidebar._height}`;
+
+            this._renderer.setStyle(this._el.nativeElement, 'transform', `translate${transformDir}(${transformAmt}px)`);
+          } else {
+            this._renderer.removeStyle(this._el.nativeElement, 'transform');
+          }
+        }
+
+        if ((sidebar.mode === 'push' && sidebar.opened) || sidebar.mode === 'dock') {
           switch (sidebar.position) {
             case 'left':
               left = Math.max(left, sidebar._width);
