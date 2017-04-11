@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 
 import { Sidebar } from './sidebar.component';
-import { Utils } from './utils';
+import { isBrowser } from './utils';
 
 // Based on https://github.com/angular/material2/tree/master/src/lib/sidenav
 @Component({
@@ -93,11 +93,8 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
     private _ref: ChangeDetectorRef,
     private _el: ElementRef) {}
 
+  @isBrowser
   ngAfterContentInit(): void {
-    if (!Utils.isBrowser()) {
-      return;
-    }
-
     this._subscribe();
 
     this._sidebars.changes.subscribe(() => {
@@ -106,21 +103,16 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
     });
   }
 
+  @isBrowser
   ngOnChanges(changes: SimpleChanges): void {
-    if (!Utils.isBrowser()) {
-      return;
-    }
 
     if (changes['showBackdrop']) {
       this.showBackdropChange.emit(changes['showBackdrop'].currentValue);
     }
   }
 
+  @isBrowser
   ngOnDestroy(): void {
-    if (!Utils.isBrowser()) {
-      return;
-    }
-
     this._unsubscribe();
   }
 

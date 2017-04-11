@@ -17,7 +17,7 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
 
 import { SidebarService } from './sidebar.service';
-import { Utils } from './utils';
+import { isBrowser, upperCaseFirst, isLTR, isIOS } from './utils';
 
 @Component({
   selector: 'ng-sidebar',
@@ -138,7 +138,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   constructor(
     @Inject(DOCUMENT) private _document /*: HTMLDocument */,
     private _sidebarService: SidebarService) {
-    if (Utils.isIOS() && 'ontouchstart' in window) {
+    if (isIOS() && 'ontouchstart' in window) {
       this._clickEvent = 'touchstart';
     }
 
@@ -158,11 +158,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     this._closeSub = this._sidebarService.onClose(this.close);
   }
 
+  @isBrowser
   ngOnInit() {
-    if (!Utils.isBrowser()) {
-      return;
-    }
-
     // Prevents an initial transition hiccup in IE (issue #59)
     if (this.animate) {
       this.animate = false;
@@ -172,11 +169,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  @isBrowser
   ngOnChanges(changes: SimpleChanges): void {
-    if (!Utils.isBrowser()) {
-      return;
-    }
-
     if (changes['opened']) {
       if (changes['opened'].currentValue) {
         this.open();
@@ -208,11 +202,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  @isBrowser
   ngOnDestroy(): void {
-    if (!Utils.isBrowser()) {
-      return;
-    }
-
     this._destroyCloseListeners();
     this._destroyCollapseListeners();
 
@@ -227,11 +218,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   /**
    * Opens the sidebar and emits the appropriate events.
    */
+  @isBrowser
   open(): void {
-    if (!Utils.isBrowser()) {
-      return;
-    }
-
     this.opened = true;
     this.openedChange.emit(true);
 
@@ -254,11 +242,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   /**
    * Closes the sidebar and emits the appropriate events.
    */
+  @isBrowser
   close(): void {
-    if (!Utils.isBrowser()) {
-      return;
-    }
-
     this.opened = false;
     this.openedChange.emit(false);
 
@@ -281,11 +266,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   /**
    * Manually trigger a re-render of the container. Useful if the sidebar contents might change.
    */
+  @isBrowser
   triggerRerender(): void {
-    if (!Utils.isBrowser()) {
-      return;
-    }
-
     this._onRerender.emit();
   }
 
@@ -311,7 +293,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       const translateAmt: string = `${isLeftOrTop ? '-' : ''}100%`;
 
       if (isDockMode && parseFloat(this.dockedSize) > 0) {
-        const marginPos = `margin${Utils.upperCaseFirst(this.position)}`;
+        const marginPos = `margin${upperCaseFirst(this.position)}`;
 
         marginStyle = {
           [marginPos]: this.dockedSize
@@ -598,12 +580,12 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * LTR.
    */
   private _normalizePosition(): void {
-    const isLTR: boolean = Utils.isLTR(this._document);
+    const ltr: boolean = isLTR(this._document);
 
     if (this.position === 'start') {
-      this.position = isLTR ? 'left' : 'right';
+      this.position = ltr ? 'left' : 'right';
     } else if (this.position === 'end') {
-      this.position = isLTR ? 'right' : 'left';
+      this.position = ltr ? 'right' : 'left';
     }
   }
 }
