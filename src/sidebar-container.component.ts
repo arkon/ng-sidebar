@@ -151,7 +151,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
             const transformDir: string = isLeftOrRight ? 'X' : 'Y';
             const transformAmt: string = `${isLeftOrTop ? '' : '-'}${isLeftOrRight ? sidebar._width : sidebar._height}`;
 
-            this._el.nativeElement.style.transform = `translate${transformDir}(${transformAmt}px)`;
+            transformStyle = `translate${transformDir}(${transformAmt}px)`;
           }
 
           this._el.nativeElement.style.transform = transformStyle;
