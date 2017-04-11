@@ -17,6 +17,7 @@ import { DOCUMENT } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
 
 import { SidebarService } from './sidebar.service';
+import { Utils } from './utils';
 
 @Component({
   selector: 'ng-sidebar',
@@ -137,7 +138,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   constructor(
     @Inject(DOCUMENT) private _document /*: HTMLDocument */,
     private _sidebarService: SidebarService) {
-    if (this._isIOS() && 'ontouchstart' in window) {
+    if (Utils.isIOS() && 'ontouchstart' in window) {
       this._clickEvent = 'touchstart';
     }
 
@@ -286,7 +287,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       const translateAmt: string = `${isLeftOrTop ? '-' : ''}100%`;
 
       if (isDockMode && parseFloat(this.dockedSize) > 0) {
-        const marginPos = `margin${this._upperCaseFirst(this.position)}`;
+        const marginPos = `margin${Utils.upperCaseFirst(this.position)}`;
 
         marginStyle = {
           [marginPos]: this.dockedSize
@@ -573,48 +574,12 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * LTR.
    */
   private _normalizePosition(): void {
+    const isLTR: boolean = Utils.isLTR(this._document);
+
     if (this.position === 'start') {
-      this.position = this._isLTR ? 'left' : 'right';
+      this.position = isLTR ? 'left' : 'right';
     } else if (this.position === 'end') {
-      this.position = this._isLTR ? 'right' : 'left';
+      this.position = isLTR ? 'right' : 'left';
     }
-  }
-
-  /**
-   * Makes a string's first letter uppercase.
-   *
-   * @return {string} Original string, but with first letter in upper case.
-   */
-  private _upperCaseFirst(str) {
-    return str.charAt(0).toUpperCase() + str.substring(1);
-  }
-
-  /**
-   * Returns whether the page is in LTR mode. Defaults to `true` if it can't be computed.
-   *
-   * @return {boolean} Page's language direction is left-to-right.
-   */
-  private get _isLTR(): boolean {
-    let dir: string = 'ltr';
-
-    // If `window` doesn't exist, this isn't in the context of a browser...
-    if (window) {
-      if (window.getComputedStyle) {
-        dir = window.getComputedStyle(this._document.body, null).getPropertyValue('direction');
-      } else {
-        dir = this._document.body.currentStyle.direction;
-      }
-    }
-
-    return dir === 'ltr';
-  }
-
-  /**
-   * Returns whether or not the current device is an iOS device.
-   *
-   * @return {boolean} Device is an iOS device (i.e. iPod touch/iPhone/iPad).
-   */
-  private _isIOS(): boolean {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
   }
 }
