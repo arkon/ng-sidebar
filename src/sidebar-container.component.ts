@@ -11,12 +11,12 @@ import {
   OnDestroy,
   Output,
   QueryList,
-  Renderer2,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 
 import { Sidebar } from './sidebar.component';
+import { Utils } from './utils';
 
 // Based on https://github.com/angular/material2/tree/master/src/lib/sidenav
 @Component({
@@ -31,7 +31,7 @@ import { Sidebar } from './sidebar.component';
 
     <div class="ng-sidebar__content"
       [ngClass]="sidebarContentClass"
-      [ngStyle]="_getStyles()">
+      [ngStyle]="_getContentStyles()">
       <ng-content></ng-content>
     </div>
   `,
@@ -91,10 +91,13 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
 
   constructor(
     private _ref: ChangeDetectorRef,
-    private _renderer: Renderer2,
     private _el: ElementRef) {}
 
   ngAfterContentInit(): void {
+    if (!Utils.isBrowser()) {
+      return;
+    }
+
     this._subscribe();
 
     this._sidebars.changes.subscribe(() => {
@@ -104,12 +107,20 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (!Utils.isBrowser()) {
+      return;
+    }
+
     if (changes['showBackdrop']) {
       this.showBackdropChange.emit(changes['showBackdrop'].currentValue);
     }
   }
 
   ngOnDestroy(): void {
+    if (!Utils.isBrowser()) {
+      return;
+    }
+
     this._unsubscribe();
   }
 
@@ -120,7 +131,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
    *
    * @return {CSSStyleDeclaration} margin styles for the page content.
    */
-  _getStyles(): CSSStyleDeclaration {
+  _getContentStyles(): CSSStyleDeclaration {
     let left = 0,
         right = 0,
         top = 0,
@@ -131,6 +142,8 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
         if (!sidebar) { return; }
 
         if (sidebar.mode === 'slide') {
+          let transformStyle = null;
+
           if (sidebar.opened) {
             const isLeftOrTop: boolean = sidebar.position === 'left' || sidebar.position === 'top';
             const isLeftOrRight: boolean = sidebar.position === 'left' || sidebar.position === 'right';
@@ -138,10 +151,10 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
             const transformDir: string = isLeftOrRight ? 'X' : 'Y';
             const transformAmt: string = `${isLeftOrTop ? '' : '-'}${isLeftOrRight ? sidebar._width : sidebar._height}`;
 
-            this._renderer.setStyle(this._el.nativeElement, 'transform', `translate${transformDir}(${transformAmt}px)`);
-          } else {
-            this._renderer.removeStyle(this._el.nativeElement, 'transform');
+            this._el.nativeElement.style.transform = `translate${transformDir}(${transformAmt}px)`;
           }
+
+          this._el.nativeElement.style.transform = transformStyle;
         }
 
         if ((sidebar.mode === 'push' && sidebar.opened) || sidebar.mode === 'dock') {

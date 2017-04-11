@@ -159,6 +159,10 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
+    if (!Utils.isBrowser()) {
+      return;
+    }
+
     // Prevents an initial transition hiccup in IE (issue #59)
     if (this.animate) {
       this.animate = false;
@@ -169,6 +173,10 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (!Utils.isBrowser()) {
+      return;
+    }
+
     if (changes['opened']) {
       if (changes['opened'].currentValue) {
         this.open();
@@ -201,6 +209,10 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (!Utils.isBrowser()) {
+      return;
+    }
+
     this._destroyCloseListeners();
     this._destroyCollapseListeners();
 
@@ -216,6 +228,10 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * Opens the sidebar and emits the appropriate events.
    */
   open(): void {
+    if (!Utils.isBrowser()) {
+      return;
+    }
+
     this.opened = true;
     this.openedChange.emit(true);
 
@@ -239,6 +255,10 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * Closes the sidebar and emits the appropriate events.
    */
   close(): void {
+    if (!Utils.isBrowser()) {
+      return;
+    }
+
     this.opened = false;
     this.openedChange.emit(false);
 
@@ -262,6 +282,10 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * Manually trigger a re-render of the container. Useful if the sidebar contents might change.
    */
   triggerRerender(): void {
+    if (!Utils.isBrowser()) {
+      return;
+    }
+
     this._onRerender.emit();
   }
 

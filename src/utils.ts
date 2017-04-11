@@ -16,8 +16,7 @@ export class Utils {
   static isLTR(doc: HTMLDocument): boolean {
     let dir: string = 'ltr';
 
-    // If `window` doesn't exist, this isn't in the context of a browser...
-    if (window) {
+    if (Utils.isBrowser()) {
       if (window.getComputedStyle) {
         dir = window.getComputedStyle(doc.body, null).getPropertyValue('direction');
       } else {
@@ -34,6 +33,16 @@ export class Utils {
    * @return {boolean} Device is an iOS device (i.e. iPod touch/iPhone/iPad).
    */
   static isIOS(): boolean {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+    return Utils.isBrowser() && /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+  }
+
+  /**
+   * Returns whether we're in the context of a browser (assuming if `window`
+   * exists, then we're in a browser).
+   *
+   * @return {boolean} In browser context.
+   */
+  static isBrowser(): boolean {
+    return typeof window !== 'undefined';
   }
 }
