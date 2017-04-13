@@ -95,6 +95,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
 
   @isBrowser
   ngAfterContentInit(): void {
+    this._onToggle();
     this._subscribe();
 
     this._sidebars.changes.subscribe(() => {
@@ -105,7 +106,6 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
 
   @isBrowser
   ngOnChanges(changes: SimpleChanges): void {
-
     if (changes['showBackdrop']) {
       this.showBackdropChange.emit(changes['showBackdrop'].currentValue);
     }

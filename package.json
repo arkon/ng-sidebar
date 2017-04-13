@@ -1,7 +1,7 @@
 {
   "name": "ng-sidebar",
   "version": "4.1.0",
-  "description": "Angular 2+ sidebar component.",
+  "description": "Angular sidebar component.",
   "repository": {
     "type": "git",
     "url": "https://github.com/arkon/ng-sidebar.git"
