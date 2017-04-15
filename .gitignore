@@ -4,6 +4,9 @@ ehthumbs.db
 Icon?
 Thumbs.db
 
+# VSCode
+.vscode
+
 # Logs
 logs
 *.log
