@@ -101,6 +101,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   @Input() autoFocus: boolean = true;
 
   @Input() showBackdrop: boolean = false;
+  @Input() closeOnClickBackdrop: boolean = false;
   @Input() closeOnClickOutside: boolean = false;
 
   @Input() keyClose: boolean = false;

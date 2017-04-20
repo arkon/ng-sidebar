@@ -27,7 +27,8 @@ import { isBrowser } from './utils';
     <div *ngIf="showBackdrop"
       aria-hidden="true"
       class="ng-sidebar__backdrop"
-      [ngClass]="backdropClass"></div>
+      [ngClass]="backdropClass"
+      (click)="_onBackdropClicked()"></div>
 
     <div class="ng-sidebar__content"
       [ngClass]="sidebarContentClass"
@@ -174,6 +175,20 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
     return {
       margin: `${top}px ${right}px ${bottom}px ${left}px`
     } as CSSStyleDeclaration;
+  }
+
+  /**
+   * @internal
+   *
+   * Closes sidebars when the backdrop is clicked, if they have the
+   * `closeOnClickBackdrop` option set.
+   */
+  _onBackdropClicked(): void {
+    this._sidebars.forEach((sidebar: Sidebar) => {
+      if(sidebar.opened && sidebar.showBackdrop && sidebar.closeOnClickBackdrop) {
+        sidebar.close();
+      }
+    });
   }
 
   /**
