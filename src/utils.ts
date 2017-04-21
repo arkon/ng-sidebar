@@ -12,14 +12,14 @@ export function upperCaseFirst(str) {
  *
  * @return {boolean} Page's language direction is left-to-right.
  */
-export function isLTR(doc: HTMLDocument): boolean {
+export function isLTR(): boolean {
   let dir: string = 'ltr';
 
   if (window) {
     if (window.getComputedStyle) {
-      dir = window.getComputedStyle(doc.body, null).getPropertyValue('direction');
+      dir = window.getComputedStyle(document.body, null).getPropertyValue('direction');
     } else {
-      dir = (doc.body as any).currentStyle.direction;
+      dir = (document.body as any).currentStyle.direction;
     }
   }
 

@@ -3,7 +3,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -13,7 +12,6 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { DOCUMENT } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
 import guard from 'ts-guard-decorator';
 
@@ -137,7 +135,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   private _onResizeAttached: boolean = false;
 
   constructor(
-    @Inject(DOCUMENT) private _document /*: HTMLDocument */,
     private _sidebarService: SidebarService) {
     if (isIOS() && 'ontouchstart' in window) {
       this._clickEvent = 'touchstart';
@@ -345,7 +342,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * Sets focus to the first focusable element inside the sidebar.
    */
   private _focusFirstItem(): void {
-    if (this._focusableElements && this._focusableElements.length) {
+    if (this._focusableElements && this._focusableElements.length > 0) {
       this._focusableElements[0].focus();
     }
   }
@@ -368,7 +365,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       this._elSidebar.nativeElement.querySelectorAll(this._focusableElementsString)) as Array<HTMLElement>;
 
     if (this.opened) {
-      this._focusedBeforeOpen = this._document.activeElement as HTMLElement;
+      this._focusedBeforeOpen = document.activeElement as HTMLElement;
 
       // Restore focusability, with previous tabindex attributes
       for (let el of this._focusableElements) {
@@ -385,7 +382,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
         this._focusFirstItem();
       }
 
-      this._document.addEventListener('focus', this._onFocusTrap, true);
+      document.addEventListener('focus', this._onFocusTrap, true);
     } else {
       // Manually make all focusable elements unfocusable, saving existing tabindex attributes
       for (let el of this._focusableElements) {
@@ -397,7 +394,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
         el.setAttribute('tabindex', '-1');
       }
 
-      this._document.removeEventListener('focus', this._onFocusTrap, true);
+      document.removeEventListener('focus', this._onFocusTrap, true);
 
       // Set focus back to element before the sidebar was opened
       if (this.autoFocus && this._isModeOver && this._focusedBeforeOpen) {
@@ -418,12 +415,12 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       // In a timeout so that things render first
       setTimeout(() => {
         if (this.closeOnClickOutside && !this._onClickOutsideAttached) {
-          this._document.addEventListener(this._clickEvent, this._onClickOutside);
+          document.addEventListener(this._clickEvent, this._onClickOutside);
           this._onClickOutsideAttached = true;
         }
 
         if (this.keyClose && !this._onKeyDownAttached) {
-          this._document.addEventListener('keydown', this._onKeyDown);
+          document.addEventListener('keydown', this._onKeyDown);
           this._onKeyDownAttached = true;
         }
       });
@@ -435,12 +432,12 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    */
   private _destroyCloseListeners(): void {
     if (this._onClickOutsideAttached) {
-      this._document.removeEventListener(this._clickEvent, this._onClickOutside);
+      document.removeEventListener(this._clickEvent, this._onClickOutside);
       this._onClickOutsideAttached = false;
     }
 
     if (this._onKeyDownAttached) {
-      this._document.removeEventListener('keydown', this._onKeyDown);
+      document.removeEventListener('keydown', this._onKeyDown);
       this._onKeyDownAttached = false;
     }
   }
@@ -581,7 +578,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * LTR.
    */
   private _normalizePosition(): void {
-    const ltr: boolean = isLTR(this._document);
+    const ltr: boolean = isLTR();
 
     if (this.position === 'start') {
       this.position = ltr ? 'left' : 'right';
