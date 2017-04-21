@@ -17,8 +17,6 @@
   "compileOnSave": false,
   "buildOnSave": false,
   "angularCompilerOptions": {
-    "strictMetadataEmit": true,
-    "genDir": "factories",
-    "debug": true
+    "skipTemplateCodegen": true
   }
 }

@@ -36,20 +36,10 @@ export function isIOS(): boolean {
 }
 
 /**
- * A decorator that prevents a method from running if it's not in browser context.
+ * Returns whether or not this is running in a browser context.
+ *
+ * @return {boolean} Running in a browser context.
  */
-export function isBrowser(target: Object, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) {
-    let originalMethod = descriptor.value;
-
-    descriptor.value = function(...args: any[]) {
-      if (typeof window === 'undefined') {
-        return;
-      }
-
-      // Run original method
-      // tslint:disable-next-line:no-invalid-this
-      return originalMethod.apply(this, args);
-    };
-
-    return descriptor;
+export function isBrowser(): boolean {
+  return typeof window !== 'undefined';
 }

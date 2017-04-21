@@ -15,6 +15,7 @@ import {
 } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Subscription } from 'rxjs/Subscription';
+import guard from 'ts-guard-decorator';
 
 import { SidebarService } from './sidebar.service';
 import { isBrowser, upperCaseFirst, isLTR, isIOS } from './utils';
@@ -158,7 +159,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     this._closeSub = this._sidebarService.onClose(this.close);
   }
 
-  @isBrowser
+  @guard(isBrowser())
   ngOnInit() {
     // Prevents an initial transition hiccup in IE (issue #59)
     if (this.animate) {
@@ -169,7 +170,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  @isBrowser
+  @guard(isBrowser())
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['opened']) {
       if (changes['opened'].currentValue) {
@@ -202,7 +203,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  @isBrowser
+  @guard(isBrowser())
   ngOnDestroy(): void {
     this._destroyCloseListeners();
     this._destroyCollapseListeners();
@@ -218,7 +219,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   /**
    * Opens the sidebar and emits the appropriate events.
    */
-  @isBrowser
+  @guard(isBrowser())
   open(): void {
     this.opened = true;
     this.openedChange.emit(true);
@@ -242,7 +243,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   /**
    * Closes the sidebar and emits the appropriate events.
    */
-  @isBrowser
+  @guard(isBrowser())
   close(): void {
     this.opened = false;
     this.openedChange.emit(false);
@@ -266,7 +267,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   /**
    * Manually trigger a re-render of the container. Useful if the sidebar contents might change.
    */
-  @isBrowser
+  @guard(isBrowser())
   triggerRerender(): void {
     this._onRerender.emit();
   }
