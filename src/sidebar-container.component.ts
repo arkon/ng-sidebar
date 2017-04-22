@@ -186,7 +186,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
    */
   _onBackdropClicked(): void {
     this._sidebars.forEach((sidebar: Sidebar) => {
-      if(sidebar.opened && sidebar.showBackdrop && sidebar.closeOnClickBackdrop) {
+      if (sidebar.opened && sidebar.showBackdrop && sidebar.closeOnClickBackdrop) {
         sidebar.close();
       }
     });

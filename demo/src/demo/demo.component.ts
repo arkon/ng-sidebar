@@ -13,6 +13,7 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
         [autoCollapseHeight]="_autoCollapseHeight"
         [autoCollapseWidth]="_autoCollapseWidth"
         [closeOnClickOutside]="_closeOnClickOutside"
+        [closeOnClickBackdrop]="_closeOnClickBackdrop"
         [showBackdrop]="_showBackdrop"
         [animate]="_animate"
         [trapFocus]="_trapFocus"
@@ -52,6 +53,7 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
 
         <div>
           <button class="demo-control" (click)="_toggleCloseOnClickOutside()">closeOnClickOutside ({{_closeOnClickOutside}})</button>
+          <button class="demo-control" (click)="_toggleCloseOnClickBackdrop()">closeOnClickBackdrop ({{_closeOnClickBackdrop}})</button>
           <button class="demo-control" (click)="_toggleShowBackdrop()">showBackdrop ({{_showBackdrop}})</button>
           <button class="demo-control" (click)="_toggleAnimate()">animate ({{_animate}})</button>
         </div>
@@ -87,6 +89,7 @@ export class DemoComponent {
   private _modeNum: number = 0;
   private _positionNum: number = 0;
   private _closeOnClickOutside: boolean = false;
+  private _closeOnClickBackdrop: boolean = false;
   private _showBackdrop: boolean = false;
   private _animate: boolean = true;
   private _trapFocus: boolean = true;
@@ -128,6 +131,10 @@ export class DemoComponent {
 
   private _toggleCloseOnClickOutside(): void {
     this._closeOnClickOutside = !this._closeOnClickOutside;
+  }
+
+  private _toggleCloseOnClickBackdrop(): void {
+    this._closeOnClickBackdrop = !this._closeOnClickBackdrop;
   }
 
   private _toggleShowBackdrop(): void {
