@@ -14,7 +14,6 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import guard from 'ts-guard-decorator';
 
 import { Sidebar } from './sidebar.component';
 import { isBrowser } from './utils';
@@ -95,8 +94,9 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
     private _ref: ChangeDetectorRef,
     private _el: ElementRef) {}
 
-  @guard(isBrowser())
   ngAfterContentInit(): void {
+    if (!isBrowser()) { return; }
+
     this._onToggle();
     this._subscribe();
 
@@ -106,15 +106,17 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
     });
   }
 
-  @guard(isBrowser())
   ngOnChanges(changes: SimpleChanges): void {
+    if (!isBrowser()) { return; }
+
     if (changes['showBackdrop']) {
       this.showBackdropChange.emit(changes['showBackdrop'].currentValue);
     }
   }
 
-  @guard(isBrowser())
   ngOnDestroy(): void {
+    if (!isBrowser()) { return; }
+
     this._unsubscribe();
   }
 

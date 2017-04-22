@@ -13,7 +13,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import guard from 'ts-guard-decorator';
 
 import { SidebarService } from './sidebar.service';
 import { isBrowser, upperCaseFirst, isLTR, isIOS } from './utils';
@@ -157,8 +156,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     this._closeSub = this._sidebarService.onClose(this.close);
   }
 
-  @guard(isBrowser())
   ngOnInit() {
+    if (!isBrowser()) { return; }
+
     // Prevents an initial transition hiccup in IE (issue #59)
     if (this.animate) {
       this.animate = false;
@@ -168,8 +168,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  @guard(isBrowser())
   ngOnChanges(changes: SimpleChanges): void {
+    if (!isBrowser()) { return; }
+
     if (changes['opened']) {
       if (changes['opened'].currentValue) {
         this.open();
@@ -201,8 +202,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  @guard(isBrowser())
   ngOnDestroy(): void {
+    if (!isBrowser()) { return; }
+
     this._destroyCloseListeners();
     this._destroyCollapseListeners();
 
@@ -217,8 +219,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   /**
    * Opens the sidebar and emits the appropriate events.
    */
-  @guard(isBrowser())
   open(): void {
+    if (!isBrowser()) { return; }
+
     this.opened = true;
     this.openedChange.emit(true);
 
@@ -241,8 +244,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   /**
    * Closes the sidebar and emits the appropriate events.
    */
-  @guard(isBrowser())
   close(): void {
+    if (!isBrowser()) { return; }
+
     this.opened = false;
     this.openedChange.emit(false);
 
@@ -265,8 +269,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   /**
    * Manually trigger a re-render of the container. Useful if the sidebar contents might change.
    */
-  @guard(isBrowser())
   triggerRerender(): void {
+    if (!isBrowser()) { return; }
+
     this._onRerender.emit();
   }
 
