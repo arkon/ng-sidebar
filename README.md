@@ -191,6 +191,7 @@ If you are using Angular 2's default emulated view encapsulation, you may have t
 | trapFocus | boolean | `true` | Keeps focus within the sidebar when open. |
 | autoFocus | boolean | `true` | Automatically focus the first focusable element in the sidebar when opened. |
 | showBackdrop | boolean | `false` | If a translucent black backdrop overlay should appear over the page contents when the sidebar is opened.  This is ignored if the sidebar's parent container has its `allowSidebarBackdropControl` property set to `true`. |
+| closeOnClickBackdrop | boolean | `false` | Whether clicking on the backdrop of the open sidebar will close it. |
 | closeOnClickOutside | boolean | `false` | Whether clicking outside of the open sidebar will close it. |
 | keyClose | boolean | `false` | Close the sidebar when a keyboard button is pressed. |
 | keyCode | number | `27` | The [key code](http://keycode.info/) for `keyClose`. |
