@@ -22,5 +22,4 @@ lib/
 factories/
 
 # Built demo files
-demo/public/style.css
-demo/public/bundle.js
+demo/dist

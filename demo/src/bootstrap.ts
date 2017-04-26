@@ -5,6 +5,8 @@ import { SidebarModule } from 'ng-sidebar';
 
 import { DemoComponent } from './demo/demo.component';
 
+import './styles/styles.scss';
+
 enableProdMode();
 
 @NgModule({

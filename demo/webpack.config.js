@@ -1,34 +1,66 @@
 const path = require('path');
 const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const root = function (args) {
+  return path.join.apply(path, [__dirname].concat(...arguments));
+};
 
 module.exports = {
   entry: [
-    './src/polyfills.ts',
-    './src/bootstrap.ts'
+    root('src/polyfills.ts'),
+    root('src/bootstrap.ts')
   ],
+
   output: {
-    path: path.join(__dirname, 'public'),
-    filename: 'bundle.js',
-    publicPath: '/'
+    path: root('dist'),
+    filename: 'js/[name].js'
   },
+
   resolve: {
-    cache: true,
-    root: __dirname,
-    extensions: ['', '.ts', '.js']
+    extensions: ['.js', '.ts', '.scss', '.html']
   },
+
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.ts$/,
         exclude: [/node_modules\//],
         loader: 'ts-loader'
+      },
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                'sourceMap': true,
+                'importLoaders': 1
+              }
+            },
+            'sass-loader'
+          ]
+        })
       }
     ]
   },
+
   plugins: [
-    new webpack.NoErrorsPlugin(),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+
+    new HtmlWebpackPlugin({
+      template: root('public/index.html'),
+      inject: true
+    }),
+
+    new ExtractTextPlugin({
+      filename: 'css/[name].css'
+    }),
+
     new webpack.optimize.UglifyJsPlugin({
       compressor: {
         warnings: false,
@@ -37,10 +69,20 @@ module.exports = {
       output: {
         comments: false
       }
-    })
+    }),
+
+    new CopyWebpackPlugin([{
+      from: root('public')
+    }]),
+
+    new webpack.ContextReplacementPlugin(
+      /angular(\\|\/)core(\\|\/)@angular/,
+      root('src')
+    )
   ],
+
   devServer: {
-    contentBase: path.resolve(__dirname, 'public'),
+    contentBase: root('public'),
     stats: { chunkModules: false },
   }
 };
