@@ -316,8 +316,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   /**
    * @internal
    *
-   * Handles the `transitionend` event on the sidebar to emit the onOpened/onClosed events after
-   * the transform transition is completed.
+   * Handles the `transitionend` event on the sidebar to emit the onOpened/onClosed events after the transform
+   * transition is completed.
    */
   _onTransitionEnd(e: TransitionEvent): void {
     if (e.target === this._elSidebar.nativeElement && e.propertyName.endsWith('transform')) {
@@ -340,6 +340,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   // ==============================================================================================
 
   /**
+   * @internal
+   *
    * Returns whether focus should be trapped within the sidebar.
    *
    * @return {boolean} Trap focus inside sidebar.
@@ -349,6 +351,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
+   * @internal
+   *
    * Sets focus to the first focusable element inside the sidebar.
    */
   private _focusFirstItem(): void {
@@ -358,6 +362,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
+   * @internal
+   *
    * Loops focus back to the start of the sidebar if set to do so.
    */
   private _onFocusTrap(e: FocusEvent): void {
@@ -367,8 +373,10 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
-   * Handles the ability to focus sidebar elements when it's open/closed to ensure that the sidebar is inert
-   * when appropriate.
+   * @internal
+   *
+   * Handles the ability to focus sidebar elements when it's open/closed to ensure that the sidebar is inert when
+   * appropriate.
    */
   private _setFocused(): void {
     this._focusableElements = Array.from(
@@ -378,7 +386,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       this._focusedBeforeOpen = document.activeElement as HTMLElement;
 
       // Restore focusability, with previous tabindex attributes
-      for (let el of this._focusableElements) {
+      for (const el of this._focusableElements) {
         const prevTabIndex = el.getAttribute('__tabindex__');
         if (prevTabIndex !== null) {
           el.setAttribute('tabindex', prevTabIndex);
@@ -395,13 +403,13 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       document.addEventListener('focus', this._onFocusTrap, true);
     } else {
       // Manually make all focusable elements unfocusable, saving existing tabindex attributes
-      for (let el of this._focusableElements) {
+      for (const el of this._focusableElements) {
         const existingTabIndex = el.getAttribute('tabindex');
+        el.setAttribute('tabindex', '-1');
+
         if (existingTabIndex !== null) {
           el.setAttribute('__tabindex__', existingTabIndex);
         }
-
-        el.setAttribute('tabindex', '-1');
       }
 
       document.removeEventListener('focus', this._onFocusTrap, true);
@@ -418,6 +426,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   // ==============================================================================================
 
   /**
+   * @internal
+   *
    * Initializes event handlers for the closeOnClickOutside and keyClose options.
    */
   private _initCloseListeners(): void {
@@ -438,6 +448,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
+   * @internal
+   *
    * Destroys the event handlers from _initCloseListeners.
    */
   private _destroyCloseListeners(): void {
@@ -453,6 +465,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
+   * @internal
+   *
    * Handles `click` events on anything while the sidebar is open for the closeOnClickOutside option.
    * Programatically closes the sidebar if a click occurs outside the sidebar.
    *
@@ -465,6 +479,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
+   * @internal
+   *
    * Handles the `keydown` event for the keyClose option.
    *
    * @param e {KeyboardEvent} Normalized keydown event.
@@ -481,6 +497,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   // Auto collapse handlers
   // ==============================================================================================
 
+  /** @internal */
   private _initCollapseListeners(): void {
     if (this.autoCollapseHeight || this.autoCollapseWidth) {
       // In a timeout so that things render first
@@ -493,6 +510,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  /** @internal */
   private _destroyCollapseListeners(): void {
     if (this._onResizeAttached) {
       window.removeEventListener('resize', this._onResize);
@@ -500,6 +518,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  /** @internal */
   private _onResize(): void {
     const winHeight: number = window.innerHeight;
     const winWidth: number = window.innerWidth;
@@ -528,24 +547,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
   // Helpers
   // ==============================================================================================
-
-  /**
-   * Returns whether the sidebar is "docked" -- i.e. it is closed but in dock mode.
-   *
-   * @return {boolean} Sidebar is docked.
-   */
-  private get _isDocked(): boolean {
-    return this.mode === 'dock' && this.dockedSize && !this.opened;
-  }
-
-  /**
-   * Returns whether the sidebar is set to the default "over" mode.
-   *
-   * @return {boolean} Sidebar mode is "over".
-   */
-  private get _isModeOver(): boolean {
-    return this.mode === 'over';
-  }
 
   /**
    * @internal
@@ -584,8 +585,31 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
-   * "Normalizes" position. For example, "start" would be "left" if the page is
-   * LTR.
+   * @internal
+   *
+   * Returns whether the sidebar is "docked" -- i.e. it is closed but in dock mode.
+   *
+   * @return {boolean} Sidebar is docked.
+   */
+  private get _isDocked(): boolean {
+    return this.mode === 'dock' && this.dockedSize && !this.opened;
+  }
+
+  /**
+   * @internal
+   *
+   * Returns whether the sidebar is set to the default "over" mode.
+   *
+   * @return {boolean} Sidebar mode is "over".
+   */
+  private get _isModeOver(): boolean {
+    return this.mode === 'over';
+  }
+
+  /**
+   * @internal
+   *
+   * "Normalizes" position. For example, "start" would be "left" if the page is LTR.
    */
   private _normalizePosition(): void {
     const ltr: boolean = isLTR();

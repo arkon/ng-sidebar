@@ -195,6 +195,8 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   }
 
   /**
+   * @internal
+   *
    * Subscribes from all sidebar events to react properly.
    */
   private _subscribe(): void {
@@ -215,6 +217,8 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   }
 
   /**
+   * @internal
+   *
    * Unsubscribes from all sidebars.
    */
   private _unsubscribe(): void {
@@ -235,6 +239,8 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   }
 
   /**
+   * @internal
+   *
    * Triggers change detection to recompute styles.
    */
   private _markForCheck(): void {
@@ -242,6 +248,8 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   }
 
   /**
+   * @internal
+   *
    * Check if we should show the backdrop when a sidebar is toggled.
    */
   private _onToggle(): void {
