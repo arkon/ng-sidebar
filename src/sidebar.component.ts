@@ -227,12 +227,12 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
     this.onOpenStart.emit();
 
-    this._elSidebar.nativeElement.addEventListener('transitionend', this._onTransitionEnd);
+    if (this.animate) {
+      this._elSidebar.nativeElement.addEventListener('transitionend', this._onTransitionEnd);
+    } else {
+      this._setFocused();
+      this._initCloseListeners();
 
-    this._setFocused();
-    this._initCloseListeners();
-
-    if (!this.animate) {
       setTimeout(() => {
         if (this.opened) {
           this.onOpened.emit();
@@ -252,12 +252,12 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
     this.onCloseStart.emit();
 
-    this._elSidebar.nativeElement.addEventListener('transitionend', this._onTransitionEnd);
+    if (this.animate) {
+      this._elSidebar.nativeElement.addEventListener('transitionend', this._onTransitionEnd);
+    } else {
+      this._setFocused();
+      this._destroyCloseListeners();
 
-    this._setFocused();
-    this._destroyCloseListeners();
-
-    if (!this.animate) {
       setTimeout(() => {
         if (!this.opened) {
           this.onClosed.emit();
@@ -321,9 +321,13 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    */
   _onTransitionEnd(e: TransitionEvent): void {
     if (e.target === this._elSidebar.nativeElement && e.propertyName.endsWith('transform')) {
+      this._setFocused();
+
       if (this.opened) {
+        this._initCloseListeners();
         this.onOpened.emit();
       } else {
+        this._destroyCloseListeners();
         this.onClosed.emit();
       }
 
@@ -376,7 +380,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       // Restore focusability, with previous tabindex attributes
       for (let el of this._focusableElements) {
         const prevTabIndex = el.getAttribute('__tabindex__');
-        if (prevTabIndex) {
+        if (prevTabIndex !== null) {
           el.setAttribute('tabindex', prevTabIndex);
           el.removeAttribute('__tabindex__');
         } else {
@@ -393,7 +397,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       // Manually make all focusable elements unfocusable, saving existing tabindex attributes
       for (let el of this._focusableElements) {
         const existingTabIndex = el.getAttribute('tabindex');
-        if (existingTabIndex) {
+        if (existingTabIndex !== null) {
           el.setAttribute('__tabindex__', existingTabIndex);
         }
 
