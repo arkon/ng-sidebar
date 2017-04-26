@@ -202,6 +202,8 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   private _subscribe(): void {
     if (this._sidebars) {
       this._sidebars.forEach((sidebar: Sidebar) => {
+        if (!sidebar) { return; }
+
         sidebar.onOpenStart.subscribe(() => this._onToggle());
         sidebar.onOpened.subscribe(() => this._markForCheck());
 
@@ -224,6 +226,8 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   private _unsubscribe(): void {
     if (this._sidebars) {
       this._sidebars.forEach((sidebar: Sidebar) => {
+        if (!sidebar) { return; }
+
         sidebar.onOpenStart.unsubscribe();
         sidebar.onOpened.unsubscribe();
 
