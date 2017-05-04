@@ -208,8 +208,12 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     this._destroyCloseListeners();
     this._destroyCollapseListeners();
 
-    this._openSub.unsubscribe();
-    this._closeSub.unsubscribe();
+    if (this._openSub) {
+      this._openSub.unsubscribe();
+    }
+    if (this._closeSub) {
+      this._closeSub.unsubscribe();
+    }
   }
 
 

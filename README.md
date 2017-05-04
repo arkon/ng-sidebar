@@ -134,6 +134,7 @@ If you are using Angular 2's default emulated view encapsulation, you may have t
 | `ng-sidebar--bottom` | When `position` is `'bottom'`. |
 | `ng-sidebar--over` | When `mode` is `'over'`. |
 | `ng-sidebar--push` | When `mode` is `'push'`. |
+| `ng-sidebar--slide` | When `mode` is `'slide'`. |
 | `ng-sidebar--dock` | When `mode` is `'dock'`. |
 | `ng-sidebar--inert` | Ignores pointer clicks. Class is applied when the sidebar is closed. |
 | `ng-sidebar--animate` | When `animate` is `true` for a sidebar. |
@@ -180,9 +181,9 @@ If you are using Angular 2's default emulated view encapsulation, you may have t
 | Property name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
 | opened | boolean | `false` | Controls the opened state of the sidebar. This should be two-way bound. |
-| mode | `'over' | 'push' | 'dock'` | `'over'` | Display the sidebar over the content when open, beside it when open, or slightly open. |
+| mode | `'over', 'push', 'slide', 'dock'` | `'over'` | Display the sidebar over the content when open, beside it when open, slide the content over, or slightly open. |
 | dockedSize | string | `'0px'` | When `mode` is set to `'dock'`, this value indicates how much of the sidebar is still visible when "closed". |
-| position | `'left' | 'right' | 'top' | 'bottom' | 'start' | 'end'` | `'start'` | What side the sidebar should be docked to. `'start'` and `'end'` are aliases that respect the page's language (e.g. `start` is the same as `left` for English, but would be `right` for Hebrew. |
+| position | `'left', 'right', 'top', 'bottom', 'start', 'end'` | `'start'` | What side the sidebar should be docked to. `'start'` and `'end'` are aliases that respect the page's language (e.g. `start` is the same as `left` for English, but would be `right` for Hebrew. |
 | autoCollapseHeight | number | | Window height in pixels in which to automatically close the sidebar. |
 | autoCollapseWidth | number | | Window width in pixels in which to automatically close the sidebar. |
 | animate | boolean | `true` | Animate the opening/closing of the sidebar. |
