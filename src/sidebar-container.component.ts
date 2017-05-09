@@ -3,27 +3,23 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChildren,
   ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   Output,
-  QueryList,
-  SimpleChanges,
-  ViewEncapsulation
+  SimpleChanges
 } from '@angular/core';
 
 import { Sidebar } from './sidebar.component';
+import { SidebarService } from './sidebar.service';
 import { isBrowser } from './utils';
 
 // Based on https://github.com/angular/material2/tree/master/src/lib/sidenav
 @Component({
   selector: 'ng-sidebar-container',
   template: `
-    <ng-content select="ng-sidebar"></ng-content>
-
     <div *ngIf="showBackdrop"
       aria-hidden="true"
       class="ng-sidebar__backdrop"
@@ -37,13 +33,13 @@ import { isBrowser } from './utils';
     </div>
   `,
   styles: [`
-    ng-sidebar-container {
+    :host {
       box-sizing: border-box;
       display: block;
       position: relative;
     }
 
-      ng-sidebar-container.ng-sidebar-container--animate {
+      :host.ng-sidebar-container--animate {
         -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
         transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
       }
@@ -66,7 +62,7 @@ import { isBrowser } from './utils';
       overflow: auto;
     }
 
-      .ng-sidebar-container--animate .ng-sidebar__content {
+      :host.ng-sidebar-container--animate .ng-sidebar__content {
         -webkit-transition: margin 0.3s cubic-bezier(0, 0, 0.3, 1);
         transition: margin 0.3s cubic-bezier(0, 0, 0.3, 1);
       }
@@ -74,8 +70,7 @@ import { isBrowser } from './utils';
   host: {
     '[class.ng-sidebar-container--animate]': 'animate'
   },
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy {
   @Input() sidebarContentClass: string;
@@ -87,22 +82,21 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   @Output() showBackdropChange = new EventEmitter<boolean>();
 
   /** @internal */
-  @ContentChildren(Sidebar)
-  _sidebars: QueryList<Sidebar>;
+  _sidebars: Sidebar[] =  new Array<Sidebar>();
 
   constructor(
     private _ref: ChangeDetectorRef,
-    private _el: ElementRef) {}
+    private _el: ElementRef,
+    private _sidebarService: SidebarService) {}
 
   ngAfterContentInit(): void {
     if (!isBrowser()) { return; }
 
     this._onToggle();
-    this._subscribe();
 
-    this._sidebars.changes.subscribe(() => {
-      this._unsubscribe();
-      this._subscribe();
+    this._sidebarService.onRegistry((sidebar) => {
+      this._sidebars.push(sidebar);
+      this._subscribe(sidebar);
     });
   }
 
@@ -197,25 +191,19 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   /**
    * @internal
    *
-   * Subscribes from all sidebar events to react properly.
+   * Subscribes from a sidebar events to react properly.
    */
-  private _subscribe(): void {
-    if (this._sidebars) {
-      this._sidebars.forEach((sidebar: Sidebar) => {
-        if (!sidebar) { return; }
+  private _subscribe(sidebar: Sidebar): void {
+    sidebar.onOpenStart.subscribe(() => this._onToggle());
+    sidebar.onOpened.subscribe(() => this._markForCheck());
 
-        sidebar.onOpenStart.subscribe(() => this._onToggle());
-        sidebar.onOpened.subscribe(() => this._markForCheck());
+    sidebar.onCloseStart.subscribe(() => this._onToggle());
+    sidebar.onClosed.subscribe(() => this._markForCheck());
 
-        sidebar.onCloseStart.subscribe(() => this._onToggle());
-        sidebar.onClosed.subscribe(() => this._markForCheck());
+    sidebar.onModeChange.subscribe(() => this._markForCheck());
+    sidebar.onPositionChange.subscribe(() => this._markForCheck());
 
-        sidebar.onModeChange.subscribe(() => this._markForCheck());
-        sidebar.onPositionChange.subscribe(() => this._markForCheck());
-
-        sidebar._onRerender.subscribe(() => this._markForCheck());
-      });
-    }
+    sidebar._onRerender.subscribe(() => this._markForCheck());
   }
 
   /**
@@ -260,7 +248,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
     if (this._sidebars && this.allowSidebarBackdropControl) {
       let hasOpen = false;
 
-      const _sidebars = this._sidebars.toArray();
+      const _sidebars: Sidebar[] = [...this._sidebars];
       for (let i = 0; i < _sidebars.length; i++) {
         const sidebar: Sidebar = _sidebars[i];
 
@@ -275,6 +263,8 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
       this.showBackdropChange.emit(hasOpen);
     }
 
-    this._markForCheck();
+    setTimeout(() => {
+      this._markForCheck();
+    });
   }
 }
