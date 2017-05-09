@@ -31,8 +31,6 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
       <p><a closeSidebar>This will close the sidebar too</a></p>
     </ng-sidebar>
 
-    <demo-second></demo-second>
-
     <header class="demo-header">
       <button (click)="_toggleOpened()" class="demo-header__toggle">Toggle sidebar</button>
       <span>ng-sidebar</span>
