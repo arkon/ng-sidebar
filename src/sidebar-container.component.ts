@@ -82,7 +82,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   @Output() showBackdropChange = new EventEmitter<boolean>();
 
   /** @internal */
-  _sidebars: Sidebar[] =  new Array<Sidebar>();
+  _sidebars: Sidebar[] =  [];
 
   constructor(
     private _ref: ChangeDetectorRef,
