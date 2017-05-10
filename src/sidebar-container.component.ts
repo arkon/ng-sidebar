@@ -94,7 +94,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
 
     this._onToggle();
 
-    this._sidebarService.onRegistry((sidebar) => {
+    this._sidebarService.onRegister((sidebar) => {
       this._sidebars.push(sidebar);
       this._subscribe(sidebar);
     });

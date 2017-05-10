@@ -9,7 +9,7 @@ import { Sidebar } from './sidebar.component';
 export class SidebarService {
   private _openObserver: Subject<void> = new Subject<void>();
   private _closeObserver: Subject<void> = new Subject<void>();
-  private _registryObserver: ReplaySubject<Sidebar> = new ReplaySubject<Sidebar>();
+  private _registerObserver: ReplaySubject<Sidebar> = new ReplaySubject<Sidebar>();
 
   open(): void {
     this._openObserver.next();
@@ -19,8 +19,8 @@ export class SidebarService {
     this._closeObserver.next();
   }
 
-  registry(sidebar: Sidebar) {
-    this._registryObserver.next(sidebar);
+  register(sidebar: Sidebar) {
+    this._registerObserver.next(sidebar);
   }
 
   onOpen(fn: () => void): Subscription {
@@ -31,7 +31,7 @@ export class SidebarService {
     return this._closeObserver.subscribe(fn);
   }
 
-  onRegistry(fn: (sidebar: Sidebar) => void): Subscription {
-    return this._registryObserver.subscribe(fn);
+  onRegister(fn: (sidebar: Sidebar) => void): Subscription {
+    return this._registerObserver.subscribe(fn);
   }
 }

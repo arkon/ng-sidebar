@@ -157,7 +157,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     if (!isBrowser()) { return; }
 
-    this._sidebarService.registry(this);
+    this._sidebarService.register(this);
 
     // Prevents an initial transition hiccup in IE (issue #59)
     if (this.animate) {
