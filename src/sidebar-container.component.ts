@@ -248,9 +248,8 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
     if (this._sidebars && this.allowSidebarBackdropControl) {
       let hasOpen = false;
 
-      const _sidebars: Sidebar[] = [...this._sidebars];
-      for (let i = 0; i < _sidebars.length; i++) {
-        const sidebar: Sidebar = _sidebars[i];
+      for (let i = 0; i < this._sidebars.length; i++) {
+        const sidebar: Sidebar = this._sidebars[i];
 
         // Show backdrop if a single open sidebar has it set
         if (sidebar.opened && sidebar.showBackdrop) {
