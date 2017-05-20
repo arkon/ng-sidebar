@@ -37,6 +37,7 @@ import { isBrowser, upperCaseFirst, isLTR, isIOS } from './utils';
       overflow: auto;
       pointer-events: auto;
       position: fixed;
+      touch-action: auto;
       will-change: initial;
       z-index: 99999999;
     }
@@ -67,6 +68,7 @@ import { isBrowser, upperCaseFirst, isLTR, isIOS } from './utils';
 
     .ng-sidebar--inert {
       pointer-events: none;
+      touch-action: none;
       will-change: transform;
     }
 
