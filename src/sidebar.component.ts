@@ -9,8 +9,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild,
-  ViewEncapsulation
+  ViewChild
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -76,8 +75,7 @@ import { isBrowser, upperCaseFirst, isLTR, isIOS } from './utils';
       transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
     }
   `],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Sidebar implements OnInit, OnChanges, OnDestroy {
   // `openedChange` allows for "2-way" data binding
@@ -159,6 +157,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     if (!isBrowser()) { return; }
 
+    this._sidebarService.register(this);
+
     // Prevents an initial transition hiccup in IE (issue #59)
     if (this.animate) {
       this.animate = false;
@@ -194,7 +194,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
 
     if (changes['mode']) {
-      this.onModeChange.emit(changes['mode'].currentValue);
+      setTimeout(() => {
+        this.onModeChange.emit(changes['mode'].currentValue);
+      });
     }
 
     if (changes['autoCollapseHeight'] || changes['autoCollapseWidth']) {
@@ -231,18 +233,20 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
     this.onOpenStart.emit();
 
-    if (this.animate) {
-      this._elSidebar.nativeElement.addEventListener('transitionend', this._onTransitionEnd);
-    } else {
-      this._setFocused();
-      this._initCloseListeners();
+    setTimeout(() => {
+      if (this.animate) {
+        this._elSidebar.nativeElement.addEventListener('transitionend', this._onTransitionEnd);
+      } else {
+        this._setFocused();
+        this._initCloseListeners();
 
-      setTimeout(() => {
-        if (this.opened) {
-          this.onOpened.emit();
-        }
-      });
-    }
+        setTimeout(() => {
+          if (this.opened) {
+            this.onOpened.emit();
+          }
+        });
+      }
+    });
   }
 
   /**
@@ -256,18 +260,20 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
     this.onCloseStart.emit();
 
-    if (this.animate) {
-      this._elSidebar.nativeElement.addEventListener('transitionend', this._onTransitionEnd);
-    } else {
-      this._setFocused();
-      this._destroyCloseListeners();
+    setTimeout(() => {
+      if (this.animate) {
+        this._elSidebar.nativeElement.addEventListener('transitionend', this._onTransitionEnd);
+      } else {
+        this._setFocused();
+        this._destroyCloseListeners();
 
-      setTimeout(() => {
-        if (!this.opened) {
-          this.onClosed.emit();
-        }
-      });
-    }
+        setTimeout(() => {
+          if (!this.opened) {
+            this.onClosed.emit();
+          }
+        });
+      }
+    });
   }
 
   /**
