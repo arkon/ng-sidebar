@@ -240,11 +240,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
         this._setFocused();
         this._initCloseListeners();
 
-        setTimeout(() => {
-          if (this.opened) {
-            this.onOpened.emit();
-          }
-        });
+        if (this.opened) {
+          this.onOpened.emit();
+        }
       }
     });
   }
@@ -267,11 +265,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
         this._setFocused();
         this._destroyCloseListeners();
 
-        setTimeout(() => {
-          if (!this.opened) {
-            this.onClosed.emit();
-          }
-        });
+        if (!this.opened) {
+          this.onClosed.emit();
+        }
       }
     });
   }

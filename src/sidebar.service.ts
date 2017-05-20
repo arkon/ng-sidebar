@@ -19,7 +19,7 @@ export class SidebarService {
     this._closeObserver.next();
   }
 
-  register(sidebar: Sidebar) {
+  register(sidebar: Sidebar): void {
     this._registerObserver.next(sidebar);
   }
 

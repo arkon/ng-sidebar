@@ -84,7 +84,7 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
 })
 export class DemoComponent {
   private _opened: boolean = false;
-  private _modeNum: number = 1;
+  private _modeNum: number = 0;
   private _positionNum: number = 0;
   private _closeOnClickOutside: boolean = false;
   private _closeOnClickBackdrop: boolean = false;
@@ -178,17 +178,4 @@ export class DemoComponent {
   private _onAnimationDone(e: AnimationTransitionEvent): void {
     console.info('Animation done', e);
   }
-}
-
-
-@Component({
-  selector: 'demo-container',
-  template: `
-  <ng-sidebar-container>
-    <demo></demo>
-    </ng-sidebar-container>
-  `
-})
-export class DemoContainerComponent {
-
 }

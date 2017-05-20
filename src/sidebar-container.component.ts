@@ -82,7 +82,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   @Output() showBackdropChange = new EventEmitter<boolean>();
 
   /** @internal */
-  _sidebars: Sidebar[] =  [];
+  private _sidebars: Array<Sidebar> = [];
 
   constructor(
     private _ref: ChangeDetectorRef,
@@ -233,30 +233,12 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   /**
    * @internal
    *
-   * Triggers change detection to recompute styles.
-   */
-  private _markForCheck(): void {
-    this._ref.markForCheck();
-  }
-
-  /**
-   * @internal
-   *
    * Check if we should show the backdrop when a sidebar is toggled.
    */
   private _onToggle(): void {
     if (this._sidebars && this.allowSidebarBackdropControl) {
-      let hasOpen = false;
-
-      for (let i = 0; i < this._sidebars.length; i++) {
-        const sidebar: Sidebar = this._sidebars[i];
-
-        // Show backdrop if a single open sidebar has it set
-        if (sidebar.opened && sidebar.showBackdrop) {
-          hasOpen = true;
-          break;
-        }
-      }
+      // Show backdrop if a single open sidebar has it set
+      const hasOpen = this._sidebars.some(sidebar => sidebar.opened && sidebar.showBackdrop);
 
       this.showBackdrop = hasOpen;
       this.showBackdropChange.emit(hasOpen);
@@ -265,5 +247,14 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
     setTimeout(() => {
       this._markForCheck();
     });
+  }
+
+  /**
+   * @internal
+   *
+   * Triggers change detection to recompute styles.
+   */
+  private _markForCheck(): void {
+    this._ref.markForCheck();
   }
 }
