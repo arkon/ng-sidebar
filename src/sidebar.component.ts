@@ -423,8 +423,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       document.removeEventListener('focus', this._onFocusTrap, true);
 
       // Set focus back to element before the sidebar was opened
-      if (this.autoFocus && this._isModeOver && this._focusedBeforeOpen) {
+      if (this._focusedBeforeOpen && this.autoFocus && this._isModeOver) {
         this._focusedBeforeOpen.focus();
+        this._focusedBeforeOpen = null;
       }
     }
   }
