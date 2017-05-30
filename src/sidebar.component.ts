@@ -354,8 +354,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   // ==============================================================================================
 
   /**
-   * @internal
-   *
    * Returns whether focus should be trapped within the sidebar.
    *
    * @return {boolean} Trap focus inside sidebar.
@@ -365,8 +363,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
-   * @internal
-   *
    * Sets focus to the first focusable element inside the sidebar.
    */
   private _focusFirstItem(): void {
@@ -376,8 +372,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
-   * @internal
-   *
    * Loops focus back to the start of the sidebar if set to do so.
    */
   private _onFocusTrap(e: FocusEvent): void {
@@ -387,8 +381,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
-   * @internal
-   *
    * Handles the ability to focus sidebar elements when it's open/closed to ensure that the sidebar is inert when
    * appropriate.
    */
@@ -441,8 +433,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   // ==============================================================================================
 
   /**
-   * @internal
-   *
    * Initializes event handlers for the closeOnClickOutside and keyClose options.
    */
   private _initCloseListeners(): void {
@@ -463,8 +453,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
-   * @internal
-   *
    * Destroys the event handlers from _initCloseListeners.
    */
   private _destroyCloseListeners(): void {
@@ -480,8 +468,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
-   * @internal
-   *
    * Handles `click` events on anything while the sidebar is open for the closeOnClickOutside option.
    * Programatically closes the sidebar if a click occurs outside the sidebar.
    *
@@ -494,8 +480,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
-   * @internal
-   *
    * Handles the `keydown` event for the keyClose option.
    *
    * @param e {KeyboardEvent} Normalized keydown event.
@@ -512,7 +496,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   // Auto collapse handlers
   // ==============================================================================================
 
-  /** @internal */
   private _initCollapseListeners(): void {
     if (this.autoCollapseHeight || this.autoCollapseWidth) {
       // In a timeout so that things render first
@@ -525,7 +508,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  /** @internal */
   private _destroyCollapseListeners(): void {
     if (this._onResizeAttached) {
       window.removeEventListener('resize', this._onResize);
@@ -533,7 +515,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  /** @internal */
   private _onResize(): void {
     const winHeight: number = window.innerHeight;
     const winWidth: number = window.innerWidth;
@@ -622,8 +603,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
-   * @internal
-   *
    * "Normalizes" position. For example, "start" would be "left" if the page is LTR.
    */
   private _normalizePosition(): void {

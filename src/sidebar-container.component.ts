@@ -84,10 +84,9 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   @Input() sidebarContentClass: string;
   @Input() backdropClass: string;
 
-  /** @internal */
-  private _sidebars: Array<Sidebar> = [];
-
   private _isBrowser: boolean;
+
+  private _sidebars: Array<Sidebar> = [];
 
   constructor(
     private _ref: ChangeDetectorRef,
@@ -197,8 +196,6 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   }
 
   /**
-   * @internal
-   *
    * Subscribes from a sidebar events to react properly.
    */
   private _subscribe(sidebar: Sidebar): void {
@@ -215,8 +212,6 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   }
 
   /**
-   * @internal
-   *
    * Unsubscribes from all sidebars.
    */
   private _unsubscribe(): void {
@@ -239,8 +234,6 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   }
 
   /**
-   * @internal
-   *
    * Check if we should show the backdrop when a sidebar is toggled.
    */
   private _onToggle(): void {
@@ -258,8 +251,6 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   }
 
   /**
-   * @internal
-   *
    * Triggers change detection to recompute styles.
    */
   private _markForCheck(): void {
