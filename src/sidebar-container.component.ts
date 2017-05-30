@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   Inject,
   Input,
@@ -38,13 +37,9 @@ import { SidebarService } from './sidebar.service';
     :host {
       box-sizing: border-box;
       display: block;
+      overflow: hidden;
       position: relative;
     }
-
-      :host.ng-sidebar-container--animate {
-        -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
-        transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
-      }
 
     .ng-sidebar__backdrop {
       background: #000;
@@ -61,12 +56,11 @@ import { SidebarService } from './sidebar.service';
     .ng-sidebar__content {
       display: block;
       height: 100%;
-      overflow: auto;
     }
 
       :host.ng-sidebar-container--animate .ng-sidebar__content {
-        -webkit-transition: margin 0.3s cubic-bezier(0, 0, 0.3, 1);
-        transition: margin 0.3s cubic-bezier(0, 0, 0.3, 1);
+        -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1), padding 0.3s cubic-bezier(0, 0, 0.3, 1);
+        transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1), padding 0.3s cubic-bezier(0, 0, 0.3, 1);
       }
   `],
   host: {
@@ -90,7 +84,6 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
 
   constructor(
     private _ref: ChangeDetectorRef,
-    private _el: ElementRef,
     private _sidebarService: SidebarService,
     @Inject(PLATFORM_ID) platformId: Object) {
     this._isBrowser = isPlatformBrowser(platformId);
@@ -134,24 +127,25 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
         top = 0,
         bottom = 0;
 
+    let transformStyle: string = null;
+
     if (this._sidebars) {
       this._sidebars.forEach((sidebar: Sidebar) => {
         if (!sidebar) { return; }
 
-        if (sidebar.mode === 'slide') {
-          let transformStyle = null;
+        const isSlideMode: boolean = sidebar.mode === 'slide';
+        const isLeftOrRight: boolean = sidebar.position === 'left' || sidebar.position === 'right';
 
+        // Slide mode: we need to translate the entire container
+        if (isSlideMode) {
           if (sidebar.opened) {
             const isLeftOrTop: boolean = sidebar.position === 'left' || sidebar.position === 'top';
-            const isLeftOrRight: boolean = sidebar.position === 'left' || sidebar.position === 'right';
 
             const transformDir: string = isLeftOrRight ? 'X' : 'Y';
             const transformAmt: string = `${isLeftOrTop ? '' : '-'}${isLeftOrRight ? sidebar._width : sidebar._height}`;
 
             transformStyle = `translate${transformDir}(${transformAmt}px)`;
           }
-
-          this._el.nativeElement.style.transform = transformStyle;
         }
 
         if ((sidebar.mode === 'push' && sidebar.opened) || sidebar.mode === 'dock') {
@@ -177,7 +171,9 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
     }
 
     return {
-      margin: `${top}px ${right}px ${bottom}px ${left}px`
+      padding: `${top}px ${right}px ${bottom}px ${left}px`,
+      webkitTransform: transformStyle,
+      transform: transformStyle
     } as CSSStyleDeclaration;
   }
 

@@ -299,7 +299,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * @return {CSSStyleDeclaration} The transform styles, with the WebKit-prefixed version as well.
    */
   _getStyle(): CSSStyleDeclaration {
-    let transformStyle: string = 'none';
+    let transformStyle: string = null;
     let marginStyle = {};
 
     const isSlideMode: boolean = this.mode === 'slide';
@@ -555,7 +555,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   get _height(): number {
     if (this._elSidebar.nativeElement) {
       return this._isDocked ?
-        parseFloat(this.dockedSize) :
+        this._dockedSize :
         this._elSidebar.nativeElement.offsetHeight;
     }
 
@@ -573,11 +573,22 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   get _width(): number {
     if (this._elSidebar.nativeElement) {
       return this._isDocked ?
-        parseFloat(this.dockedSize) :
+        this._dockedSize :
         this._elSidebar.nativeElement.offsetWidth;
     }
 
     return 0;
+  }
+
+  /**
+   * @internal
+   *
+   * Returns the docked size as a number.
+   *
+   * @return {number} Docked size.
+   */
+  get _dockedSize(): number {
+    return parseFloat(this.dockedSize);
   }
 
   /**
