@@ -73,13 +73,14 @@ import { isBrowser } from './utils';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy {
-  @Input() sidebarContentClass: string;
-  @Input() backdropClass: string;
-  @Input() allowSidebarBackdropControl: boolean = true;
   @Input() animate: boolean = true;
 
+  @Input() allowSidebarBackdropControl: boolean = true;
   @Input() showBackdrop: boolean = false;
   @Output() showBackdropChange = new EventEmitter<boolean>();
+
+  @Input() sidebarContentClass: string;
+  @Input() backdropClass: string;
 
   /** @internal */
   private _sidebars: Array<Sidebar> = [];

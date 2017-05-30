@@ -307,9 +307,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       if (isDockMode && parseFloat(this.dockedSize) > 0) {
         const marginPos = `margin${upperCaseFirst(this.position)}`;
 
-        marginStyle = {
-          [marginPos]: this.dockedSize
-        };
+        marginStyle[marginPos] = this.dockedSize;
       }
 
       transformStyle += `(${translateAmt})`;
