@@ -95,7 +95,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   @Input() sidebarClass: string;
 
   @Input() ariaLabel: string;
-  @Input() trapFocus: boolean = true;
+  @Input() trapFocus: boolean = false;
   @Input() autoFocus: boolean = true;
 
   @Input() showBackdrop: boolean = false;

@@ -189,7 +189,7 @@ If you are using Angular 2's default emulated view encapsulation, you may have t
 | animate | boolean | `true` | Animate the opening/closing of the sidebar. |
 | sidebarClass | string | | Additional class name on the sidebar element. |
 | ariaLabel | string | | Value for the sidebar's `aria-label` attribute. |
-| trapFocus | boolean | `true` | Keeps focus within the sidebar when open. |
+| trapFocus | boolean | `false` | Keeps focus within the sidebar when open. Note that this only makes sense if there's one sidebar open at a time. |
 | autoFocus | boolean | `true` | Automatically focus the first focusable element in the sidebar when opened. |
 | showBackdrop | boolean | `false` | If a translucent black backdrop overlay should appear over the page contents when the sidebar is opened.  This is ignored if the sidebar's parent container has its `allowSidebarBackdropControl` property set to `true`. |
 | closeOnClickBackdrop | boolean | `false` | Whether clicking on the backdrop of the open sidebar will close it. |
