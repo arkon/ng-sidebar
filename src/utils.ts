@@ -34,12 +34,3 @@ export function isLTR(): boolean {
 export function isIOS(): boolean {
   return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
 }
-
-/**
- * Returns whether or not this is running in a browser context.
- *
- * @return {boolean} Running in a browser context.
- */
-export function isBrowser(): boolean {
-  return typeof window !== 'undefined';
-}

@@ -3,18 +3,21 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  PLATFORM_ID,
   SimpleChanges,
   ViewChild
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 
 import { SidebarService } from './sidebar.service';
-import { isBrowser, upperCaseFirst, isLTR, isIOS } from './utils';
+import { upperCaseFirst, isLTR, isIOS } from './utils';
 
 @Component({
   selector: 'ng-sidebar',
@@ -119,6 +122,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   @ViewChild('sidebar')
   _elSidebar: ElementRef;
 
+  private _isBrowser: boolean;
+
   private _openSub: Subscription;
   private _closeSub: Subscription;
 
@@ -135,7 +140,10 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   private _onResizeAttached: boolean = false;
 
   constructor(
-    private _sidebarService: SidebarService) {
+    private _sidebarService: SidebarService,
+    @Inject(PLATFORM_ID) platformId: Object) {
+    this._isBrowser = isPlatformBrowser(platformId);
+
     if (isIOS() && 'ontouchstart' in window) {
       this._clickEvent = 'touchstart';
     }
@@ -157,7 +165,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    if (!isBrowser()) { return; }
+    if (!this._isBrowser) { return; }
 
     this._sidebarService.register(this);
 
@@ -171,7 +179,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!isBrowser()) { return; }
+    if (!this._isBrowser) { return; }
 
     if (changes['opened']) {
       if (changes['opened'].currentValue) {
@@ -207,7 +215,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (!isBrowser()) { return; }
+    if (!this._isBrowser) { return; }
 
     this._destroyCloseListeners();
     this._destroyCollapseListeners();
@@ -228,7 +236,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * Opens the sidebar and emits the appropriate events.
    */
   open(): void {
-    if (!isBrowser()) { return; }
+    if (!this._isBrowser) { return; }
 
     this.opened = true;
     this.openedChange.emit(true);
@@ -253,7 +261,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * Closes the sidebar and emits the appropriate events.
    */
   close(): void {
-    if (!isBrowser()) { return; }
+    if (!this._isBrowser) { return; }
 
     this.opened = false;
     this.openedChange.emit(false);
@@ -278,7 +286,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * Manually trigger a re-render of the container. Useful if the sidebar contents might change.
    */
   triggerRerender(): void {
-    if (!isBrowser()) { return; }
+    if (!this._isBrowser) { return; }
 
     this._onRerender.emit();
   }

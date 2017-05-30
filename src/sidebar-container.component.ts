@@ -5,16 +5,18 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
   Output,
+  PLATFORM_ID,
   SimpleChanges
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 import { Sidebar } from './sidebar.component';
 import { SidebarService } from './sidebar.service';
-import { isBrowser } from './utils';
 
 // Based on https://github.com/angular/material2/tree/master/src/lib/sidenav
 @Component({
@@ -85,13 +87,18 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   /** @internal */
   private _sidebars: Array<Sidebar> = [];
 
+  private _isBrowser: boolean;
+
   constructor(
     private _ref: ChangeDetectorRef,
     private _el: ElementRef,
-    private _sidebarService: SidebarService) {}
+    private _sidebarService: SidebarService,
+    @Inject(PLATFORM_ID) platformId: Object) {
+    this._isBrowser = isPlatformBrowser(platformId);
+  }
 
   ngAfterContentInit(): void {
-    if (!isBrowser()) { return; }
+    if (!this._isBrowser) { return; }
 
     this._onToggle();
 
@@ -102,7 +109,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!isBrowser()) { return; }
+    if (!this._isBrowser) { return; }
 
     if (changes['showBackdrop']) {
       this.showBackdropChange.emit(changes['showBackdrop'].currentValue);
@@ -110,7 +117,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   }
 
   ngOnDestroy(): void {
-    if (!isBrowser()) { return; }
+    if (!this._isBrowser) { return; }
 
     this._unsubscribe();
   }
