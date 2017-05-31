@@ -36,6 +36,7 @@ var packages = {
 };
 ```
 
+
 ## Changelog
 
 See the [releases page](https://github.com/arkon/ng-sidebar/releases) in the GitHub repo.
@@ -135,7 +136,7 @@ If you are using Angular 2's default emulated view encapsulation, you may have t
 | `ng-sidebar--over` | When `mode` is `'over'`. |
 | `ng-sidebar--push` | When `mode` is `'push'`. |
 | `ng-sidebar--slide` | When `mode` is `'slide'`. |
-| `ng-sidebar--dock` | When `mode` is `'dock'`. |
+| `ng-sidebar--docked` | When the sidebar is docked (i.e. it is "closed" and `dock` is `true`). |
 | `ng-sidebar--inert` | Ignores pointer clicks. Class is applied when the sidebar is closed. |
 | `ng-sidebar--animate` | When `animate` is `true` for a sidebar. |
 
@@ -174,6 +175,7 @@ If you are using Angular 2's default emulated view encapsulation, you may have t
 | ------------- | ------------------ | ----------- |
 | showBackdropChange | `showBackdrop: boolean` | Emitted when `showBackdrop` is modified. This allows for you to do "two-way binding" (i.e. `[(showBackdrop)]`). |
 
+
 ### `<ng-sidebar>`
 
 #### Inputs
@@ -181,7 +183,8 @@ If you are using Angular 2's default emulated view encapsulation, you may have t
 | Property name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
 | opened | boolean | `false` | Controls the opened state of the sidebar. This should be two-way bound. |
-| mode | `'over', 'push', 'slide', 'dock'` | `'over'` | Display the sidebar over the content when open, beside it when open, slide the content over, or slightly open. |
+| mode | `'over', 'push', 'slide'` | `'over'` | See the "Modes" section. |
+| dock | boolean | `false` | Show the sidebar as docked when closed. |
 | dockedSize | string | `'0px'` | When `mode` is set to `'dock'`, this value indicates how much of the sidebar is still visible when "closed". |
 | position | `'left', 'right', 'top', 'bottom', 'start', 'end'` | `'start'` | What side the sidebar should be docked to. `'start'` and `'end'` are aliases that respect the page's language (e.g. `start` is the same as `left` for English, but would be `right` for Hebrew. |
 | autoCollapseHeight | number | | Window height in pixels in which to automatically close the sidebar. |
@@ -189,7 +192,7 @@ If you are using Angular 2's default emulated view encapsulation, you may have t
 | animate | boolean | `true` | Animate the opening/closing of the sidebar. |
 | sidebarClass | string | | Additional class name on the sidebar element. |
 | ariaLabel | string | | Value for the sidebar's `aria-label` attribute. |
-| trapFocus | boolean | `false` | Keeps focus within the sidebar when open. Note that this only makes sense if there's one sidebar open at a time. |
+| trapFocus | boolean | `false` | Keeps focus within the sidebar when open. Note that this only works if there's one sidebar open at a time. |
 | autoFocus | boolean | `true` | Automatically focus the first focusable element in the sidebar when opened. |
 | showBackdrop | boolean | `false` | If a translucent black backdrop overlay should appear over the page contents when the sidebar is opened.  This is ignored if the sidebar's parent container has its `allowSidebarBackdropControl` property set to `true`. |
 | closeOnClickBackdrop | boolean | `false` | Whether clicking on the backdrop of the open sidebar will close it. |
@@ -208,3 +211,17 @@ If you are using Angular 2's default emulated view encapsulation, you may have t
 | onClosed | | Emitted when the sidebar is closed. |
 | onModeChange | `mode: string` | Emitted when `mode` is changed. |
 | onPositionChange | `position: string` | Emitted when `position` is changed. |
+
+#### Modes
+
+##### `over`
+
+This is the default mode. The sidebar slides in over the page contents.
+
+##### `push`
+
+The page contents is pushed to make space for the sidebar.
+
+##### `slide`
+
+The entire page slides over to show the sidebar. Note that this only works if you have one sidebar open at a time.

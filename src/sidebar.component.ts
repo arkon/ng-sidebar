@@ -27,7 +27,8 @@ import { upperCaseFirst, isLTR, isIOS } from './utils';
       [attr.aria-hidden]="!opened"
       [attr.aria-label]="ariaLabel"
       class="ng-sidebar ng-sidebar--{{opened ? 'opened' : 'closed'}} ng-sidebar--{{position}} ng-sidebar--{{mode}}"
-      [class.ng-sidebar--inert]="!opened && mode !== 'dock'"
+      [class.ng-sidebar--docked]="_isDocked"
+      [class.ng-sidebar--inert]="_isInert"
       [class.ng-sidebar--animate]="animate"
       [ngClass]="sidebarClass"
       [ngStyle]="_getStyle()">
@@ -87,7 +88,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   @Input() opened: boolean = false;
   @Output() openedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  @Input() mode: 'over' | 'push' | 'slide' | 'dock' = 'over';
+  @Input() mode: 'over' | 'push' | 'slide' = 'over';
+  @Input() dock: boolean = false;
   @Input() dockedSize: string = '0px';
   @Input() position: 'start' | 'end' | 'left' | 'right' | 'top' | 'bottom' = 'start';
   @Input() animate: boolean = true;
@@ -208,6 +210,10 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       });
     }
 
+    if (changes['dock']) {
+      this.triggerRerender();
+    }
+
     if (changes['autoCollapseHeight'] || changes['autoCollapseWidth']) {
       this._initCollapseListeners();
     }
@@ -303,23 +309,22 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     let transformStyle: string = null;
     let marginStyle = {};
 
-    const isSlideMode: boolean = this.mode === 'slide';
-
-    if (!this.opened || isSlideMode) {
-      transformStyle = `translate${(this.position === 'left' || this.position === 'right') ? 'X' : 'Y'}`;
-
+    // Hides sidebar off screen
+    if (!this.opened || this._isModeSlide) {
       const isLeftOrTop: boolean = this.position === 'left' || this.position === 'top';
-      const isDockMode: boolean = this.mode === 'dock';
+      const isLeftOrRight: boolean = this.position === 'left' || this.position === 'right';
 
+      const transformDir: string = isLeftOrRight ? 'X' : 'Y';
       const translateAmt: string = `${isLeftOrTop ? '-' : ''}100%`;
 
-      if (isDockMode && parseFloat(this.dockedSize) > 0) {
+      transformStyle = `translate${transformDir}(${translateAmt})`;
+
+      // Docked mode: partially remains open
+      if (this.dock && this._dockedSize > 0 && !(this._isModeSlide && this.opened)) {
         const marginPos = `margin${upperCaseFirst(this.position)}`;
 
         marginStyle[marginPos] = this.dockedSize;
       }
-
-      transformStyle += `(${translateAmt})`;
     }
 
     return Object.assign(marginStyle, {
@@ -632,19 +637,19 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    *
    * @return {boolean} Sidebar is docked.
    */
-  private get _isDocked(): boolean {
-    return this.mode === 'dock' && this.dockedSize && !this.opened;
+  get _isDocked(): boolean {
+    return this.dock && this.dockedSize && !this.opened;
   }
 
   /**
    * @internal
    *
-   * Returns whether the sidebar is set to the default "over" mode.
+   * Returns whether the sidebar is inert -- i.e. the contents cannot be focused.
    *
-   * @return {boolean} Sidebar mode is "over".
+   * @return {boolean} Sidebar is inert.
    */
-  private get _isModeOver(): boolean {
-    return this.mode === 'over';
+  get _isInert(): boolean {
+    return !this.opened && !this.dock;
   }
 
   /**

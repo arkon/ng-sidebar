@@ -8,6 +8,7 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
       [mode]="_MODES[_modeNum]"
       [keyClose]="_keyClose"
       [position]="_POSITIONS[_positionNum]"
+      [dock]="_dock"
       [dockedSize]="'50px'"
       [autoCollapseHeight]="_autoCollapseHeight"
       [autoCollapseWidth]="_autoCollapseWidth"
@@ -37,12 +38,13 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
     </header>
 
     <section class="demo-contents">
-      <h1>Controls</h1>
+      <h1>Options</h1>
 
       <div>
         <button class="demo-control" (click)="_toggleOpened()">opened ({{_opened}})</button>
         <button class="demo-control" (click)="_toggleMode()">mode ({{_MODES[_modeNum]}})</button>
         <button class="demo-control" (click)="_togglePosition()">position ({{_POSITIONS[_positionNum]}})</button>
+        <button class="demo-control" (click)="_toggleDock()">dock ({{_dock}})</button>
       </div>
 
       <div>
@@ -62,6 +64,8 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
         <button class="demo-control" (click)="_toggleAutoFocus()">autoFocus ({{_autoFocus}})</button>
         <button class="demo-control" (click)="_toggleKeyClose()">keyClose ({{_keyClose}})</button>
       </div>
+
+      <a href="https://github.com/arkon/ng-sidebar#options">More info about options</a>
 
 
       <h1>Download</h1>
@@ -86,6 +90,7 @@ export class DemoComponent {
   private _opened: boolean = false;
   private _modeNum: number = 0;
   private _positionNum: number = 0;
+  private _dock: boolean = false;
   private _closeOnClickOutside: boolean = false;
   private _closeOnClickBackdrop: boolean = false;
   private _showBackdrop: boolean = false;
@@ -96,7 +101,7 @@ export class DemoComponent {
   private _autoCollapseHeight: number = null;
   private _autoCollapseWidth: number = null;
 
-  private _MODES: Array<string> = ['over', 'push', 'slide', 'dock'];
+  private _MODES: Array<string> = ['over', 'push', 'slide'];
   private _POSITIONS: Array<string> = ['left', 'right', 'top', 'bottom'];
 
   private _toggleOpened(): void {
@@ -125,6 +130,10 @@ export class DemoComponent {
     if (this._positionNum === this._POSITIONS.length) {
       this._positionNum = 0;
     }
+  }
+
+  private _toggleDock(): void {
+    this._dock = !this._dock;
   }
 
   private _toggleCloseOnClickOutside(): void {

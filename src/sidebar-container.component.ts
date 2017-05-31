@@ -128,6 +128,8 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
         bottom = 0;
 
     let transformStyle: string = null;
+    let heightStyle: string = null;
+    let widthStyle: string = null;
 
     if (this._sidebars) {
       this._sidebars.forEach((sidebar: Sidebar) => {
@@ -147,22 +149,40 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
           }
         }
 
-        if ((sidebar.mode === 'push' && sidebar.opened) || sidebar.mode === 'dock') {
+        // Create a space for the sidebar
+        if ((sidebar._isModePush && sidebar.opened) || sidebar.dock) {
+          let paddingAmt: number = 0;
+
+          if (sidebar._isModeSlide && sidebar.opened) {
+            const offsetDim = `calc(100% - ${sidebar._dockedSize}px`;
+            if (isLeftOrRight) {
+              widthStyle = offsetDim;
+            } else {
+              heightStyle = offsetDim;
+            }
+          } else {
+            if (sidebar._isDocked || (sidebar._isModeOver && sidebar.dock)) {
+              paddingAmt = sidebar._dockedSize;
+            } else {
+              paddingAmt = isLeftOrRight ? sidebar._width : sidebar._height;
+            }
+          }
+
           switch (sidebar.position) {
             case 'left':
-              left = Math.max(left, sidebar._width);
+              left = Math.max(left, paddingAmt);
               break;
 
             case 'right':
-              right = Math.max(right, sidebar._width);
+              right = Math.max(right, paddingAmt);
               break;
 
             case 'top':
-              top = Math.max(top, sidebar._height);
+              top = Math.max(top, paddingAmt);
               break;
 
             case 'bottom':
-              bottom = Math.max(bottom, sidebar._height);
+              bottom = Math.max(bottom, paddingAmt);
               break;
           }
         }
@@ -172,7 +192,9 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
     return {
       padding: `${top}px ${right}px ${bottom}px ${left}px`,
       webkitTransform: transformStyle,
-      transform: transformStyle
+      transform: transformStyle,
+      height: heightStyle,
+      width: widthStyle
     } as CSSStyleDeclaration;
   }
 
