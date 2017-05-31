@@ -119,8 +119,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   @Output() _onRerender: EventEmitter<null> = new EventEmitter<null>();
 
   /** @internal */
-  @ViewChild('sidebar')
-  _elSidebar: ElementRef;
+  @ViewChild('sidebar') _elSidebar: ElementRef;
 
   private _isBrowser: boolean;
 
@@ -144,7 +143,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     @Inject(PLATFORM_ID) platformId: Object) {
     this._isBrowser = isPlatformBrowser(platformId);
 
-    if (isIOS() && 'ontouchstart' in window) {
+    if (this._isBrowser && isIOS() && 'ontouchstart' in window) {
       this._clickEvent = 'touchstart';
     }
 
