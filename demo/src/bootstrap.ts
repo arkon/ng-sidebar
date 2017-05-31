@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { SidebarModule } from 'ng-sidebar';
 
-import { DemoContainerComponent } from './demo/demo-container.component';
 import { DemoComponent } from './demo/demo.component';
 
 import './styles/styles.scss';
@@ -11,9 +10,9 @@ import './styles/styles.scss';
 enableProdMode();
 
 @NgModule({
-  declarations: [DemoContainerComponent, DemoComponent],
+  declarations: [DemoComponent],
   imports: [BrowserModule, SidebarModule.forRoot()],
-  bootstrap: [DemoContainerComponent],
+  bootstrap: [DemoComponent],
 })
 class DemoAppModule {}
 
