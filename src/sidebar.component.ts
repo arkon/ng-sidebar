@@ -287,7 +287,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   triggerRerender(): void {
     if (!this._isBrowser) { return; }
 
-    this._onRerender.emit();
+    setTimeout(() => {
+      this._onRerender.emit();
+    });
   }
 
   /**
