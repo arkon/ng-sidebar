@@ -133,11 +133,10 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
       this._sidebars.forEach((sidebar: Sidebar) => {
         if (!sidebar) { return; }
 
-        const isSlideMode: boolean = sidebar.mode === 'slide';
         const isLeftOrRight: boolean = sidebar.position === 'left' || sidebar.position === 'right';
 
         // Slide mode: we need to translate the entire container
-        if (isSlideMode) {
+        if (sidebar._isModeSlide) {
           if (sidebar.opened) {
             const isLeftOrTop: boolean = sidebar.position === 'left' || sidebar.position === 'top';
 

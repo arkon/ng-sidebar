@@ -593,6 +593,39 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   /**
    * @internal
    *
+   * Returns whether the sidebar is over mode.
+   *
+   * @return {boolean} Sidebar's mode is "over".
+   */
+  get _isModeOver(): boolean {
+    return this.mode === 'over';
+  }
+
+  /**
+   * @internal
+   *
+   * Returns whether the sidebar is push mode.
+   *
+   * @return {boolean} Sidebar's mode is "push".
+   */
+  get _isModePush(): boolean {
+    return this.mode === 'push';
+  }
+
+  /**
+   * @internal
+   *
+   * Returns whether the sidebar is slide mode.
+   *
+   * @return {boolean} Sidebar's mode is "slide".
+   */
+  get _isModeSlide(): boolean {
+    return this.mode === 'slide';
+  }
+
+  /**
+   * @internal
+   *
    * Returns whether the sidebar is "docked" -- i.e. it is closed but in dock mode.
    *
    * @return {boolean} Sidebar is docked.
