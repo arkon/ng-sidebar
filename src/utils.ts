@@ -15,7 +15,7 @@ export function upperCaseFirst(str) {
 export function isLTR(): boolean {
   let dir: string = 'ltr';
 
-  if (window) {
+  if (typeof window !== 'undefined') {
     if (window.getComputedStyle) {
       dir = window.getComputedStyle(document.body, null).getPropertyValue('direction');
     } else {
@@ -32,5 +32,9 @@ export function isLTR(): boolean {
  * @return {boolean} Device is an iOS device (i.e. iPod touch/iPhone/iPad).
  */
 export function isIOS(): boolean {
-  return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+  if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+  }
+
+  return false;
 }
