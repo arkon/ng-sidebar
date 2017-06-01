@@ -3,7 +3,10 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
 @Component({
   selector: 'demo',
   template: `
-    <ng-sidebar-container>
+    <ng-sidebar-container
+      [(showBackdrop)]="_containerShowBackdrop"
+      [allowSidebarBackdropControl]="_containerAllowSidebarBackdropControl"
+      [animate]="_containerAnimate">
       <ng-sidebar
         [(opened)]="_opened"
         [mode]="_MODES[_modeNum]"
@@ -41,6 +44,8 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
       <section class="demo-contents">
         <h1>Options</h1>
 
+        <h2>Sidebar</h2>
+
         <div>
           <button class="demo-control" (click)="_toggleOpened()">opened ({{_opened}})</button>
           <button class="demo-control" (click)="_toggleMode()">mode ({{_MODES[_modeNum]}})</button>
@@ -66,13 +71,23 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
           <button class="demo-control" (click)="_toggleKeyClose()">keyClose ({{_keyClose}})</button>
         </div>
 
-        <a href="https://github.com/arkon/ng-sidebar#options">More info about options</a>
+
+        <h2>Container</h2>
+
+        <div>
+          <button class="demo-control" (click)="toggleContainerShowBackdrop()">showBackdrop ({{_containerShowBackdrop}})</button>
+          <button class="demo-control" (click)="toggleContainerAllowSidebarBackdropControl()">allowSidebarBackdropControl ({{_containerAllowSidebarBackdropControl}})</button>
+          <button class="demo-control" (click)="toggleContainerAnimate()">animate ({{_containerAnimate}})</button>
+        </div>
+
+        <p><a href="https://github.com/arkon/ng-sidebar#options">More info about options</a></p>
 
 
         <h1>Download</h1>
 
         <p>Download from <a href="https://www.npmjs.com/package/ng-sidebar">NPM</a>.</p>
         <p>Source code available on <a href="https://github.com/arkon/ng-sidebar">GitHub</a>.</p>
+        <p>Source code for this demo is also on <a href="https://github.com/arkon/ng-sidebar/tree/master/demo">GitHub</a>.</p>
 
 
         <h1>Some filler content</h1>
@@ -89,6 +104,10 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
   `
 })
 export class DemoComponent {
+  private _containerShowBackdrop: boolean = false;
+  private _containerAllowSidebarBackdropControl: boolean = true;
+  private _containerAnimate: boolean = true;
+
   private _opened: boolean = false;
   private _modeNum: number = 0;
   private _positionNum: number = 0;
@@ -105,6 +124,18 @@ export class DemoComponent {
 
   private _MODES: Array<string> = ['over', 'push', 'slide'];
   private _POSITIONS: Array<string> = ['left', 'right', 'top', 'bottom'];
+
+  private toggleContainerShowBackdrop(): void {
+    this._containerShowBackdrop = !this._containerShowBackdrop;
+  }
+
+  private toggleContainerAllowSidebarBackdropControl(): void {
+    this._containerAllowSidebarBackdropControl = !this._containerAllowSidebarBackdropControl;
+  }
+
+  private toggleContainerAnimate(): void {
+    this._containerAnimate = !this._containerAnimate;
+  }
 
   private _toggleOpened(): void {
     this._opened = !this._opened;

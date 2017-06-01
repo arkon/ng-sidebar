@@ -34,10 +34,18 @@ p {
   margin-bottom: 1em;
 }
 
+h1,
+h2 {
+  font-weight: 300;
+}
+
 h1 {
   border-bottom: 1px dotted $brand;
   display: block;
-  font-weight: 300;
   margin: 2rem 0 1rem;
   padding-bottom: 0.5rem;
+}
+
+h2 {
+  margin: 0.5rem 0;
 }
