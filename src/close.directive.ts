@@ -1,6 +1,6 @@
 import { Directive } from '@angular/core';
 
-import { SidebarService } from './sidebar.service';
+import { Sidebar } from './sidebar.component';
 
 @Directive({
   selector: '[closeSidebar]',
@@ -9,10 +9,10 @@ import { SidebarService } from './sidebar.service';
   }
 })
 export class CloseSidebar {
-  constructor(private _sidebarService: SidebarService) {}
+  constructor(private _sidebar: Sidebar) {}
 
   /** @internal */
   _onClick(): void {
-    this._sidebarService.close();
+    this._sidebar.close();
   }
 }
