@@ -13,6 +13,8 @@ export class CloseSidebar {
 
   /** @internal */
   _onClick(): void {
-    this._sidebar.close();
+    if (this._sidebar) {
+      this._sidebar.close();
+    }
   }
 }
