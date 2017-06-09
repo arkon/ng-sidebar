@@ -253,7 +253,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     this._ref.detectChanges();
 
     setTimeout(() => {
-      if (this.animate) {
+      if (this.animate && !this._isModeSlide) {
         this._elSidebar.nativeElement.addEventListener('transitionend', this._onTransitionEnd);
       } else {
         this._setFocused();
@@ -280,7 +280,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     this._ref.detectChanges();
 
     setTimeout(() => {
-      if (this.animate) {
+      if (this.animate && !this._isModeSlide) {
         this._elSidebar.nativeElement.addEventListener('transitionend', this._onTransitionEnd);
       } else {
         this._setFocused();
