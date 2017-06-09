@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -141,6 +142,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   private _onResizeAttached: boolean = false;
 
   constructor(
+    private _ref: ChangeDetectorRef,
     private _sidebarService: SidebarService,
     @Inject(PLATFORM_ID) platformId: Object) {
     this._isBrowser = isPlatformBrowser(platformId);
@@ -248,6 +250,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
     this.onOpenStart.emit();
 
+    this._ref.detectChanges();
+
     setTimeout(() => {
       if (this.animate) {
         this._elSidebar.nativeElement.addEventListener('transitionend', this._onTransitionEnd);
@@ -272,6 +276,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     this.openedChange.emit(false);
 
     this.onCloseStart.emit();
+
+    this._ref.detectChanges();
 
     setTimeout(() => {
       if (this.animate) {
