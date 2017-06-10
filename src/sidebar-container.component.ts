@@ -15,7 +15,6 @@ import {
 import { isPlatformBrowser } from '@angular/common';
 
 import { Sidebar } from './sidebar.component';
-import { SidebarService } from './sidebar.service';
 
 // Based on https://github.com/angular/material2/tree/master/src/lib/sidenav
 @Component({
@@ -84,7 +83,6 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
 
   constructor(
     private _ref: ChangeDetectorRef,
-    private _sidebarService: SidebarService,
     @Inject(PLATFORM_ID) platformId: Object) {
     this._isBrowser = isPlatformBrowser(platformId);
   }
@@ -93,11 +91,6 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
     if (!this._isBrowser) { return; }
 
     this._onToggle();
-
-    this._sidebarService.onRegister((sidebar) => {
-      this._sidebars.push(sidebar);
-      this._subscribe(sidebar);
-    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -112,6 +105,32 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
     if (!this._isBrowser) { return; }
 
     this._unsubscribe();
+  }
+
+  /**
+   * @internal
+   *
+   * Adds a sidebar to the container's list of sidebars.
+   *
+   * @param sidebar {Sidebar} A sidebar within the container to register.
+   */
+  _addSidebar(sidebar: Sidebar) {
+    this._sidebars.push(sidebar);
+    this._subscribe(sidebar);
+  }
+
+  /**
+   * @internal
+   *
+   * Removes a sidebar from the container's list of sidebars.
+   *
+   * @param sidebar {Sidebar} The sidebar to remove.
+   */
+  _removeSidebar(sidebar: Sidebar) {
+    const index = this._sidebars.indexOf(sidebar);
+    if (index !== -1) {
+      this._sidebars.splice(index, 1);
+    }
   }
 
   /**

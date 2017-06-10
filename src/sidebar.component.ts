@@ -9,6 +9,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   PLATFORM_ID,
   SimpleChanges,
@@ -17,6 +18,7 @@ import {
 import { isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 
+import { SidebarContainer } from './sidebar-container.component';
 import { SidebarService } from './sidebar.service';
 import { upperCaseFirst, isLTR, isIOS } from './utils';
 
@@ -142,10 +144,15 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   private _onResizeAttached: boolean = false;
 
   constructor(
+    @Optional() private _container: SidebarContainer,
     private _ref: ChangeDetectorRef,
     private _sidebarService: SidebarService,
     @Inject(PLATFORM_ID) platformId: Object) {
     this._isBrowser = isPlatformBrowser(platformId);
+
+    if (!this._container) {
+      throw new Error('<ng-sidebar> must be inside a <ng-sidebar-container>');
+    }
 
     if (this._isBrowser && isIOS() && 'ontouchstart' in window) {
       this._clickEvent = 'touchstart';
@@ -170,7 +177,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     if (!this._isBrowser) { return; }
 
-    this._sidebarService.register(this);
+    this._container._addSidebar(this);
 
     // Prevents an initial transition hiccup in IE (issue #59)
     if (this.animate) {
@@ -233,6 +240,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     if (this._closeSub) {
       this._closeSub.unsubscribe();
     }
+
+    this._container._removeSidebar(this);
   }
 
 
