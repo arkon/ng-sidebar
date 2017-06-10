@@ -150,62 +150,58 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
     let heightStyle: string = null;
     let widthStyle: string = null;
 
-    if (this._sidebars) {
-      this._sidebars.forEach((sidebar: Sidebar) => {
-        if (!sidebar) { return; }
+    for (const sidebar of this._sidebars) {
+      const isLeftOrRight: boolean = sidebar.position === 'left' || sidebar.position === 'right';
 
-        const isLeftOrRight: boolean = sidebar.position === 'left' || sidebar.position === 'right';
+      // Slide mode: we need to translate the entire container
+      if (sidebar._isModeSlide) {
+        if (sidebar.opened) {
+          const isLeftOrTop: boolean = sidebar.position === 'left' || sidebar.position === 'top';
 
-        // Slide mode: we need to translate the entire container
-        if (sidebar._isModeSlide) {
-          if (sidebar.opened) {
-            const isLeftOrTop: boolean = sidebar.position === 'left' || sidebar.position === 'top';
+          const transformDir: string = isLeftOrRight ? 'X' : 'Y';
+          const transformAmt: string = `${isLeftOrTop ? '' : '-'}${isLeftOrRight ? sidebar._width : sidebar._height}`;
 
-            const transformDir: string = isLeftOrRight ? 'X' : 'Y';
-            const transformAmt: string = `${isLeftOrTop ? '' : '-'}${isLeftOrRight ? sidebar._width : sidebar._height}`;
-
-            transformStyle = `translate${transformDir}(${transformAmt}px)`;
-          }
+          transformStyle = `translate${transformDir}(${transformAmt}px)`;
         }
+      }
 
-        // Create a space for the sidebar
-        if ((sidebar._isModePush && sidebar.opened) || sidebar.dock) {
-          let paddingAmt: number = 0;
+      // Create a space for the sidebar
+      if ((sidebar._isModePush && sidebar.opened) || sidebar.dock) {
+        let paddingAmt: number = 0;
 
-          if (sidebar._isModeSlide && sidebar.opened) {
-            const offsetDim = `calc(100% - ${sidebar._dockedSize}px`;
-            if (isLeftOrRight) {
-              widthStyle = offsetDim;
-            } else {
-              heightStyle = offsetDim;
-            }
+        if (sidebar._isModeSlide && sidebar.opened) {
+          const offsetDim = `calc(100% - ${sidebar._dockedSize}px`;
+          if (isLeftOrRight) {
+            widthStyle = offsetDim;
           } else {
-            if (sidebar._isDocked || (sidebar._isModeOver && sidebar.dock)) {
-              paddingAmt = sidebar._dockedSize;
-            } else {
-              paddingAmt = isLeftOrRight ? sidebar._width : sidebar._height;
-            }
+            heightStyle = offsetDim;
           }
-
-          switch (sidebar.position) {
-            case 'left':
-              left = Math.max(left, paddingAmt);
-              break;
-
-            case 'right':
-              right = Math.max(right, paddingAmt);
-              break;
-
-            case 'top':
-              top = Math.max(top, paddingAmt);
-              break;
-
-            case 'bottom':
-              bottom = Math.max(bottom, paddingAmt);
-              break;
+        } else {
+          if (sidebar._isDocked || (sidebar._isModeOver && sidebar.dock)) {
+            paddingAmt = sidebar._dockedSize;
+          } else {
+            paddingAmt = isLeftOrRight ? sidebar._width : sidebar._height;
           }
         }
-      });
+
+        switch (sidebar.position) {
+          case 'left':
+            left = Math.max(left, paddingAmt);
+            break;
+
+          case 'right':
+            right = Math.max(right, paddingAmt);
+            break;
+
+          case 'top':
+            top = Math.max(top, paddingAmt);
+            break;
+
+          case 'bottom':
+            bottom = Math.max(bottom, paddingAmt);
+            break;
+        }
+      }
     }
 
     return {
@@ -224,11 +220,11 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
    * `closeOnClickBackdrop` option set.
    */
   _onBackdropClicked(): void {
-    this._sidebars.forEach((sidebar: Sidebar) => {
+    for (const sidebar of this._sidebars) {
       if (sidebar.opened && sidebar.showBackdrop && sidebar.closeOnClickBackdrop) {
         sidebar.close();
       }
-    });
+    }
   }
 
   /**
@@ -251,21 +247,17 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
    * Unsubscribes from all sidebars.
    */
   private _unsubscribe(): void {
-    if (this._sidebars) {
-      this._sidebars.forEach((sidebar: Sidebar) => {
-        if (!sidebar) { return; }
+    for (const sidebar of this._sidebars) {
+      sidebar.onOpenStart.unsubscribe();
+      sidebar.onOpened.unsubscribe();
 
-        sidebar.onOpenStart.unsubscribe();
-        sidebar.onOpened.unsubscribe();
+      sidebar.onCloseStart.unsubscribe();
+      sidebar.onClosed.unsubscribe();
 
-        sidebar.onCloseStart.unsubscribe();
-        sidebar.onClosed.unsubscribe();
+      sidebar.onModeChange.unsubscribe();
+      sidebar.onPositionChange.unsubscribe();
 
-        sidebar.onModeChange.unsubscribe();
-        sidebar.onPositionChange.unsubscribe();
-
-        sidebar._onRerender.unsubscribe();
-      });
+      sidebar._onRerender.unsubscribe();
     }
   }
 
@@ -273,7 +265,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
    * Check if we should show the backdrop when a sidebar is toggled.
    */
   private _onToggle(): void {
-    if (this._sidebars && this.allowSidebarBackdropControl) {
+    if (this._sidebars.length > 0 && this.allowSidebarBackdropControl) {
       // Show backdrop if a single open sidebar has it set
       const hasOpen = this._sidebars.some(sidebar => sidebar.opened && sidebar.showBackdrop);
 
