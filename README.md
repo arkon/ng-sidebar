@@ -39,7 +39,7 @@ var packages = {
 
 ## Changelog
 
-See the [releases page](https://github.com/arkon/ng-sidebar/releases) in the GitHub repo.
+See the [releases page](https://github.com/arkon/ng-sidebar/releases) on GitHub.
 
 
 ## Usage
@@ -57,7 +57,8 @@ import { SidebarModule } from 'ng-sidebar';
 class AppModule {}
 ```
 
-In your app component, simply use add a `<ng-sidebar-container>` wrapper, then place your `<ng-sidebar>`(s) and content within it:
+In your app component, simply use add a `<ng-sidebar-container>` wrapper, then place your `<ng-sidebar>`(s) and content within it.
+Your page content should be in some container with a `ng-sidebar-content` attribute.
 
 ```typescript
 @Component({
@@ -72,7 +73,9 @@ In your app component, simply use add a `<ng-sidebar-container>` wrapper, then p
       </ng-sidebar>
 
       <!-- Page content -->
-      <button (click)="_toggleSidebar()">Toggle sidebar</button>
+      <div ng-sidebar-content>
+        <button (click)="_toggleSidebar()">Toggle sidebar</button>
+      </div>
 
     </ng-sidebar-container>
   `
@@ -120,7 +123,7 @@ The sidebar has a few public functions:
 
 Various class names are attached to the sidebar and container for easier styling.
 
-If you are using Angular 2's default emulated view encapsulation, you may have to use the `>>>` selector to target the sidebar's classes. Check out [Angular's documentation](https://angular.io/docs/ts/latest/guide/component-styles.html#!#-deep-) for more details. Note that the `/deep/` selector [will soon be deprecated](https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/68qSZM5QMRQ/pT2YCqZSomAJ).
+If you are using Angular's default emulated view encapsulation, you may have to use the `>>>` selector to target the sidebar's classes. Check out [Angular's documentation](https://angular.io/guide/component-styles#deep) for more details. Note that the `/deep/` selector [will soon be deprecated](https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/68qSZM5QMRQ/pT2YCqZSomAJ).
 
 ### Sidebar
 
@@ -150,8 +153,8 @@ If you are using Angular 2's default emulated view encapsulation, you may have t
 
 | Class name | Description |
 | ---------- | ----------- |
-| `ng-sidebar-container--animate` | When `animate` is `true` for the container. |
 | `ng-sidebar__content` | Class of the wrapper `div` for the page content. |
+| `ng-sidebar__content--animate` | When `animate` is `true` for the container. |
 
 
 
@@ -163,7 +166,7 @@ If you are using Angular 2's default emulated view encapsulation, you may have t
 
 | Property name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
-| sidebarContentClass | string | | Additional class name on the `div` wrapping the page contents. |
+| contentClass | string | | Additional class name on the `div` wrapping the page contents. |
 | backdropClass | string | | Additional class name on the overlay element. |
 | showBackdrop | boolean | `false` | Controls the backdrop state of the sidebar container. This should be two-way bound. |
 | allowSidebarBackdropControl | boolean | `true` | Determines if the container component respects the sidebar's `showBackdrop` input option. |

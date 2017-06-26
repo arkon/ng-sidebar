@@ -38,35 +38,35 @@ import { upperCaseFirst, isLTR, isIOS, isBrowser } from './utils';
     .ng-sidebar {
       overflow: auto;
       pointer-events: auto;
-      position: fixed;
+      position: absolute;
       touch-action: auto;
       will-change: initial;
       z-index: 99999999;
     }
 
-      .ng-sidebar--left {
-        bottom: 0;
-        left: 0;
-        top: 0;
-      }
+    .ng-sidebar--left {
+      bottom: 0;
+      left: 0;
+      top: 0;
+    }
 
-      .ng-sidebar--right {
-        bottom: 0;
-        right: 0;
-        top: 0;
-      }
+    .ng-sidebar--right {
+      bottom: 0;
+      right: 0;
+      top: 0;
+    }
 
-      .ng-sidebar--top {
-        left: 0;
-        right: 0;
-        top: 0;
-      }
+    .ng-sidebar--top {
+      left: 0;
+      right: 0;
+      top: 0;
+    }
 
-      .ng-sidebar--bottom {
-        bottom: 0;
-        left: 0;
-        right: 0;
-      }
+    .ng-sidebar--bottom {
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
 
     .ng-sidebar--inert {
       pointer-events: none;
@@ -74,7 +74,7 @@ import { upperCaseFirst, isLTR, isIOS, isBrowser } from './utils';
       will-change: transform;
     }
 
-    .ng-sidebar--animate.ng-sidebar {
+    .ng-sidebar--animate {
       -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
       transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
     }
@@ -317,7 +317,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     let marginStyle = {};
 
     // Hides sidebar off screen
-    if (!this.opened || this._isModeSlide) {
+    if (!this.opened) {
       const isLeftOrTop: boolean = this.position === 'left' || this.position === 'top';
       const isLeftOrRight: boolean = this.position === 'left' || this.position === 'right';
 

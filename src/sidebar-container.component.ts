@@ -24,11 +24,13 @@ import { isBrowser } from './utils';
       [ngClass]="backdropClass"
       (click)="_onBackdropClicked()"></div>
 
+    <ng-content select="ng-sidebar"></ng-content>
+
     <div class="ng-sidebar__content"
       [class.ng-sidebar__content--animate]="animate"
-      [ngClass]="sidebarContentClass"
+      [ngClass]="contentClass"
       [ngStyle]="_getContentStyles()">
-      <ng-content></ng-content>
+      <ng-content select="[ng-sidebar-content]"></ng-content>
     </div>
   `,
   styles: [
@@ -36,25 +38,31 @@ import { isBrowser } from './utils';
     :host {
       box-sizing: border-box;
       display: block;
-      overflow: hidden;
       position: relative;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
     }
 
     .ng-sidebar__backdrop {
-      background: #000;
-      height: 100%;
+      position: absolute;
+      top: 0;
+      bottom: 0;
       left: 0;
+      right: 0;
+      background: #000;
       opacity: 0.75;
       pointer-events: auto;
-      position: fixed;
-      top: 0;
-      width: 100%;
       z-index: 99999998;
     }
 
     .ng-sidebar__content {
-      display: block;
-      height: 100%;
+      overflow: auto;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
     }
 
     .ng-sidebar__content--animate {
@@ -72,7 +80,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   @Input() showBackdrop: boolean = false;
   @Output() showBackdropChange = new EventEmitter<boolean>();
 
-  @Input() sidebarContentClass: string;
+  @Input() contentClass: string;
   @Input() backdropClass: string;
 
   private _sidebars: Array<Sidebar> = [];
