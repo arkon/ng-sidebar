@@ -4,17 +4,15 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  Inject,
   Input,
   OnChanges,
   OnDestroy,
   Output,
-  PLATFORM_ID,
   SimpleChanges
 } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
 
 import { Sidebar } from './sidebar.component';
+import { isBrowser } from './utils';
 
 // Based on https://github.com/angular/material2/tree/master/src/lib/sidenav
 @Component({
@@ -77,14 +75,12 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   @Input() sidebarContentClass: string;
   @Input() backdropClass: string;
 
-  private _isBrowser: boolean;
-
   private _sidebars: Array<Sidebar> = [];
 
-  constructor(
-    private _ref: ChangeDetectorRef,
-    @Inject(PLATFORM_ID) platformId: Object) {
-    this._isBrowser = isPlatformBrowser(platformId);
+  private _isBrowser: boolean;
+
+  constructor(private _ref: ChangeDetectorRef) {
+    this._isBrowser = isBrowser();
   }
 
   ngAfterContentInit(): void {

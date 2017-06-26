@@ -4,23 +4,20 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   Output,
-  PLATFORM_ID,
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 
 import { SidebarContainer } from './sidebar-container.component';
 import { SidebarService } from './sidebar.service';
-import { upperCaseFirst, isLTR, isIOS } from './utils';
+import { upperCaseFirst, isLTR, isIOS, isBrowser } from './utils';
 
 @Component({
   selector: 'ng-sidebar',
@@ -126,8 +123,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   /** @internal */
   @ViewChild('sidebar') _elSidebar: ElementRef;
 
-  private _isBrowser: boolean;
-
   private _openSub: Subscription;
   private _closeSub: Subscription;
 
@@ -143,16 +138,17 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   private _onKeyDownAttached: boolean = false;
   private _onResizeAttached: boolean = false;
 
+  private _isBrowser: boolean;
+
   constructor(
     @Optional() private _container: SidebarContainer,
-    private _ref: ChangeDetectorRef,
     private _sidebarService: SidebarService,
-    @Inject(PLATFORM_ID) platformId: Object) {
-    this._isBrowser = isPlatformBrowser(platformId);
-
+    private _ref: ChangeDetectorRef) {
     if (!this._container) {
       throw new Error('<ng-sidebar> must be inside a <ng-sidebar-container>');
     }
+
+    this._isBrowser = isBrowser();
 
     if (this._isBrowser && isIOS() && 'ontouchstart' in window) {
       this._clickEvent = 'touchstart';
