@@ -35,7 +35,6 @@ import { upperCaseFirst, isLTR, isIOS, isBrowser } from './utils';
   `,
   styles: [`
     .ng-sidebar {
-      background-color: #fff;
       overflow: auto;
       pointer-events: auto;
       position: fixed;
