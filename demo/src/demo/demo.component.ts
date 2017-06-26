@@ -3,10 +3,7 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
 @Component({
   selector: 'demo',
   template: `
-    <ng-sidebar-container
-      [(showBackdrop)]="_containerShowBackdrop"
-      [allowSidebarBackdropControl]="_containerAllowSidebarBackdropControl"
-      [animate]="_containerAnimate">
+    <ng-sidebar-container>
       <ng-sidebar
         [(opened)]="_opened"
         [mode]="_MODES[_modeNum]"
@@ -37,7 +34,8 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
 
         <hr>
 
-        <p>Throwup on your pillow steal the warm chair right after you get up.</p>
+        <p>Throwup on your pillow.</p>
+        <p>Steal the warm chair right after you get up.</p>
         <p>Use lap as chair hide head under blanket.</p>
         <p>Walk on car leaving trail of paw prints on hood.</p>
         <p>Steal the warm chair right after you get up.</p>
@@ -114,10 +112,6 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
   `
 })
 export class DemoComponent {
-  private _containerShowBackdrop: boolean = false;
-  private _containerAllowSidebarBackdropControl: boolean = true;
-  private _containerAnimate: boolean = true;
-
   private _opened: boolean = false;
   private _modeNum: number = 0;
   private _positionNum: number = 0;
@@ -134,18 +128,6 @@ export class DemoComponent {
 
   private _MODES: Array<string> = ['over', 'push', 'slide'];
   private _POSITIONS: Array<string> = ['left', 'right', 'top', 'bottom'];
-
-  private toggleContainerShowBackdrop(): void {
-    this._containerShowBackdrop = !this._containerShowBackdrop;
-  }
-
-  private toggleContainerAllowSidebarBackdropControl(): void {
-    this._containerAllowSidebarBackdropControl = !this._containerAllowSidebarBackdropControl;
-  }
-
-  private toggleContainerAnimate(): void {
-    this._containerAnimate = !this._containerAnimate;
-  }
 
   private _toggleOpened(): void {
     this._opened = !this._opened;
