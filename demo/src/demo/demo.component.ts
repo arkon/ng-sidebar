@@ -34,6 +34,13 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
 
         <button class="demo-control" (click)="_toggleOpened()">Close sidebar</button>
         <p><a closeSidebar>This will close the sidebar too</a></p>
+
+        <hr>
+
+        <p>Throwup on your pillow steal the warm chair right after you get up.</p>
+        <p>Use lap as chair hide head under blanket.</p>
+        <p>Walk on car leaving trail of paw prints on hood.</p>
+        <p>Steal the warm chair right after you get up.</p>
       </ng-sidebar>
 
       <header class="demo-header">
@@ -80,7 +87,10 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
           <button class="demo-control" (click)="toggleContainerAnimate()">animate ({{_containerAnimate}})</button>
         </div>
 
-        <p><a href="https://github.com/arkon/ng-sidebar#options">More info about options</a></p>
+
+        <h2>Documentation</h2>
+
+        <p><a href="https://github.com/arkon/ng-sidebar#readme">See the README on GitHub.</a></p>
 
 
         <h1>Download</h1>
