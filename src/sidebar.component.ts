@@ -13,10 +13,8 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 
 import { SidebarContainer } from './sidebar-container.component';
-import { SidebarService } from './sidebar.service';
 import { upperCaseFirst, isLTR, isIOS, isBrowser } from './utils';
 
 @Component({
@@ -123,9 +121,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   /** @internal */
   @ViewChild('sidebar') _elSidebar: ElementRef;
 
-  private _openSub: Subscription;
-  private _closeSub: Subscription;
-
   private _focusableElementsString: string = 'a[href], area[href], input:not([disabled]), select:not([disabled]),' +
     'textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]';
   private _focusableElements: Array<HTMLElement>;
@@ -142,7 +137,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     @Optional() private _container: SidebarContainer,
-    private _sidebarService: SidebarService,
     private _ref: ChangeDetectorRef) {
     if (!this._container) {
       throw new Error('<ng-sidebar> must be inside a <ng-sidebar-container>');
@@ -165,9 +159,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     this._onKeyDown = this._onKeyDown.bind(this);
 
     this._onResize = this._onResize.bind(this);
-
-    this._openSub = this._sidebarService.onOpen(this.open);
-    this._closeSub = this._sidebarService.onClose(this.close);
   }
 
   ngOnInit() {
@@ -229,13 +220,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
     this._destroyCloseListeners();
     this._destroyCollapseListeners();
-
-    if (this._openSub) {
-      this._openSub.unsubscribe();
-    }
-    if (this._closeSub) {
-      this._closeSub.unsubscribe();
-    }
 
     this._container._removeSidebar(this);
   }
