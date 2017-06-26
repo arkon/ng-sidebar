@@ -30,7 +30,8 @@ import { isBrowser } from './utils';
       <ng-content></ng-content>
     </div>
   `,
-  styles: [`
+  styles: [
+    `
     :host {
       box-sizing: border-box;
       display: block;
@@ -59,7 +60,8 @@ import { isBrowser } from './utils';
         -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1), padding 0.3s cubic-bezier(0, 0, 0.3, 1);
         transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1), padding 0.3s cubic-bezier(0, 0, 0.3, 1);
       }
-  `],
+  `
+  ],
   host: {
     '[class.ng-sidebar-container--animate]': 'animate'
   },
@@ -84,13 +86,17 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   }
 
   ngAfterContentInit(): void {
-    if (!this._isBrowser) { return; }
+    if (!this._isBrowser) {
+      return;
+    }
 
     this._onToggle();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!this._isBrowser) { return; }
+    if (!this._isBrowser) {
+      return;
+    }
 
     if (changes['showBackdrop']) {
       this.showBackdropChange.emit(changes['showBackdrop'].currentValue);
@@ -98,7 +104,9 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   }
 
   ngOnDestroy(): void {
-    if (!this._isBrowser) { return; }
+    if (!this._isBrowser) {
+      return;
+    }
 
     this._unsubscribe();
   }
@@ -138,9 +146,9 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
    */
   _getContentStyles(): CSSStyleDeclaration {
     let left = 0,
-        right = 0,
-        top = 0,
-        bottom = 0;
+      right = 0,
+      top = 0,
+      bottom = 0;
 
     let transformStyle: string = null;
     let heightStyle: string = null;

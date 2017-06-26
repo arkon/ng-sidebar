@@ -33,7 +33,8 @@ import { upperCaseFirst, isLTR, isIOS, isBrowser } from './utils';
       <ng-content></ng-content>
     </aside>
   `,
-  styles: [`
+  styles: [
+    `
     .ng-sidebar {
       overflow: auto;
       pointer-events: auto;
@@ -77,7 +78,8 @@ import { upperCaseFirst, isLTR, isIOS, isBrowser } from './utils';
       -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
       transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
     }
-  `],
+  `
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Sidebar implements OnInit, OnChanges, OnDestroy {
@@ -105,7 +107,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   @Input() closeOnClickOutside: boolean = false;
 
   @Input() keyClose: boolean = false;
-  @Input() keyCode: number = 27;  // Default to ESC key
+  @Input() keyCode: number = 27; // Default to ESC key
 
   @Output() onOpenStart: EventEmitter<null> = new EventEmitter<null>();
   @Output() onOpened: EventEmitter<null> = new EventEmitter<null>();
@@ -134,15 +136,17 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
   private _isBrowser: boolean;
 
-  constructor(
-    @Optional() private _container: SidebarContainer,
-    private _ref: ChangeDetectorRef) {
+  constructor(@Optional() private _container: SidebarContainer, private _ref: ChangeDetectorRef) {
     if (!this._container) {
-      throw new Error('<ng-sidebar> must be inside a <ng-sidebar-container>');
+      throw new Error(
+        '<ng-sidebar> must be inside a <ng-sidebar-container>. ' +
+          'See https://github.com/arkon/ng-sidebar#usage for more info.'
+      );
     }
 
     this._isBrowser = isBrowser();
 
+    // Handle taps in iOS
     if (this._isBrowser && isIOS() && 'ontouchstart' in window) {
       this._clickEvent = 'touchstart';
     }
@@ -151,17 +155,17 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
-
     this._onTransitionEnd = this._onTransitionEnd.bind(this);
     this._onFocusTrap = this._onFocusTrap.bind(this);
     this._onClickOutside = this._onClickOutside.bind(this);
     this._onKeyDown = this._onKeyDown.bind(this);
-
     this._onResize = this._onResize.bind(this);
   }
 
   ngOnInit() {
-    if (!this._isBrowser) { return; }
+    if (!this._isBrowser) {
+      return;
+    }
 
     this._container._addSidebar(this);
 
@@ -175,7 +179,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!this._isBrowser) { return; }
+    if (!this._isBrowser) {
+      return;
+    }
 
     if (changes['opened']) {
       if (changes['opened'].currentValue) {
@@ -215,14 +221,15 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (!this._isBrowser) { return; }
+    if (!this._isBrowser) {
+      return;
+    }
 
     this._destroyCloseListeners();
     this._destroyCollapseListeners();
 
     this._container._removeSidebar(this);
   }
-
 
   // Sidebar toggling
   // ==============================================================================================
@@ -231,7 +238,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * Opens the sidebar and emits the appropriate events.
    */
   open(): void {
-    if (!this._isBrowser) { return; }
+    if (!this._isBrowser) {
+      return;
+    }
 
     this.opened = true;
     this.openedChange.emit(true);
@@ -258,7 +267,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * Closes the sidebar and emits the appropriate events.
    */
   close(): void {
-    if (!this._isBrowser) { return; }
+    if (!this._isBrowser) {
+      return;
+    }
 
     this.opened = false;
     this.openedChange.emit(false);
@@ -285,7 +296,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * Manually trigger a re-render of the container. Useful if the sidebar contents might change.
    */
   triggerRerender(): void {
-    if (!this._isBrowser) { return; }
+    if (!this._isBrowser) {
+      return;
+    }
 
     setTimeout(() => {
       this._onRerender.emit();
@@ -349,7 +362,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-
   // Focus on open/close
   // ==============================================================================================
 
@@ -386,7 +398,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    */
   private _setFocused(): void {
     this._focusableElements = Array.from(
-      this._elSidebar.nativeElement.querySelectorAll(this._focusableElementsString)) as Array<HTMLElement>;
+      this._elSidebar.nativeElement.querySelectorAll(this._focusableElementsString)
+    ) as Array<HTMLElement>;
 
     if (this.opened) {
       this._focusedBeforeOpen = document.activeElement as HTMLElement;
@@ -427,7 +440,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       }
     }
   }
-
 
   // Close event handlers
   // ==============================================================================================
@@ -492,7 +504,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-
   // Auto collapse handlers
   // ==============================================================================================
 
@@ -540,7 +551,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-
   // Helpers
   // ==============================================================================================
 
@@ -554,9 +564,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    */
   get _height(): number {
     if (this._elSidebar.nativeElement) {
-      return this._isDocked ?
-        this._dockedSize :
-        this._elSidebar.nativeElement.offsetHeight;
+      return this._isDocked ? this._dockedSize : this._elSidebar.nativeElement.offsetHeight;
     }
 
     return 0;
@@ -572,9 +580,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    */
   get _width(): number {
     if (this._elSidebar.nativeElement) {
-      return this._isDocked ?
-        this._dockedSize :
-        this._elSidebar.nativeElement.offsetWidth;
+      return this._isDocked ? this._dockedSize : this._elSidebar.nativeElement.offsetWidth;
     }
 
     return 0;
