@@ -183,10 +183,10 @@ If you are using Angular 2's default emulated view encapsulation, you may have t
 | Property name | Type | Default | Description |
 | ------------- | ---- | ------- | ----------- |
 | opened | boolean | `false` | Controls the opened state of the sidebar. This should be two-way bound. |
-| mode | `'over', 'push', 'slide'` | `'over'` | See the "Modes" section. |
+| mode | `'over'`, `'push'`, `'slide'` | `'over'` | See the "Modes" section. |
 | dock | boolean | `false` | Show the sidebar as docked when closed. |
 | dockedSize | string | `'0px'` | When `mode` is set to `'dock'`, this value indicates how much of the sidebar is still visible when "closed". |
-| position | `'left', 'right', 'top', 'bottom', 'start', 'end'` | `'start'` | What side the sidebar should be docked to. `'start'` and `'end'` are aliases that respect the page's language (e.g. `start` is the same as `left` for English, but would be `right` for Hebrew. |
+| position | `'left'`, `'right'`, `'top'`, `'bottom'`, `'start'`, `'end'` | `'start'` | What side the sidebar should be docked to. `'start'` and `'end'` are aliases that respect the page's language (e.g. `start` is the same as `left` for English, but would be `right` for Hebrew. |
 | autoCollapseHeight | number | | Window height in pixels in which to automatically close the sidebar. |
 | autoCollapseWidth | number | | Window width in pixels in which to automatically close the sidebar. |
 | animate | boolean | `true` | Animate the opening/closing of the sidebar. |
