@@ -25,6 +25,7 @@ import { isBrowser } from './utils';
       (click)="_onBackdropClicked()"></div>
 
     <div class="ng-sidebar__content"
+      [class.ng-sidebar__content--animate]="animate"
       [ngClass]="sidebarContentClass"
       [ngStyle]="_getContentStyles()">
       <ng-content></ng-content>
@@ -56,15 +57,12 @@ import { isBrowser } from './utils';
       height: 100%;
     }
 
-      :host.ng-sidebar-container--animate .ng-sidebar__content {
-        -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1), padding 0.3s cubic-bezier(0, 0, 0.3, 1);
-        transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1), padding 0.3s cubic-bezier(0, 0, 0.3, 1);
-      }
+    .ng-sidebar__content--animate {
+      -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1), padding 0.3s cubic-bezier(0, 0, 0.3, 1);
+      transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1), padding 0.3s cubic-bezier(0, 0, 0.3, 1);
+    }
   `
   ],
-  host: {
-    '[class.ng-sidebar-container--animate]': 'animate'
-  },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy {
