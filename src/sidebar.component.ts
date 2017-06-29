@@ -15,7 +15,7 @@ import {
 } from '@angular/core';
 
 import { SidebarContainer } from './sidebar-container.component';
-import { upperCaseFirst, isLTR, isIOS, isBrowser } from './utils';
+import { isLTR, isIOS, isBrowser } from './utils';
 
 @Component({
   selector: 'ng-sidebar',
@@ -33,8 +33,7 @@ import { upperCaseFirst, isLTR, isIOS, isBrowser } from './utils';
       <ng-content></ng-content>
     </aside>
   `,
-  styles: [
-    `
+  styles: [`
     .ng-sidebar {
       overflow: auto;
       pointer-events: auto;
@@ -78,8 +77,7 @@ import { upperCaseFirst, isLTR, isIOS, isBrowser } from './utils';
       -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
       transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
     }
-  `
-  ],
+  `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Sidebar implements OnInit, OnChanges, OnDestroy {
@@ -314,30 +312,24 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    */
   _getStyle(): CSSStyleDeclaration {
     let transformStyle: string = null;
-    let marginStyle = {};
 
-    // Hides sidebar off screen
+    // Hides sidebar off screen when closed
     if (!this.opened) {
-      const isLeftOrTop: boolean = this.position === 'left' || this.position === 'top';
-      const isLeftOrRight: boolean = this.position === 'left' || this.position === 'right';
-
-      const transformDir: string = isLeftOrRight ? 'X' : 'Y';
-      const translateAmt: string = `${isLeftOrTop ? '-' : ''}100%`;
-
-      transformStyle = `translate${transformDir}(${translateAmt})`;
+      const transformDir: string = this._isLeftOrRight ? 'X' : 'Y';
+      let translateAmt: string = `${this._isLeftOrTop ? '-' : ''}100%`;
 
       // Docked mode: partially remains open
       if (this.dock && this._dockedSize > 0 && !(this._isModeSlide && this.opened)) {
-        const marginPos = `margin${upperCaseFirst(this.position)}`;
-
-        marginStyle[marginPos] = this.dockedSize;
+        translateAmt = `calc(${translateAmt} ${this._isLeftOrTop ? '+' : '-'} ${this.dockedSize})`;
       }
+
+      transformStyle = `translate${transformDir}(${translateAmt})`;
     }
 
-    return Object.assign(marginStyle, {
+    return {
       webkitTransform: transformStyle,
       transform: transformStyle
-    }) as CSSStyleDeclaration;
+    } as CSSStyleDeclaration;
   }
 
   /**
@@ -640,6 +632,29 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   get _isDocked(): boolean {
     return this.dock && this.dockedSize && !this.opened;
   }
+
+  /**
+   * @internal
+   *
+   * Returns whether the sidebar is positioned at the left or top.
+   *
+   * @return {boolean} Sidebar is positioned at the left or top.
+   */
+  get _isLeftOrTop(): boolean {
+    return this.position === 'left' || this.position === 'top';
+  }
+
+  /**
+   * @internal
+   *
+   * Returns whether the sidebar is positioned at the left or right.
+   *
+   * @return {boolean} Sidebar is positioned at the left or right.
+   */
+  get _isLeftOrRight(): boolean {
+    return this.position === 'left' || this.position === 'right';
+  }
+
 
   /**
    * @internal

@@ -29,12 +29,11 @@ import { isBrowser } from './utils';
     <div class="ng-sidebar__content"
       [class.ng-sidebar__content--animate]="animate"
       [ngClass]="contentClass"
-      [ngStyle]="_getContentStyles()">
+      [ngStyle]="_getContentStyle()">
       <ng-content select="[ng-sidebar-content]"></ng-content>
     </div>
   `,
-  styles: [
-    `
+  styles: [`
     :host {
       box-sizing: border-box;
       display: block;
@@ -69,8 +68,7 @@ import { isBrowser } from './utils';
       -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1), padding 0.3s cubic-bezier(0, 0, 0.3, 1);
       transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1), padding 0.3s cubic-bezier(0, 0, 0.3, 1);
     }
-  `
-  ],
+  `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy {
@@ -150,7 +148,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
    *
    * @return {CSSStyleDeclaration} margin styles for the page content.
    */
-  _getContentStyles(): CSSStyleDeclaration {
+  _getContentStyle(): CSSStyleDeclaration {
     let left = 0,
       right = 0,
       top = 0,
@@ -161,15 +159,12 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
     let widthStyle: string = null;
 
     for (const sidebar of this._sidebars) {
-      const isLeftOrRight: boolean = sidebar.position === 'left' || sidebar.position === 'right';
-
       // Slide mode: we need to translate the entire container
       if (sidebar._isModeSlide) {
         if (sidebar.opened) {
-          const isLeftOrTop: boolean = sidebar.position === 'left' || sidebar.position === 'top';
-
-          const transformDir: string = isLeftOrRight ? 'X' : 'Y';
-          const transformAmt: string = `${isLeftOrTop ? '' : '-'}${isLeftOrRight ? sidebar._width : sidebar._height}`;
+          const transformDir: string = sidebar._isLeftOrRight ? 'X' : 'Y';
+          const transformAmt: string =
+            `${sidebar._isLeftOrTop ? '' : '-'}${sidebar._isLeftOrRight ? sidebar._width : sidebar._height}`;
 
           transformStyle = `translate${transformDir}(${transformAmt}px)`;
         }
@@ -180,17 +175,16 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
         let paddingAmt: number = 0;
 
         if (sidebar._isModeSlide && sidebar.opened) {
-          const offsetDim = `calc(100% - ${sidebar._dockedSize}px`;
-          if (isLeftOrRight) {
-            widthStyle = offsetDim;
+          if (sidebar._isLeftOrRight) {
+            widthStyle = '100%';
           } else {
-            heightStyle = offsetDim;
+            heightStyle = '100%';
           }
         } else {
           if (sidebar._isDocked || (sidebar._isModeOver && sidebar.dock)) {
             paddingAmt = sidebar._dockedSize;
           } else {
-            paddingAmt = isLeftOrRight ? sidebar._width : sidebar._height;
+            paddingAmt = sidebar._isLeftOrRight ? sidebar._width : sidebar._height;
           }
         }
 

@@ -1,13 +1,4 @@
 /**
- * Makes a string's first letter uppercase.
- *
- * @return {string} Original string, but with first letter in upper case.
- */
-export function upperCaseFirst(str) {
-  return str.charAt(0).toUpperCase() + str.substring(1);
-}
-
-/**
  * Returns whether the page is in LTR mode. Defaults to `true` if it can't be computed.
  *
  * @return {boolean} Page's language direction is left-to-right.
