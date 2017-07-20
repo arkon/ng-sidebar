@@ -4,7 +4,7 @@
 
 **[Demo](https://echeung.me/ng-sidebar)**
 
-*Formally called [ng2-sidebar](https://github.com/arkon/ng2-sidebar)*
+*Formerly called [ng2-sidebar](https://github.com/arkon/ng2-sidebar)*
 
 An Angular 2+ sidebar component.
 
