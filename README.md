@@ -89,6 +89,8 @@ class AppComponent {
 }
 ```
 
+If nothing seems to show up, your wrappers' heights may be collapsing. Try adding a height (e.g. `height: 100vh;`) to the wrapper `<ng-sidebar-container>` or other wrapper elements you may have. (See [issue #100](https://github.com/arkon/ng-sidebar/issues/100) for more info.)
+
 A directive is also provided to easily close the sidebar by clicking something inside it:
 
 ```html
