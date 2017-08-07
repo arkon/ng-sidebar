@@ -24,9 +24,7 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
         (onOpenStart)="_onOpenStart()"
         (onOpened)="_onOpened()"
         (onCloseStart)="_onCloseStart()"
-        (onClosed)="_onClosed()"
-        (onAnimationStart)="_onAnimationStart($event)"
-        (onAnimationDone)="_onAnimationDone($event)">
+        (onClosed)="_onClosed()">
         <p>Sidebar contents</p>
 
         <button class="demo-control" (click)="_toggleOpened()">Close sidebar</button>
@@ -196,13 +194,5 @@ export class DemoComponent {
 
   private _onClosed(): void {
     console.info('Sidebar closed');
-  }
-
-  private _onAnimationStart(e: AnimationTransitionEvent): void {
-    console.info('Animation start', e);
-  }
-
-  private _onAnimationDone(e: AnimationTransitionEvent): void {
-    console.info('Animation done', e);
   }
 }
