@@ -315,15 +315,16 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
     // Hides sidebar off screen when closed
     if (!this.opened) {
-      const transformDir: string = this._isLeftOrRight ? 'X' : 'Y';
+      const transformDir: string = 'translate' + (this._isLeftOrRight ? 'X' : 'Y');
       let translateAmt: string = `${this._isLeftOrTop ? '-' : ''}100%`;
 
-      // Docked mode: partially remains open
-      if (this.dock && this._dockedSize > 0 && !(this._isModeSlide && this.opened)) {
-        translateAmt = `calc(${translateAmt} ${this._isLeftOrTop ? '+' : '-'} ${this.dockedSize})`;
-      }
+      transformStyle = `${transformDir}(${translateAmt})`;
 
-      transformStyle = `translate${transformDir}(${translateAmt})`;
+      // Docked mode: partially remains open
+      // Note that using `calc(...)` within `transform(...)` doesn't work in IE
+      if (this.dock && this._dockedSize > 0 && !(this._isModeSlide && this.opened)) {
+        transformStyle += ` ${transformDir}(${this._isLeftOrTop ? '+' : '-'}${this.dockedSize})`;
+      }
     }
 
     return {
