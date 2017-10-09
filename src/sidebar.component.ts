@@ -35,6 +35,7 @@ import { isLTR, isIOS, isBrowser } from './utils';
   `,
   styles: [`
     .ng-sidebar {
+      -webkit-overflow-scrolling: touch;
       overflow: auto;
       pointer-events: auto;
       position: absolute;

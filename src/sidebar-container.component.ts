@@ -56,6 +56,7 @@ import { isBrowser } from './utils';
     }
 
     .ng-sidebar__content {
+      -webkit-overflow-scrolling: touch;
       overflow: auto;
       position: absolute;
       top: 0;
