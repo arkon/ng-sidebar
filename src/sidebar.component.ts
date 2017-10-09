@@ -128,6 +128,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
   private _wasCollapsed: boolean;
 
+  // Delay initial animation (issues #59, #112)
+  private _shouldAnimate: boolean;
+
   private _clickEvent: string = 'click';
   private _onClickOutsideAttached: boolean = false;
   private _onKeyDownAttached: boolean = false;
@@ -166,15 +169,12 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       return;
     }
 
-    this._container._addSidebar(this);
-
-    // Prevents an initial transition hiccup in IE (issue #59)
     if (this.animate) {
+      this._shouldAnimate = true;
       this.animate = false;
-      setTimeout(() => {
-        this.animate = true;
-      });
     }
+
+    this._container._addSidebar(this);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -182,7 +182,16 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       return;
     }
 
+    if (changes['animate'] && this._shouldAnimate) {
+      this._shouldAnimate = changes['animate'].currentValue;
+    }
+
     if (changes['opened']) {
+      if (this._shouldAnimate) {
+        this.animate = true;
+        this._shouldAnimate = false;
+      }
+
       if (changes['opened'].currentValue) {
         this.open();
       } else {
