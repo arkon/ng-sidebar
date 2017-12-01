@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const root = function (args) {
   return path.join.apply(path, [__dirname].concat(...arguments));
@@ -61,15 +62,7 @@ module.exports = {
       filename: 'css/[name].css'
     }),
 
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false,
-        screw_ie8: true
-      },
-      output: {
-        comments: false
-      }
-    }),
+    new UglifyJSPlugin(),
 
     new CopyWebpackPlugin([{
       from: root('public')
