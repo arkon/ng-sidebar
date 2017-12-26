@@ -321,7 +321,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * @return {CSSStyleDeclaration} The transform styles, with the WebKit-prefixed version as well.
    */
   _getStyle(): CSSStyleDeclaration {
-    let transformStyle: string = null;
+    let transformStyle: string = '';
 
     // Hides sidebar off screen when closed
     if (!this.opened) {

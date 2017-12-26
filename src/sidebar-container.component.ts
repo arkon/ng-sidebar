@@ -155,9 +155,9 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
       top = 0,
       bottom = 0;
 
-    let transformStyle: string = null;
-    let heightStyle: string = null;
-    let widthStyle: string = null;
+    let transformStyle: string = '';
+    let heightStyle: string = '';
+    let widthStyle: string = '';
 
     for (const sidebar of this._sidebars) {
       // Slide mode: we need to translate the entire container
