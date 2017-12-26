@@ -32,18 +32,18 @@
   "scripts": {
     "lint": "tslint --project tsconfig.json src/**/*.ts",
     "build": "npm run lint && rimraf lib && ngc",
-    "prepublish": "npm run build"
+    "prepare": "npm run build"
   },
   "peerDependencies": {
     "@angular/core": ">=2.3.0",
     "@angular/common": ">=2.3.0"
   },
   "devDependencies": {
-    "@angular/common": "^5.0.3",
-    "@angular/compiler": "^5.0.3",
-    "@angular/compiler-cli": "^5.0.3",
-    "@angular/core": "^5.0.3",
-    "@angular/platform-browser": "^5.0.3",
+    "@angular/common": "^4.4.4",
+    "@angular/compiler": "^4.4.4",
+    "@angular/compiler-cli": "^4.4.4",
+    "@angular/core": "^4.4.4",
+    "@angular/platform-browser": "^4.4.4",
     "rimraf": "^2.6.2",
     "rxjs": "^5.5.2",
     "tslint": "^5.8.0",

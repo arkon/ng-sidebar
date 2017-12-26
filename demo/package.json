@@ -18,11 +18,11 @@
     "node": ">=6"
   },
   "dependencies": {
-    "@angular/common": "^5.0.3",
-    "@angular/compiler": "^5.0.3",
-    "@angular/core": "^5.0.3",
-    "@angular/platform-browser": "^5.0.3",
-    "@angular/platform-browser-dynamic": "^5.0.3",
+    "@angular/common": "^4.4.4",
+    "@angular/compiler": "^4.4.4",
+    "@angular/core": "^4.4.4",
+    "@angular/platform-browser": "^4.4.4",
+    "@angular/platform-browser-dynamic": "^4.4.4",
     "es6-shim": "^0.35.3",
     "ng-sidebar": "file:../",
     "reflect-metadata": "^0.1.10",
