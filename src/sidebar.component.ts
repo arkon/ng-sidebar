@@ -94,6 +94,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
   @Input() autoCollapseHeight: number;
   @Input() autoCollapseWidth: number;
+  @Input() autoCollapseOnInit: boolean = true;
 
   @Input() sidebarClass: string;
 
@@ -161,7 +162,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     this._onFocusTrap = this._onFocusTrap.bind(this);
     this._onClickOutside = this._onClickOutside.bind(this);
     this._onKeyDown = this._onKeyDown.bind(this);
-    this._onResize = this._onResize.bind(this);
+    this._collapse = this._collapse.bind(this);
   }
 
   ngOnInit() {
@@ -175,6 +176,10 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
 
     this._container._addSidebar(this);
+
+    if (this.autoCollapseOnInit) {
+      this._collapse();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -515,7 +520,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       // In a timeout so that things render first
       setTimeout(() => {
         if (!this._onResizeAttached) {
-          window.addEventListener('resize', this._onResize);
+          window.addEventListener('resize', this._collapse);
           this._onResizeAttached = true;
         }
       });
@@ -524,12 +529,12 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
   private _destroyCollapseListeners(): void {
     if (this._onResizeAttached) {
-      window.removeEventListener('resize', this._onResize);
+      window.removeEventListener('resize', this._collapse);
       this._onResizeAttached = false;
     }
   }
 
-  private _onResize(): void {
+  private _collapse(): void {
     const winHeight: number = window.innerHeight;
     const winWidth: number = window.innerWidth;
 

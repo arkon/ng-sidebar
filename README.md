@@ -194,6 +194,7 @@ If you are using Angular's default emulated view encapsulation, you may have to 
 | position | `'left'`, `'right'`, `'top'`, `'bottom'`, `'start'`, `'end'` | `'start'` | What side the sidebar should be docked to. `'start'` and `'end'` are aliases that respect the page's language (e.g. `start` is the same as `left` for English, but would be `right` for Hebrew. |
 | autoCollapseHeight | number | | Window height in pixels in which to automatically close the sidebar. |
 | autoCollapseWidth | number | | Window width in pixels in which to automatically close the sidebar. |
+| autoCollapseOnInit | boolean | `true` | Collapse sidebar based on `autoCollapseHeight` and/or `autoCollapseWidth` on initial render as needed. |
 | animate | boolean | `true` | Animate the opening/closing of the sidebar. |
 | sidebarClass | string | | Additional class name on the sidebar element. |
 | ariaLabel | string | | Value for the sidebar's `aria-label` attribute. |
