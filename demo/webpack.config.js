@@ -63,7 +63,7 @@ module.exports = {
       filename: 'css/[name].css'
     }),
 
-    new UglifyJSPlugin(),
+    // new UglifyJSPlugin(),
 
     new CopyWebpackPlugin([{
       from: root('public')
