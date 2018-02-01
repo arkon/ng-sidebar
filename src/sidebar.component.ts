@@ -113,6 +113,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   @Output() onOpened: EventEmitter<null> = new EventEmitter<null>();
   @Output() onCloseStart: EventEmitter<null> = new EventEmitter<null>();
   @Output() onClosed: EventEmitter<null> = new EventEmitter<null>();
+  @Output() onTransitionEnd: EventEmitter<null> = new EventEmitter<null>();
   @Output() onModeChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() onPositionChange: EventEmitter<string> = new EventEmitter<string>();
 
@@ -365,6 +366,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
         this._destroyCloseListeners();
         this.onClosed.emit();
       }
+
+      this.onTransitionEnd.emit();
 
       this._elSidebar.nativeElement.removeEventListener('transitionend', this._onTransitionEnd);
     }

@@ -215,6 +215,7 @@ If you are using Angular's default emulated view encapsulation, you may have to 
 | onOpened | | Emitted when the sidebar is opened. |
 | onCloseStart | | Emitted when the sidebar is closing. |
 | onClosed | | Emitted when the sidebar is closed. |
+| onTransitionEnd | | Emitted when the animation for opening or closing ends. |
 | onModeChange | `mode: string` | Emitted when `mode` is changed. |
 | onPositionChange | `position: string` | Emitted when `position` is changed. |
 
