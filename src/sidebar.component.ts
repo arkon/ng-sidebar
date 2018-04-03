@@ -128,6 +128,9 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   private _focusableElements: Array<HTMLElement>;
   private _focusedBeforeOpen: HTMLElement;
 
+  private _tabIndexAttr: string = '__tabindex__';
+  private _tabIndexIndicatorAttr: string = '__ngsidebar-tabindex__';
+
   private _wasCollapsed: boolean;
 
   // Delay initial animation (issues #59, #112)
@@ -417,12 +420,14 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
       // Restore focusability, with previous tabindex attributes
       for (const el of this._focusableElements) {
-        const prevTabIndex = el.getAttribute('__tabindex__');
+        const prevTabIndex = el.getAttribute(this._tabIndexAttr);
+        const wasTabIndexSet = el.getAttribute(this._tabIndexIndicatorAttr) !== null;
         if (prevTabIndex !== null) {
           el.setAttribute('tabindex', prevTabIndex);
-          el.removeAttribute('__tabindex__');
-        } else {
+          el.removeAttribute(this._tabIndexAttr);
+        } else if (wasTabIndexSet) {
           el.removeAttribute('tabindex');
+          el.removeAttribute(this._tabIndexIndicatorAttr);
         }
       }
 
@@ -436,9 +441,10 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       for (const el of this._focusableElements) {
         const existingTabIndex = el.getAttribute('tabindex');
         el.setAttribute('tabindex', '-1');
+        el.setAttribute(this._tabIndexIndicatorAttr, '');
 
         if (existingTabIndex !== null) {
-          el.setAttribute('__tabindex__', existingTabIndex);
+          el.setAttribute(this._tabIndexAttr, existingTabIndex);
         }
       }
 
