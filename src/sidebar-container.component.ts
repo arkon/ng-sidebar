@@ -24,7 +24,7 @@ import { isBrowser } from './utils';
       [ngClass]="backdropClass"
       (click)="_onBackdropClicked()"></div>
 
-    <ng-content select="ng-sidebar"></ng-content>
+    <ng-content select="ng-sidebar,[ng-sidebar]"></ng-content>
 
     <div class="ng-sidebar__content"
       [class.ng-sidebar__content--animate]="animate"
