@@ -503,7 +503,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
-   * Destroys alle event handlers from _initCloseListeners.
+   * Destroys all event handlers from _initCloseListeners.
    */
   private _destroyCloseListeners(): void {
     this._destroyCloseClickListener();
