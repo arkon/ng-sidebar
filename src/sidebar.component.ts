@@ -209,20 +209,18 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
 
     if (changes['closeOnClickOutside']) {
-      if (changes["closeOnClickOutside"].currentValue) {
+      if (changes['closeOnClickOutside'].currentValue) {
         this._initCloseClickListener();
       } else {
         this._destroyCloseClickListener();
       }
-
     }
     if (changes['keyClose']) {
-      if (changes["keyClose"].currentValue) {
+      if (changes['keyClose'].currentValue) {
         this._initCloseKeyDownListener();
       } else {
         this._destroyCloseKeyDownListener();
       }
-      
     }
 
     if (changes['position']) {
