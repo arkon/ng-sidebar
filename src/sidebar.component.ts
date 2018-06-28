@@ -147,7 +147,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     if (!this._container) {
       throw new Error(
         '<ng-sidebar> must be inside a <ng-sidebar-container>. ' +
-          'See https://github.com/arkon/ng-sidebar#usage for more info.'
+        'See https://github.com/arkon/ng-sidebar#usage for more info.'
       );
     }
 
@@ -208,8 +208,19 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       }
     }
 
-    if (changes['closeOnClickOutside'] || changes['keyClose']) {
-      this._initCloseListeners();
+    if (changes['closeOnClickOutside']) {
+      if (changes['closeOnClickOutside'].currentValue) {
+        this._initCloseClickListener();
+      } else {
+        this._destroyCloseClickListener();
+      }
+    }
+    if (changes['keyClose']) {
+      if (changes['keyClose'].currentValue) {
+        this._initCloseKeyDownListener();
+      } else {
+        this._destroyCloseKeyDownListener();
+      }
     }
 
     if (changes['position']) {
@@ -465,31 +476,46 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * Initializes event handlers for the closeOnClickOutside and keyClose options.
    */
   private _initCloseListeners(): void {
-    if (this.opened && (this.closeOnClickOutside || this.keyClose)) {
-      // In a timeout so that things render first
-      setTimeout(() => {
-        if (this.closeOnClickOutside && !this._onClickOutsideAttached) {
-          document.addEventListener(this._clickEvent, this._onClickOutside);
-          this._onClickOutsideAttached = true;
-        }
+      this._initCloseClickListener();
+      this._initCloseKeyDownListener();
+  }
 
-        if (this.keyClose && !this._onKeyDownAttached) {
-          document.addEventListener('keydown', this._onKeyDown);
-          this._onKeyDownAttached = true;
-        }
-      });
-    }
+  private _initCloseClickListener(): void {
+    // In a timeout so that things render first
+    setTimeout(() => {
+      if (this.opened && this.closeOnClickOutside && !this._onClickOutsideAttached) {
+        document.addEventListener(this._clickEvent, this._onClickOutside);
+        this._onClickOutsideAttached = true;
+      }
+    });
+  }
+
+  private _initCloseKeyDownListener(): void {
+    // In a timeout so that things render first
+    setTimeout(() => {
+      if (this.opened && this.keyClose && !this._onKeyDownAttached) {
+        document.addEventListener('keydown', this._onKeyDown);
+        this._onKeyDownAttached = true;
+      }
+    });
   }
 
   /**
-   * Destroys the event handlers from _initCloseListeners.
+   * Destroys all event handlers from _initCloseListeners.
    */
   private _destroyCloseListeners(): void {
+    this._destroyCloseClickListener();
+    this._destroyCloseKeyDownListener();
+  }
+
+  private _destroyCloseClickListener(): void {
     if (this._onClickOutsideAttached) {
       document.removeEventListener(this._clickEvent, this._onClickOutside);
       this._onClickOutsideAttached = false;
     }
+  }
 
+  private _destroyCloseKeyDownListener(): void {
     if (this._onKeyDownAttached) {
       document.removeEventListener('keydown', this._onKeyDown);
       this._onKeyDownAttached = false;
