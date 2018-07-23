@@ -195,19 +195,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       this._shouldAnimate = changes['animate'].currentValue;
     }
 
-    if (changes['opened']) {
-      if (this._shouldAnimate) {
-        this.animate = true;
-        this._shouldAnimate = false;
-      }
-
-      if (changes['opened'].currentValue) {
-        this.open();
-      } else {
-        this.close();
-      }
-    }
-
     if (changes['closeOnClickOutside']) {
       if (changes['closeOnClickOutside'].currentValue) {
         this._initCloseClickListener();
@@ -245,6 +232,19 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
     if (changes['autoCollapseHeight'] || changes['autoCollapseWidth']) {
       this._initCollapseListeners();
+    }
+
+    if (changes['opened']) {
+      if (this._shouldAnimate) {
+        this.animate = true;
+        this._shouldAnimate = false;
+      }
+
+      if (changes['opened'].currentValue) {
+        this.open();
+      } else {
+        this.close();
+      }
     }
   }
 
