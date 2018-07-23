@@ -3,7 +3,8 @@ import { Component, AnimationTransitionEvent } from '@angular/core';
 @Component({
   selector: 'demo',
   template: `
-    <ng-sidebar-container>
+    <ng-sidebar-container
+        (onBackdropClicked)="_onBackdropClicked()">
       <ng-sidebar
         [(opened)]="_opened"
         [mode]="_MODES[_modeNum]"
@@ -199,5 +200,9 @@ export class DemoComponent {
 
   private _onTransitionEnd(): void {
     console.info('Transition ended');
+  }
+
+  private _onBackdropClicked(): void {
+    console.info('Backdrop clicked');
   }
 }

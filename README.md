@@ -179,6 +179,7 @@ If you are using Angular's default emulated view encapsulation, you may have to 
 | Property name | Callback arguments | Description |
 | ------------- | ------------------ | ----------- |
 | showBackdropChange | `showBackdrop: boolean` | Emitted when `showBackdrop` is modified. This allows for you to do "two-way binding" (i.e. `[(showBackdrop)]`). |
+| onBackdropClicked | | Emitted when a backdrop is clicked. |
 
 
 ### `<ng-sidebar>`

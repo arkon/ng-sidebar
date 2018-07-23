@@ -78,6 +78,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   @Input() allowSidebarBackdropControl: boolean = true;
   @Input() showBackdrop: boolean = false;
   @Output() showBackdropChange = new EventEmitter<boolean>();
+  @Output() onBackdropClicked = new EventEmitter<null>();
 
   @Input() contentClass: string;
   @Input() backdropClass: string;
@@ -225,10 +226,16 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
    * `closeOnClickBackdrop` option set.
    */
   _onBackdropClicked(): void {
+    let backdropClicked = false;
     for (const sidebar of this._sidebars) {
       if (sidebar.opened && sidebar.showBackdrop && sidebar.closeOnClickBackdrop) {
         sidebar.close();
+        backdropClicked = true;
       }
+    }
+
+    if (backdropClicked) {
+      this.onBackdropClicked.emit();
     }
   }
 
