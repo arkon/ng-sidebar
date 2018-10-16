@@ -21,33 +21,34 @@ demo {
   padding: 1em;
 }
 
-  .demo-header__toggle {
-    background: transparent;
-    border: 0.15rem solid $white;
-    border-left: 0;
-    border-right: 0;
-    cursor: pointer;
-    font-size: 0;
-    height: 1.5rem;
-    margin-right: 1rem;
-    position: relative;
-    width: 2rem;
+.demo-header__toggle {
+  background: transparent;
+  border: 0.15rem solid $white;
+  border-left: 0;
+  border-right: 0;
+  cursor: pointer;
+  font-size: 0;
+  height: 1.5rem;
+  margin-right: 1rem;
+  position: relative;
+  width: 2rem;
 
-    &::after {
-      background: $white;
-      content: '';
-      height: 0.15rem;
-      left: 0;
-      margin-top: -0.075rem;
-      position: absolute;
-      top: 50%;
-      width: 100%;
-    }
+  &::after {
+    background: $white;
+    content: '';
+    height: 0.15rem;
+    left: 0;
+    margin-top: -0.075rem;
+    position: absolute;
+    top: 50%;
+    width: 100%;
   }
+}
 
 .demo-sidebar {
   background-color: #fff;
   padding: 2em 1em;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.4);
 
   &.ng-sidebar--opened.ng-sidebar--over {
     box-shadow: 0 0 2.5em rgba(85, 85, 85, 0.5);
@@ -62,6 +63,7 @@ demo {
   background-color: $light-grey;
   border: 1px solid $dark-grey;
   cursor: pointer;
+  margin-top: 1.5em;
   margin-bottom: 0.5em;
   padding: 0.5em 2em;
   transition: background-color 0.15s;
@@ -70,4 +72,70 @@ demo {
     background-color: $dark-grey;
     color: $white;
   }
+}
+
+.demo-input-group {
+  display: block;
+}
+
+.demo-input-group .info {
+  padding: 0 16px;
+}
+
+.demo-input-control {
+  width: 4rem;
+}
+
+.sidebar-menu {
+  list-style: none;
+}
+
+.sidebar-menu li {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  height: 48px;
+  line-height: 48px;
+  padding: 0;
+  transition: background-color 0.3s;
+}
+
+.sidebar-menu li:hover {
+  background-color: rgba(240, 240, 240, 0.8);
+}
+
+.sidebar-menu li a {
+  padding: 0 16px;
+  width: 100%;
+  text-decoration: none;
+}
+
+.sidebar-menu li a:hover {
+  text-decoration: none;
+  border-bottom: none;
+}
+
+/** scroll bar styling
+
+/* width */
+ng-sidebar ::-webkit-scrollbar {
+  width: 10px;
+  /* display: none; */  // uncomment to hide scrollbar
+}
+
+/* Track */
+ng-sidebar ::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(12,12,12,0.1);
+  border-radius: 10px;
+}
+
+/* Handle */
+ng-sidebar ::-webkit-scrollbar-thumb {
+  background: rgba(14,14,14,0.1);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+ng-sidebar ::-webkit-scrollbar-thumb:hover {
+  background: rgba(10,10,10,0.1);
 }

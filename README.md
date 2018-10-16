@@ -150,6 +150,7 @@ If you are using Angular's default emulated view encapsulation, you may have to 
 | Class name | Description |
 | ---------- | ----------- |
 | `ng-sidebar__backdrop` | Class of the backdrop `div`. Note that the `div` is only in the DOM when the backdrop is shown. |
+| `ng-sidebar__backdrop--animate` | Class of the backdrop transition. |
 
 ### Page content
 
@@ -206,6 +207,11 @@ If you are using Angular's default emulated view encapsulation, you may have to 
 | closeOnClickOutside | boolean | `false` | Whether clicking outside of the open sidebar will close it. |
 | keyClose | boolean | `false` | Close the sidebar when a keyboard button is pressed. |
 | keyCode | number | `27` | The [key code](http://keycode.info/) for `keyClose`. |
+| openOnHover | boolean | false | Open the sidebar on mouse enter. |
+| delayBeforeOpen | number | 0 | Delay in miliseconds before opening of the sidebar. |
+| delayBeforeClose | number | 0 | Delay in miliseconds before closing of the sidebar. |
+| enableSliding | boolean | false | Enable sliding the sidebar with touch events. |
+| thresholdToClose | number | 5 | Threshold in px to close the sidebar. |
 
 #### Outputs
 

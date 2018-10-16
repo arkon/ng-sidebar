@@ -21,8 +21,9 @@ import { isBrowser } from './utils';
     <div *ngIf="showBackdrop"
       aria-hidden="true"
       class="ng-sidebar__backdrop"
-      [ngClass]="backdropClass"
-      (click)="_onBackdropClicked()"></div>
+      [ngClass]="{backdropClass: true, 'ng-sidebar__backdrop--animate': _showBackdropAnimate}"
+      (click)="_onBackdropClicked()">
+    </div>
 
     <ng-content select="ng-sidebar,[ng-sidebar]"></ng-content>
 
@@ -49,10 +50,15 @@ import { isBrowser } from './utils';
       bottom: 0;
       left: 0;
       right: 0;
-      background: #000;
-      opacity: 0.75;
+      background-color: rgba(0,0,0,0);
+      transition: background-color 0.3s;
+      will-change: background-color;
       pointer-events: auto;
       z-index: 99999998;
+    }
+
+    .ng-sidebar__backdrop--animate {
+      background-color: rgba(0,0,0,0.4);
     }
 
     .ng-sidebar__content {
@@ -77,6 +83,7 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
 
   @Input() allowSidebarBackdropControl: boolean = true;
   @Input() showBackdrop: boolean = false;
+
   @Output() showBackdropChange = new EventEmitter<boolean>();
   @Output() onBackdropClicked = new EventEmitter<null>();
 
@@ -86,6 +93,10 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
   private _sidebars: Array<Sidebar> = [];
 
   private _isBrowser: boolean;
+
+  _showBackdropAnimate: boolean = this.showBackdrop;
+  _animationTimer;
+  _animTimer = 1;
 
   constructor(private _ref: ChangeDetectorRef) {
     this._isBrowser = isBrowser();
@@ -281,8 +292,26 @@ export class SidebarContainer implements AfterContentInit, OnChanges, OnDestroy 
       // Show backdrop if a single open sidebar has it set
       const hasOpen = this._sidebars.some(sidebar => sidebar.opened && sidebar.showBackdrop);
 
-      this.showBackdrop = hasOpen;
+      // this.showBackdrop = hasOpen;
       this.showBackdropChange.emit(hasOpen);
+
+      if (!this._animationTimer) {
+        if (hasOpen) {
+          this.showBackdrop = hasOpen;
+          this._animationTimer = setTimeout(() => {
+            this._showBackdropAnimate = hasOpen;
+            this._animationTimer = undefined;
+            this._animTimer = 10;
+          }, this._animTimer);
+        } else {
+          this._showBackdropAnimate = hasOpen;
+          this._animationTimer = setTimeout(() => {
+            this.showBackdrop = hasOpen;
+            this._animationTimer = undefined;
+            this._animTimer = 10;
+          }, this._animTimer);
+        }
+      }
     }
 
     setTimeout(() => {
