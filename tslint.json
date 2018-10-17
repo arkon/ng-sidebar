@@ -7,7 +7,7 @@
     "indent": [true, "spaces"],
     "interface-name": [true, "always-prefix"],
     "jsdoc-format": true,
-    "max-line-length": [true, 120],
+    "max-line-length": [true, 140],
     "member-ordering": [
       true,
       "static-before-instance",

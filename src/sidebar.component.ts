@@ -75,8 +75,8 @@ import { isLTR, isIOS, isBrowser } from './utils';
     }
 
     .ng-sidebar--animate {
-      -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
-      transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
+      -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.075, 0.820, 0.165, 1.000); // original cubic-bezier(0, 0, 0.3, 1);
+      transition: transform 0.3s cubic-bezier(0.075, 0.820, 0.165, 1.000);
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -91,6 +91,13 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   @Input() dockedSize: string = '0px';
   @Input() position: 'start' | 'end' | 'left' | 'right' | 'top' | 'bottom' = 'start';
   @Input() animate: boolean = true;
+
+  @Input() openOnHover: boolean = false;
+  @Input() delayBeforeOpen: number = 0;
+  @Input() delayBeforeClose: number = 0;
+
+  @Input() enableSliding: boolean = false;
+  @Input() thresholdToClose: number = 5;
 
   @Input() autoCollapseHeight: number;
   @Input() autoCollapseWidth: number;
@@ -123,6 +130,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   /** @internal */
   @ViewChild('sidebar') _elSidebar: ElementRef;
 
+  private _supportsPassive = undefined;
   private _focusableElementsString: string = 'a[href], area[href], input:not([disabled]), select:not([disabled]),' +
     'textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]';
   private _focusableElements: Array<HTMLElement>;
@@ -140,6 +148,16 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   private _onClickOutsideAttached: boolean = false;
   private _onKeyDownAttached: boolean = false;
   private _onResizeAttached: boolean = false;
+  private _onHoverAttached: boolean = false;
+
+  private _openedByHover = false;
+  private _delayedTimer;
+
+  private _startX: number;
+  private _startY: number;
+  private _currentX: number;
+  private _currentY: number;
+  private _touchingSideNav: boolean = false;
 
   private _isBrowser: boolean;
 
@@ -167,6 +185,12 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     this._onClickOutside = this._onClickOutside.bind(this);
     this._onKeyDown = this._onKeyDown.bind(this);
     this._collapse = this._collapse.bind(this);
+    this._hoverRise = this._hoverRise.bind(this);
+    this._hoverCollapse = this._hoverCollapse.bind(this);
+    this._update = this._update.bind(this);
+    this._onTouchStart = this._onTouchStart.bind(this);
+    this._onTouchMove = this._onTouchMove.bind(this);
+    this._onTouchEnd = this._onTouchEnd.bind(this);
   }
 
   ngOnInit() {
@@ -234,6 +258,36 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       this._initCollapseListeners();
     }
 
+    if (changes['openOnHover']) {
+      this.openOnHover = changes['openOnHover'].currentValue;
+      if (this.openOnHover) {
+        this._initHoverListeners();
+      } else {
+        this._destroyHoverListeners();
+      }
+    }
+
+    if (changes['delayBeforeOpen']) {
+      this.delayBeforeOpen = changes['delayBeforeOpen'].currentValue;
+    }
+
+    if (changes['delayBeforeClose']) {
+      this.delayBeforeClose = changes['delayBeforeClose'].currentValue;
+    }
+
+    if (changes['enableSliding']) {
+      this.enableSliding = changes['enableSliding'].currentValue;
+      if (this.enableSliding) {
+        this._initSlideListeners();
+      } else {
+        this._destroySlideListeners();
+      }
+    }
+
+    if (changes['thresholdToClose']) {
+      this.thresholdToClose = changes['thresholdToClose'].currentValue;
+    }
+
     if (changes['opened']) {
       if (this._shouldAnimate) {
         this.animate = true;
@@ -255,6 +309,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
     this._destroyCloseListeners();
     this._destroyCollapseListeners();
+    this._destroyHoverListeners();
+    this._destroySlideListeners();
 
     this._container._removeSidebar(this);
   }
@@ -300,6 +356,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     }
 
     this.opened = false;
+    this._openedByHover = false;
     this.openedChange.emit(false);
 
     this.onCloseStart.emit();
@@ -546,6 +603,159 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       this.close();
     }
   }
+
+  // Hover handlers
+  // ==============================================================================================
+
+  private _initHoverListeners(): void {
+    setTimeout(() => {
+      if (!this._onHoverAttached) {
+        this._elSidebar.nativeElement.addEventListener('mouseenter', this._hoverRise);
+        this._elSidebar.nativeElement.addEventListener('mouseleave', this._hoverCollapse);
+        this._onHoverAttached = true;
+      }
+    });
+  }
+
+  private _destroyHoverListeners(): void {
+    if (this._onHoverAttached) {
+      this._elSidebar.nativeElement.removeEventListener('mouseenter', this._hoverRise);
+      this._elSidebar.nativeElement.removeEventListener('mouseleave', this._hoverCollapse);
+      this._onHoverAttached = false;
+    }
+  }
+
+  private _hoverRise(): void {
+    if (!this.dock) {
+      return;
+    }
+    if (this._openedByHover && this._delayedTimer) { // cancel closing and clearing timeout of closing
+      clearTimeout(this._delayedTimer);
+      this._delayedTimer = undefined;
+    }
+    if (this.opened) {
+      return;
+    }
+
+    this._openedByHover = true;
+    this._delayedTimer = setTimeout(() => {
+      this.open();
+      this._delayedTimer = undefined;
+    }, this.delayBeforeOpen);
+  }
+
+  private _hoverCollapse(): void {
+    if (!this.dock || !this._openedByHover) {
+      return;
+    }
+    if (this._delayedTimer) { // cancel opening and clearing timeout of opening
+      clearTimeout(this._delayedTimer);
+      this._delayedTimer = undefined;
+    }
+    if (!this.opened) {
+      return;
+    }
+
+    this._delayedTimer = setTimeout(() => {
+      this.close();
+      this._delayedTimer = undefined;
+    }, this.delayBeforeClose);
+  }
+
+  // Sliding handlers
+  // ==============================================================================================
+
+  // apply passive event listening if it's supported
+  private _applyPassive () {
+    if (this._supportsPassive !== undefined) {
+      return this._supportsPassive ? { passive: true } : false;
+    }
+
+    // feature detect
+    let isSupported = false;
+    try {
+      const opts = Object.defineProperty({}, 'passive', {
+        get: function () {
+          isSupported = true;
+        }
+      });
+      window.addEventListener('test', null, opts);
+      window.removeEventListener('test', null, opts);
+    } catch (e) {
+      isSupported = false;
+    }
+
+    this._supportsPassive = isSupported;
+    return this._applyPassive();
+  }
+
+  private _initSlideListeners(): void {
+    this._elSidebar.nativeElement.addEventListener('touchstart', this._onTouchStart, this._applyPassive());
+    this._elSidebar.nativeElement.addEventListener('touchmove', this._onTouchMove, this._applyPassive());
+    this._elSidebar.nativeElement.addEventListener('touchend', this._onTouchEnd);
+  }
+
+  private _destroySlideListeners(): void {
+    this._elSidebar.nativeElement.removeEventListener('touchend', this._onTouchStart);
+    this._elSidebar.nativeElement.removeEventListener('touchmove', this._onTouchMove);
+    this._elSidebar.nativeElement.removeEventListener('touchstart', this._onTouchStart);
+  }
+
+  private _calcOffset(): number {
+    const offset = this._isLeftOrRight ? this._currentX - this._startX : this._currentY - this._startY;
+    return this._isLeftOrTop ? Math.min(0, offset) : Math.max(0, offset);
+  }
+
+  private _update() {
+    if (!this._touchingSideNav) {
+      return;
+    }
+
+    requestAnimationFrame(this._update);
+
+    const offset = this._calcOffset();
+
+    this._elSidebar.nativeElement.style.transform =
+      'translate' + (this._isLeftOrRight ? 'X' : 'Y') + `(${offset}px)`;
+  }
+
+  private _onTouchStart(evt) {
+    if (!this.opened) {
+      return;
+    }
+
+    this._touchingSideNav = true;
+
+    this._startX = evt.touches[0].pageX;
+    this._startY = evt.touches[0].pageY;
+    this._currentX = this._startX;
+    this._currentY = this._startY;
+
+    requestAnimationFrame(this._update);
+  }
+
+  private _onTouchMove(evt) {
+    if (!this._touchingSideNav) {
+      return;
+    }
+
+    this._currentX = evt.touches[0].pageX;
+    this._currentY = evt.touches[0].pageY;
+  }
+
+  private _onTouchEnd(evt) {
+    if (!this._touchingSideNav) {
+      return;
+    }
+
+    this._touchingSideNav = false;
+    this._elSidebar.nativeElement.style.transform = '';
+
+    if (Math.abs(this._calcOffset()) >= this.thresholdToClose) {
+      this.close();
+    }
+  }
+
 
   // Auto collapse handlers
   // ==============================================================================================

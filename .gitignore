@@ -23,3 +23,6 @@ factories/
 
 # Built demo files
 demo/dist
+
+# map files
+*.map

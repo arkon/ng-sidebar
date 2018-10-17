@@ -16,6 +16,11 @@ import { Component } from '@angular/core';
         [autoCollapseWidth]="_autoCollapseWidth"
         [closeOnClickOutside]="_closeOnClickOutside"
         [closeOnClickBackdrop]="_closeOnClickBackdrop"
+        [openOnHover]="_openOnHover"
+        [delayBeforeOpen]="_delayBeforeOpen"
+        [delayBeforeClose]="_delayBeforeClose"
+        [enableSliding]="_enableSliding"
+        [thresholdToClose]="_thresholdToClose"
         [showBackdrop]="_showBackdrop"
         [animate]="_animate"
         [trapFocus]="_trapFocus"
@@ -31,14 +36,30 @@ import { Component } from '@angular/core';
 
         <button class="demo-control" (click)="_toggleOpened()">Close sidebar</button>
         <p><a closeSidebar>This will close the sidebar too</a></p>
-
         <hr>
 
-        <p>Throwup on your pillow.</p>
-        <p>Steal the warm chair right after you get up.</p>
-        <p>Use lap as chair hide head under blanket.</p>
-        <p>Walk on car leaving trail of paw prints on hood.</p>
-        <p>Steal the warm chair right after you get up.</p>
+        <ul class="sidebar-menu">
+          <li><a href="#">option 1</a></li>
+          <li><a href="#">option 2</a></li>
+          <li><a href="#">option 3</a></li>
+          <li><a href="#">option 4</a></li>
+          <li><a href="#">option 5</a></li>
+          <li><a href="#">option 6</a></li>
+          <li><a href="#">option 7</a></li>
+          <li><a href="#">option 8</a></li>
+          <li><a href="#">option 9</a></li>
+          <li><a href="#">option 10</a></li>
+          <li><a href="#">option 11</a></li>
+          <li><a href="#">option 12</a></li>
+          <li><a href="#">option 13</a></li>
+          <li><a href="#">option 14</a></li>
+          <li><a href="#">option 15</a></li>
+          <li><a href="#">option 16</a></li>
+          <li><a href="#">option 17</a></li>
+          <li><a href="#">option 18</a></li>
+          <li><a href="#">option 19</a></li>
+        </ul>
+
       </ng-sidebar>
 
       <div ng-sidebar-content>
@@ -77,6 +98,28 @@ import { Component } from '@angular/core';
             <button class="demo-control" (click)="_toggleKeyClose()">keyClose ({{_keyClose}})</button>
           </div>
 
+          <div>
+            <button class="demo-control" (click)="_toggleOpenOnHover()">openOnHover ({{_openOnHover}})</button>
+            <span class="demo-input-group">
+              <label for="delayOpen">Delay before open: </label>
+              <input id="delayOpen" name="delayOpen" class="demo-input-control" type="number" [value]="_delayBeforeOpen" (change)="_setDelayBeforeOpen($event)">
+              <span class="info">Set to {{ _delayBeforeOpen }}</span>
+            </span>
+            <span class="demo-input-group">
+              <label for="delayClose">Delay before close: </label>
+              <input id="delayClose" name="delayClose" class="demo-input-control" type="number" [value]="_delayBeforeClose" (change)="_setDelayBeforeClose($event)">
+              <span class="info">Set to {{ _delayBeforeClose }}</span>
+            </span>
+          </div>
+
+          <div>
+            <button class="demo-control" (click)="_toggleEnableSliding()">enableSliding wuth Touch ({{_enableSliding}})</button>
+            <span class="demo-input-group">
+              <label for="thresholdToClose">Threshold to close: </label>
+              <input id="thresholdToClose" name="thresholdToClose" class="demo-input-control" type="number" [value]="_thresholdToClose" (change)="_setThresholdToClose($event)">
+              <span class="info">Set to {{ _thresholdToClose }}</span>
+            </span>
+          </div>
 
           <h1>Documentation</h1>
 
@@ -108,16 +151,21 @@ export class DemoComponent {
   private _opened: boolean = false;
   private _modeNum: number = 0;
   private _positionNum: number = 0;
-  private _dock: boolean = false;
-  private _closeOnClickOutside: boolean = false;
-  private _closeOnClickBackdrop: boolean = false;
-  private _showBackdrop: boolean = false;
+  private _dock: boolean = true; // false
+  private _closeOnClickOutside: boolean = true; // false
+  private _closeOnClickBackdrop: boolean = true; // false
+  private _showBackdrop: boolean = true; // false
   private _animate: boolean = true;
   private _trapFocus: boolean = true;
   private _autoFocus: boolean = true;
-  private _keyClose: boolean = false;
+  private _keyClose: boolean = true; // false
   private _autoCollapseHeight: number = null;
   private _autoCollapseWidth: number = null;
+  private _openOnHover: boolean = true;
+  private _delayBeforeOpen: number = 200;
+  private _delayBeforeClose: number = 300;
+  private _enableSliding: boolean = false;
+  private _thresholdToClose: number = 30;
 
   private _MODES: Array<string> = ['over', 'push', 'slide'];
   private _POSITIONS: Array<string> = ['left', 'right', 'top', 'bottom'];
@@ -180,6 +228,35 @@ export class DemoComponent {
 
   private _toggleKeyClose(): void {
     this._keyClose = !this._keyClose;
+  }
+
+  private _toggleOpenOnHover(): void {
+    this._openOnHover = !this._openOnHover;
+  }
+
+  private _setDelayBeforeOpen(event): void {
+    const value: number = parseInt(event.target.value, 10);
+    if (!isNaN(value)) {
+      this._delayBeforeOpen = value;
+    }
+  }
+
+  private _setDelayBeforeClose(event): void {
+    const value: number = parseInt(event.target.value, 10);
+    if (!isNaN(value)) {
+      this._delayBeforeClose = value;
+    }
+  }
+
+  private _toggleEnableSliding(event): void {
+    this._enableSliding = !this._enableSliding;
+  }
+
+  private _setThresholdToClose(event): void {
+    const value: number = parseInt(event.target.value, 10);
+    if (!isNaN(value)) {
+      this._thresholdToClose = value;
+    }
   }
 
   private _onOpenStart(): void {
