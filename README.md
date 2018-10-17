@@ -207,11 +207,11 @@ If you are using Angular's default emulated view encapsulation, you may have to 
 | closeOnClickOutside | boolean | `false` | Whether clicking outside of the open sidebar will close it. |
 | keyClose | boolean | `false` | Close the sidebar when a keyboard button is pressed. |
 | keyCode | number | `27` | The [key code](http://keycode.info/) for `keyClose`. |
-| openOnHover | boolean | false | Open the sidebar on mouse enter. |
-| delayBeforeOpen | number | 0 | Delay in miliseconds before opening of the sidebar. |
-| delayBeforeClose | number | 0 | Delay in miliseconds before closing of the sidebar. |
-| enableSliding | boolean | false | Enable sliding the sidebar with touch events. |
-| thresholdToClose | number | 5 | Threshold in px to close the sidebar. |
+| openOnHover | boolean | false | Open the sidebar on mouse enter (close the sidebar on mouse leave). Note that this only works if sidebar is docked. |
+| delayBeforeOpen | number | 0 | Delay in miliseconds before opening of the sidebar. This applies if openOnHover is set to `true` (and docked sidebar). |
+| delayBeforeClose | number | 0 | Delay in miliseconds before closing of the sidebar. This applies if openOnHover is set to `true` (and docked sidebar). |
+| enableSliding | boolean | false | Enable closing (sliding) the sidebar with touch events. |
+| thresholdToClose | number | 5 | Threshold in px to close the sidebar while sliding. This applies only if enableSliding is set to `true`. |
 
 #### Outputs
 
