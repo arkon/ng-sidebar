@@ -21,7 +21,8 @@ import { isBrowser } from './utils';
     <div *ngIf="showBackdrop"
       aria-hidden="true"
       class="ng-sidebar__backdrop"
-      [ngClass]="{backdropClass: true, 'ng-sidebar__backdrop--animate': _showBackdropAnimate}"
+      [ngClass]="backdropClass"
+      [class.ng-sidebar__backdrop--animate]="_showBackdropAnimate"
       (click)="_onBackdropClicked()">
     </div>
 
