@@ -75,8 +75,8 @@ import { isLTR, isIOS, isBrowser } from './utils';
     }
 
     .ng-sidebar--animate {
-      -webkit-transition: -webkit-transform 0.3s cubic-bezier(0, 0, 0.3, 1);
-      transition: transform 0.3s cubic-bezier(0, 0, 0.3, 1);
+      -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.075, 0.820, 0.165, 1.000); // original cubic-bezier(0, 0, 0.3, 1);
+      transition: transform 0.3s cubic-bezier(0.075, 0.820, 0.165, 1.000);
     }
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -682,7 +682,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       window.addEventListener('test', null, opts);
       window.removeEventListener('test', null, opts);
     } catch (e) {
-      return false;
+      isSupported = false;
     }
 
     this._supportsPassive = isSupported;

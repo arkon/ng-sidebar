@@ -51,6 +51,7 @@ import { isBrowser } from './utils';
       left: 0;
       right: 0;
       background-color: rgba(0,0,0,0);
+      -webkit-transition: background-color 0.3s;
       transition: background-color 0.3s;
       will-change: background-color;
       pointer-events: auto;
