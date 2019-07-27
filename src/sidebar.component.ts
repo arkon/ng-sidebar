@@ -124,7 +124,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   @Output() _onRerender: EventEmitter<null> = new EventEmitter<null>();
 
   /** @internal */
-  @ViewChild('sidebar') _elSidebar: ElementRef;
+  @ViewChild('sidebar', {static: false}) _elSidebar: ElementRef;
 
   private _focusableElementsString: string = 'a[href], area[href], input:not([disabled]), select:not([disabled]),' +
     'textarea:not([disabled]), button:not([disabled]), iframe, object, embed, [tabindex], [contenteditable]';
