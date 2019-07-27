@@ -402,7 +402,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * @return {boolean} Trap focus inside sidebar.
    */
   private get _shouldTrapFocus(): boolean {
-    return this.opened && this.trapFocus && this._isModeOver;
+    return this.opened && this.trapFocus;
   }
 
   /**
