@@ -44,7 +44,7 @@ import { isLTR, isIOS } from './utils';
       position: absolute;
       touch-action: auto;
       will-change: initial;
-      z-index: 1;
+      z-index: 2;
     }
 
     .ng-sidebar--left {

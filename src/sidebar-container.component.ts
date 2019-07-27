@@ -54,7 +54,7 @@ import { Sidebar } from './sidebar.component';
       background: #000;
       opacity: 0.75;
       pointer-events: auto;
-      z-index: 99999998;
+      z-index: 1;
     }
 
     .ng-sidebar__content {
