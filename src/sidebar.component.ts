@@ -4,18 +4,21 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   Output,
+  PLATFORM_ID,
   SimpleChanges,
   ViewChild
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 import { SidebarContainer } from './sidebar-container.component';
-import { isLTR, isIOS, isBrowser } from './utils';
+import { isLTR, isIOS } from './utils';
 
 @Component({
   selector: 'ng-sidebar',
@@ -143,7 +146,10 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
 
   private _isBrowser: boolean;
 
-  constructor(@Optional() private _container: SidebarContainer, private _ref: ChangeDetectorRef) {
+  constructor(
+    @Optional() private _container: SidebarContainer,
+    private _ref: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) platformId: Object) {
     if (!this._container) {
       throw new Error(
         '<ng-sidebar> must be inside a <ng-sidebar-container>. ' +
@@ -151,7 +157,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       );
     }
 
-    this._isBrowser = isBrowser();
+    this._isBrowser = isPlatformBrowser(platformId);
 
     // Handle taps in iOS
     if (this._isBrowser && isIOS() && 'ontouchstart' in window) {
