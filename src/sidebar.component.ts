@@ -482,8 +482,8 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
    * Initializes event handlers for the closeOnClickOutside and keyClose options.
    */
   private _initCloseListeners(): void {
-      this._initCloseClickListener();
-      this._initCloseKeyDownListener();
+    this._initCloseClickListener();
+    this._initCloseKeyDownListener();
   }
 
   private _initCloseClickListener(): void {
@@ -711,7 +711,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   get _isLeftOrRight(): boolean {
     return this.position === 'left' || this.position === 'right';
   }
-
 
   /**
    * @internal
