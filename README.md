@@ -20,13 +20,13 @@ npm install --save ng-sidebar
 If you're using SystemJS, be sure to add the appropriate settings to your SystemJS config:
 
 ```js
-var map = {
+const map = {
   // ...
   'ng-sidebar': 'node_modules/ng-sidebar',
   // ...
 };
 
-var packages = {
+const packages = {
   // ...
   'ng-sidebar': {
     main: 'lib/index',
