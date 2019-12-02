@@ -36,14 +36,14 @@
     "@angular/common": ">=8.0.0"
   },
   "devDependencies": {
-    "@angular/common": "^8.1.3",
-    "@angular/compiler": "^8.1.3",
-    "@angular/compiler-cli": "^8.1.3",
-    "@angular/core": "^8.1.3",
-    "@angular/platform-browser": "^8.1.3",
-    "rimraf": "^2.6.3",
-    "rxjs": "^6.5.2",
-    "tslint": "^5.18.0",
+    "@angular/common": "^8.2.14",
+    "@angular/compiler": "^8.2.14",
+    "@angular/compiler-cli": "^8.2.14",
+    "@angular/core": "^8.2.14",
+    "@angular/platform-browser": "^8.2.14",
+    "rimraf": "^3.0.0",
+    "rxjs": "^6.5.3",
+    "tslint": "^5.20.1",
     "typescript": "~3.4.0",
     "zone.js": "~0.9.1"
   }
