@@ -17,6 +17,7 @@
   "compileOnSave": false,
   "buildOnSave": false,
   "angularCompilerOptions": {
+    "decoratorsAs": "static fields",
     "skipTemplateCodegen": true
   }
 }
