@@ -160,7 +160,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     this._isBrowser = isPlatformBrowser(platformId);
 
     // Handle taps in iOS
-    if (this._isBrowser && isIOS() && 'ontouchstart' in window) {
+    if (this._isBrowser && isIOS() && !('onclick' in window)) {
       this._clickEvent = 'touchstart';
     }
 
