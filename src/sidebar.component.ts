@@ -236,10 +236,6 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       this.triggerRerender();
     }
 
-    if (changes['autoCollapseHeight'] || changes['autoCollapseWidth']) {
-      this._initCollapseListeners();
-    }
-
     if (changes['opened']) {
       if (this._shouldAnimate) {
         this.animate = true;
@@ -251,6 +247,10 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
       } else {
         this.close();
       }
+    }
+
+    if (changes['autoCollapseHeight'] || changes['autoCollapseWidth']) {
+      this._initCollapseListeners();
     }
   }
 
