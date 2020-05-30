@@ -1,19 +1,12 @@
-import { NgModule, enableProdMode } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { SidebarModule } from 'ng-sidebar';
 
-import { DemoComponent } from './demo/demo.component';
+import { DemoAppModule } from './demo/demo.module';
 
 import './styles/styles.scss';
 
 enableProdMode();
 
-@NgModule({
-  declarations: [DemoComponent],
-  imports: [BrowserModule, SidebarModule.forRoot()],
-  bootstrap: [DemoComponent],
-})
-class DemoAppModule {}
-
-platformBrowserDynamic().bootstrapModule(DemoAppModule);
+platformBrowserDynamic()
+  .bootstrapModule(DemoAppModule)
+  .catch(err => console.log(err));
