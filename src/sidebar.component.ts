@@ -1,4 +1,5 @@
 import {
+  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -84,7 +85,7 @@ import { isLTR, isIOS } from './utils';
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Sidebar implements OnInit, OnChanges, OnDestroy {
+export class Sidebar implements AfterContentInit, OnInit, OnChanges, OnDestroy {
   // `openedChange` allows for "2-way" data binding
   @Input() opened: boolean = false;
   @Output() openedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -112,6 +113,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
   @Input() keyClose: boolean = false;
   @Input() keyCode: number = 27; // Default to ESC key
 
+  @Output() onContentInit: EventEmitter<null> = new EventEmitter<null>();
   @Output() onOpenStart: EventEmitter<null> = new EventEmitter<null>();
   @Output() onOpened: EventEmitter<null> = new EventEmitter<null>();
   @Output() onCloseStart: EventEmitter<null> = new EventEmitter<null>();
@@ -175,7 +177,7 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     this._collapse = this._collapse.bind(this);
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (!this._isBrowser) {
       return;
     }
@@ -190,6 +192,10 @@ export class Sidebar implements OnInit, OnChanges, OnDestroy {
     if (this.autoCollapseOnInit) {
       this._collapse();
     }
+  }
+
+  ngAfterContentInit(): void {
+    this.onContentInit.emit();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

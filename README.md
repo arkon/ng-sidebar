@@ -211,6 +211,7 @@ If you are using Angular's default emulated view encapsulation, you may have to 
 
 | Property name | Callback arguments | Description |
 | ------------- | ------------------ | ----------- |
+| onContentInit | | Corresponds with `ngAfterContentInit` lifecycle event of the sidebar component. |
 | openedChange | `opened: boolean` | Emitted when `opened` is modified. This allows for you to do "two-way binding" (i.e. `[(opened)]`). |
 | onOpenStart | | Emitted when the sidebar is opening. |
 | onOpened | | Emitted when the sidebar is opened. |
