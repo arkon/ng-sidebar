@@ -11,8 +11,8 @@
     "url": "https://github.com/arkon/ng-sidebar/issues"
   },
   "files": [
-    "src/*",
-    "lib/*",
+    "lib_commonjs/*",
+    "lib_esmodule/*",
     "README.md",
     "LICENSE"
   ],
