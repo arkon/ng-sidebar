@@ -4,9 +4,6 @@ ehthumbs.db
 Icon?
 Thumbs.db
 
-# VSCode
-.vscode
-
 # Logs
 logs
 *.log
@@ -14,12 +11,9 @@ logs
 # Node files
 node_modules
 
-# Yarn
-yarn.lock
-
 # Built files
-lib/
-factories/
+lib_commonjs/
+lib_esmodule/
 
 # Built demo files
 demo/dist

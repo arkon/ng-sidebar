@@ -24,11 +24,15 @@
     "sidebar",
     "component"
   ],
-  "main": "./lib/index.js",
-  "typings": "./lib/index.d.ts",
+  "main": "./lib_commonjs/index.js",
+  "module": "./lib_esmodule/index.js",
+  "jsnext:main": "./lib_esmodule/index.js",
+  "typings": "./lib_commonjs/index.d.ts",
   "scripts": {
     "lint": "tslint --project tsconfig.json src/**/*.ts",
-    "build": "npm run lint && rimraf lib && ngc",
+    "build:commonjs": "rimraf lib_commonjs && ngc -p tsconfig.json",
+    "build:esmodule": "rimraf lib_esmodule && ngc -p tsconfig.module.json",
+    "build": "npm run lint && npm run build:commonjs && npm run build:esmodule",
     "prepare": "npm run build"
   },
   "peerDependencies": {
