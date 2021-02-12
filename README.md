@@ -1,5 +1,9 @@
 # ng-sidebar
 
+⚠️　**This package is not actively maintained.** ⚠️
+
+---
+
 [![NPM](https://nodei.co/npm/ng-sidebar.png?compact=true)](https://nodei.co/npm/ng-sidebar)
 
 **[Demo](https://echeung.me/ng-sidebar)**
