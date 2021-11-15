@@ -1,6 +1,6 @@
 # ng-sidebar
 
-⚠️　**This package is not actively maintained.** ⚠️
+⚠️　**This package is deprecated and not maintained.** ⚠️
 
 ---
 
